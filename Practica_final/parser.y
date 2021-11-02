@@ -1,4 +1,5 @@
 %{
+	#include <stdio.h>
 	int yylex();
 	void yyerror(const char *s);
 	
@@ -98,15 +99,18 @@
 
 
 
-descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO
+descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO {printf("buenos dias\n");}
 
 
 cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO
 bloqueAlgoritmo : bloque BT_COMENTARIO
-defGlobales : definicionTipo defGlobales | definicionConst defGlobales | /* */
-defAccionesFunciones : defAccion defAccionesFunciones | defFuncion defAccionesFunciones | /* */
+defGlobales : definicionTipo defGlobales {}
+	| definicionConst defGlobales {}
+	| /* */ {}
+	;
+defAccionesFunciones : defAccion defAccionesFunciones | defFuncion defAccionesFunciones | /* */ {}
 bloque : declaraciones instrucciones
-declaraciones : definicionTipo declaraciones | definicionConst declaraciones | definicionVar declaraciones | /* */
+declaraciones : definicionTipo declaraciones | definicionConst declaraciones | definicionVar declaraciones | /* */ {}
 
 
 

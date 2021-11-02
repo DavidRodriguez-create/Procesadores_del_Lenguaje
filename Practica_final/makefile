@@ -1,6 +1,5 @@
 all: bison flex
 	gcc parser.tab.c lex.yy.o -lfl -lm
-
 	
 flex: scanner.l
 	flex scanner.l
