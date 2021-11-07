@@ -1,9 +1,10 @@
 %{
+
 	#include <stdio.h>
 	int yylex();
 	void yyerror(const char *s);
-	
-	
+	extern FILE *yyin;
+
 %}
 
 %token BT_ALGORITMO
@@ -87,7 +88,7 @@
 %left BT_Y
 %right BT_NO
 
-%left BT_MAYOR BT_MENOR BT_IGUAL BT_DISTINTO BT_MAYORIGUAL BT_MENORIGUAL 
+%left BT_MAYOR BT_MENOR BT_IGUAL BT_DISTINTO BT_MAYORIGUAL BT_MENORIGUAL
 %left BT_MOD BT_DIV
 %left BT_SUMA BT_RESTA
 %left BT_MULTIPLICACION BT_DIVREAL
@@ -102,15 +103,20 @@
 descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO {printf("buenos dias\n");}
 
 
-cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO
-bloqueAlgoritmo : bloque BT_COMENTARIO
-defGlobales : definicionTipo defGlobales {}
-	| definicionConst defGlobales {}
-	| /* */ {}
+cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO {printf("1\n");}
+bloqueAlgoritmo : bloque BT_COMENTARIO {printf("2\n");}
+defGlobales : definicionTipo defGlobales  {printf("3\n");}
+	| definicionConst defGlobales  {printf("4\n");}
+	| /* */  {printf("5\n");}
 	;
-defAccionesFunciones : defAccion defAccionesFunciones | defFuncion defAccionesFunciones | /* */ {}
-bloque : declaraciones instrucciones
-declaraciones : definicionTipo declaraciones | definicionConst declaraciones | definicionVar declaraciones | /* */ {}
+defAccionesFunciones : defAccion defAccionesFunciones  {printf("6\n");}
+	| defFuncion defAccionesFunciones {printf("7\n");}
+	| /* */  {printf("8\n");}
+bloque : declaraciones instrucciones {printf("9\n");}
+declaraciones : definicionTipo declaraciones {printf("10\n");}
+	| definicionConst declaraciones {printf("11\n");}
+ 	| definicionVar declaraciones {printf("12\n");}
+	| /* */  {printf("13\n");}
 
 
 
@@ -139,12 +145,12 @@ defSalida : BT_SAL listaDefsVariables
 
 
 
-expresion : llamadaFuncion | operando 
+expresion : llamadaFuncion | operando
 expresion:  expresion BT_SUMA expresion | expresion BT_RESTA expresion | expresion BT_MULTIPLICACION expresion | expresion BT_DIVREAL expresion
 expresion : expresion BT_DIV expresion | expresion BT_MOD expresion | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS | BT_RESTA expresion
 expresion : BT_LITERALNUMERICO
 expresion : expresion BT_Y expresion | expresion BT_O expresion | BT_NO expresion | BT_VERDADERO | BT_FALSO
-expresion : expresion BT_MAYOR expresion | expresion BT_MENOR expresion | expresion BT_IGUAL expresion | expresion BT_DISTINTO expresion | expresion BT_MAYORIGUAL expresion | expresion BT_MENORIGUAL expresion 
+expresion : expresion BT_MAYOR expresion | expresion BT_MENOR expresion | expresion BT_IGUAL expresion | expresion BT_DISTINTO expresion | expresion BT_MAYORIGUAL expresion | expresion BT_MENORIGUAL expresion
 operando : BT_IDENTIFICADOR | operando BT_PUNTO operando | operando BT_INICIOARRAY expresion BT_FINARRAY | operando BT_REF
 
 
@@ -174,9 +180,20 @@ parametrosReales : expresion BT_SEPARADOR parametrosReales | expresion | /* */
 
 %%
 
+int main(int argc, char **argv){
 
-void yyerror(const char *s){
+	#ifdef YYDEBUG
+		int yydebug = 1;
+	#endif
+	++argv, --argc;
 
+	if(argc > 0)
+		yyin = fopen(argv[0],"r");
+	else
+		yyin = stdin;
+	yylex();
 }
 
-
+void yyerror(const char *s){
+	printf("ERROR\n");
+}

@@ -68,13 +68,14 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
+
 	#include <stdio.h>
 	int yylex();
 	void yyerror(const char *s);
-	
-	
+	extern FILE *yyin;
 
-#line 78 "parser.tab.c"
+
+#line 79 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -111,7 +112,7 @@
 # define YY_YY_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -575,16 +576,16 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   102,   102,   105,   106,   107,   108,   109,   111,   111,
-     111,   112,   113,   113,   113,   113,   117,   118,   119,   123,
-     123,   124,   124,   125,   125,   125,   125,   126,   126,   127,
-     127,   131,   131,   133,   133,   134,   134,   136,   136,   136,
-     137,   138,   142,   142,   143,   143,   143,   143,   144,   144,
-     144,   144,   145,   146,   146,   146,   146,   146,   147,   147,
-     147,   147,   147,   147,   148,   148,   148,   148,   152,   152,
-     153,   153,   153,   153,   153,   154,   155,   156,   156,   157,
-     157,   158,   159,   163,   164,   165,   166,   167,   167,   167,
-     168,   168,   168,   170,   171,   172,   172,   172
+       0,   103,   103,   106,   107,   108,   109,   110,   112,   113,
+     114,   115,   116,   117,   118,   119,   123,   124,   125,   129,
+     129,   130,   130,   131,   131,   131,   131,   132,   132,   133,
+     133,   137,   137,   139,   139,   140,   140,   142,   142,   142,
+     143,   144,   148,   148,   149,   149,   149,   149,   150,   150,
+     150,   150,   151,   152,   152,   152,   152,   152,   153,   153,
+     153,   153,   153,   153,   154,   154,   154,   154,   158,   158,
+     159,   159,   159,   159,   159,   160,   161,   162,   162,   163,
+     163,   164,   165,   169,   170,   171,   172,   173,   173,   173,
+     174,   174,   174,   176,   177,   178,   178,   178
 };
 #endif
 
@@ -1569,43 +1570,91 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 102 "parser.y"
+#line 103 "parser.y"
                                                                                                                        {printf("buenos dias\n");}
-#line 1575 "parser.tab.c"
+#line 1576 "parser.tab.c"
+    break;
+
+  case 3:
+#line 106 "parser.y"
+                                                                                           {printf("1\n");}
+#line 1582 "parser.tab.c"
+    break;
+
+  case 4:
+#line 107 "parser.y"
+                                       {printf("2\n");}
+#line 1588 "parser.tab.c"
     break;
 
   case 5:
-#line 107 "parser.y"
-                                         {}
-#line 1581 "parser.tab.c"
+#line 108 "parser.y"
+                                          {printf("3\n");}
+#line 1594 "parser.tab.c"
     break;
 
   case 6:
-#line 108 "parser.y"
-                                      {}
-#line 1587 "parser.tab.c"
+#line 109 "parser.y"
+                                       {printf("4\n");}
+#line 1600 "parser.tab.c"
     break;
 
   case 7:
-#line 109 "parser.y"
-                {}
-#line 1593 "parser.tab.c"
+#line 110 "parser.y"
+                 {printf("5\n");}
+#line 1606 "parser.tab.c"
+    break;
+
+  case 8:
+#line 112 "parser.y"
+                                                       {printf("6\n");}
+#line 1612 "parser.tab.c"
+    break;
+
+  case 9:
+#line 113 "parser.y"
+                                          {printf("7\n");}
+#line 1618 "parser.tab.c"
     break;
 
   case 10:
-#line 111 "parser.y"
-                                                                                                {}
-#line 1599 "parser.tab.c"
+#line 114 "parser.y"
+                 {printf("8\n");}
+#line 1624 "parser.tab.c"
+    break;
+
+  case 11:
+#line 115 "parser.y"
+                                     {printf("9\n");}
+#line 1630 "parser.tab.c"
+    break;
+
+  case 12:
+#line 116 "parser.y"
+                                             {printf("10\n");}
+#line 1636 "parser.tab.c"
+    break;
+
+  case 13:
+#line 117 "parser.y"
+                                        {printf("11\n");}
+#line 1642 "parser.tab.c"
+    break;
+
+  case 14:
+#line 118 "parser.y"
+                                      {printf("12\n");}
+#line 1648 "parser.tab.c"
     break;
 
   case 15:
-#line 113 "parser.y"
-                                                                                                                   {}
-#line 1605 "parser.tab.c"
+#line 119 "parser.y"
+                 {printf("13\n");}
+#line 1654 "parser.tab.c"
     break;
 
 
-#line 1609 "parser.tab.c"
+#line 1658 "parser.tab.c"
 
       default: break;
     }
@@ -1837,12 +1886,23 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 175 "parser.y"
+#line 181 "parser.y"
 
 
+int main(int argc, char **argv){
 
-void yyerror(const char *s){
+	#ifdef YYDEBUG
+		int yydebug = 1;
+	#endif
+	++argv, --argc;
 
+	if(argc > 0)
+		yyin = fopen(argv[0],"r");
+	else
+		yyin = stdin;
+	yylex();
 }
 
-
+void yyerror(const char *s){
+	printf("ERROR\n");
+}
