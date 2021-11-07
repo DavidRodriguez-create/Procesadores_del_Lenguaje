@@ -2,7 +2,7 @@ all: bison flex
 	gcc parser.tab.c lex.yy.o -lfl -lm -DYYDEBUG
 
 flex: scanner.l
-	flex -d scanner.l
+	flex scanner.l
 	gcc -c lex.yy.c
 
 bison: parser.y

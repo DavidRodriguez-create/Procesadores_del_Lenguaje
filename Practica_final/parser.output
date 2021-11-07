@@ -4,9 +4,6 @@ Terminals unused in grammar
     BT_DOSCIENTOSCINCUENTAYCINCO
 
 
-State 39 conflicts: 1 shift/reduce
-
-
 Grammar
 
     0 $accept: descAlgoritmo $end
@@ -138,9 +135,9 @@ Grammar
    90         | BT_SAL listaId BT_DEFINICIONTIPOVARIABLE defTipo
    91         | BT_ENTSAL listaId BT_DEFINICIONTIPOVARIABLE defTipo
 
-   92 llamadaAccion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+   92 llamadaAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
 
-   93 llamadaFuncion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+   93 llamadaFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
 
    94 parametrosReales: expresion BT_SEPARADOR parametrosReales
    95                 | expresion
@@ -204,7 +201,7 @@ Terminals, with rules where they appear
     BT_MULTIPLICACION (308) 45
     BT_INICIOPARENTESIS (309) 49 84 85 92 93
     BT_FINPARENTESIS (310) 49 84 85 92 93
-    BT_ASIGNACION (311) 28 30 74 81 92 93
+    BT_ASIGNACION (311) 28 30 74 81
     BT_COMPOSICIONSECUENCIAL (312) 1 18 28 30 32 67 84 86
     BT_DEFINICIONTIPOVARIABLE (313) 32 89 90 91
     BT_ENTONCES (314) 75 76
@@ -752,12 +749,11 @@ State 38
 State 39
 
    63 operando: BT_IDENTIFICADOR .
-   92 llamadaAccion: BT_IDENTIFICADOR . BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+   92 llamadaAccion: BT_IDENTIFICADOR . BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
 
-    BT_ASIGNACION  shift, and go to state 80
+    BT_INICIOPARENTESIS  shift, and go to state 80
 
-    BT_ASIGNACION  [reduce using rule 63 (operando)]
-    $default       reduce using rule 63 (operando)
+    $default  reduce using rule 63 (operando)
 
 
 State 40
@@ -1130,17 +1126,30 @@ State 79
 
 State 80
 
-   92 llamadaAccion: BT_IDENTIFICADOR BT_ASIGNACION . BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+   92 llamadaAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS . parametrosReales BT_FINPARENTESIS
 
-    BT_INICIOPARENTESIS  shift, and go to state 115
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    $default  reduce using rule 96 (parametrosReales)
+
+    expresion         go to state 115
+    operando          go to state 89
+    llamadaFuncion    go to state 90
+    parametrosReales  go to state 116
 
 
 State 81
 
    63 operando: BT_IDENTIFICADOR .
-   93 llamadaFuncion: BT_IDENTIFICADOR . BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+   93 llamadaFuncion: BT_IDENTIFICADOR . BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
 
-    BT_ASIGNACION  shift, and go to state 116
+    BT_INICIOPARENTESIS  shift, and go to state 117
 
     $default  reduce using rule 63 (operando)
 
@@ -1178,7 +1187,7 @@ State 85
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 117
+    expresion       go to state 118
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -1195,7 +1204,7 @@ State 86
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 118
+    expresion       go to state 119
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -1212,7 +1221,7 @@ State 87
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 119
+    expresion       go to state 120
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -1235,21 +1244,21 @@ State 88
    62          | expresion . BT_MENORIGUAL expresion
    75 alternativa: BT_SI expresion . BT_ENTONCES instrucciones listaOpciones BT_FSI
 
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_ENTONCES        shift, and go to state 128
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_ENTONCES        shift, and go to state 129
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
 
 State 89
@@ -1291,28 +1300,28 @@ State 91
    62          | expresion . BT_MENORIGUAL expresion
    80 itCotaVariable: BT_MIENTRAS expresion . BT_HACER instrucciones BT_FMIENTRAS
 
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_HACER           shift, and go to state 135
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_HACER           shift, and go to state 136
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
 
 State 92
 
    81 itCotaFija: BT_PARA BT_IDENTIFICADOR . BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA
 
-    BT_ASIGNACION  shift, and go to state 136
+    BT_ASIGNACION  shift, and go to state 137
 
 
 State 93
@@ -1326,9 +1335,9 @@ State 94
 
    64 operando: operando BT_PUNTO . operando
 
-    BT_IDENTIFICADOR  shift, and go to state 137
+    BT_IDENTIFICADOR  shift, and go to state 138
 
-    operando  go to state 138
+    operando  go to state 139
 
 
 State 95
@@ -1343,7 +1352,7 @@ State 95
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 139
+    expresion       go to state 140
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -1360,7 +1369,7 @@ State 96
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 140
+    expresion       go to state 141
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -1376,7 +1385,7 @@ State 97
     BT_PARA           shift, and go to state 43
 
     operando        go to state 44
-    instrucciones   go to state 141
+    instrucciones   go to state 142
     instruccion     go to state 46
     asignacion      go to state 47
     alternativa     go to state 48
@@ -1390,21 +1399,21 @@ State 98
 
    84 cabeceraAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS . defParForm BT_FINPARENTESIS BT_COMPOSICIONSECUENCIAL
 
-    BT_ENT     shift, and go to state 142
-    BT_SAL     shift, and go to state 143
-    BT_ENTSAL  shift, and go to state 144
+    BT_ENT     shift, and go to state 143
+    BT_SAL     shift, and go to state 144
+    BT_ENTSAL  shift, and go to state 145
 
     $default  reduce using rule 88 (defParForm)
 
-    defParForm  go to state 145
-    dParForm    go to state 146
+    defParForm  go to state 146
+    dParForm    go to state 147
 
 
 State 99
 
    82 defAccion: BT_ACCION cabeceraAccion bloque . BT_FACCION
 
-    BT_FACCION  shift, and go to state 147
+    BT_FACCION  shift, and go to state 148
 
 
 State 100
@@ -1415,7 +1424,7 @@ State 100
 
     $default  reduce using rule 33 (listaDefsVariables)
 
-    listaDefsVariables  go to state 148
+    listaDefsVariables  go to state 149
     listaId             go to state 36
 
 
@@ -1423,7 +1432,7 @@ State 101
 
    83 defFuncion: BT_FUNCION cabeceraFuncion bloque . BT_DEV expresion BT_FFUNCION
 
-    BT_DEV  shift, and go to state 149
+    BT_DEV  shift, and go to state 150
 
 
 State 102
@@ -1458,14 +1467,14 @@ State 106
 
    28 listaCampos: BT_IDENTIFICADOR . BT_ASIGNACION defTipo BT_COMPOSICIONSECUENCIAL listaCampos
 
-    BT_ASIGNACION  shift, and go to state 150
+    BT_ASIGNACION  shift, and go to state 151
 
 
 State 107
 
    20 defTipo: BT_TUPLA listaCampos . BT_FTUPLA
 
-    BT_FTUPLA  shift, and go to state 151
+    BT_FTUPLA  shift, and go to state 152
 
 
 State 108
@@ -1475,7 +1484,7 @@ State 108
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    expresionT  go to state 152
+    expresionT  go to state 153
 
 
 State 109
@@ -1493,7 +1502,7 @@ State 110
 
     $default  reduce using rule 19 (listaDefsTipo)
 
-    listaDefsTipo  go to state 153
+    listaDefsTipo  go to state 154
 
 
 State 111
@@ -1503,7 +1512,7 @@ State 111
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    expresionT  go to state 154
+    expresionT  go to state 155
 
 
 State 112
@@ -1514,7 +1523,7 @@ State 112
 
     $default  reduce using rule 31 (listaDefsConstantes)
 
-    listaDefsConstantes  go to state 155
+    listaDefsConstantes  go to state 156
 
 
 State 113
@@ -1528,660 +1537,10 @@ State 114
 
    32 listaDefsVariables: listaId BT_DEFINICIONTIPOVARIABLE defTipo . BT_COMPOSICIONSECUENCIAL listaDefsVariables
 
-    BT_COMPOSICIONSECUENCIAL  shift, and go to state 156
+    BT_COMPOSICIONSECUENCIAL  shift, and go to state 157
 
 
 State 115
-
-   92 llamadaAccion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS . parametrosReales BT_FINPARENTESIS
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    $default  reduce using rule 96 (parametrosReales)
-
-    expresion         go to state 157
-    operando          go to state 89
-    llamadaFuncion    go to state 90
-    parametrosReales  go to state 158
-
-
-State 116
-
-   93 llamadaFuncion: BT_IDENTIFICADOR BT_ASIGNACION . BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
-
-    BT_INICIOPARENTESIS  shift, and go to state 159
-
-
-State 117
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   54          | BT_NO expresion .
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   62          | expresion . BT_MENORIGUAL expresion
-
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
-
-    $default  reduce using rule 54 (expresion)
-
-
-State 118
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   50          | BT_RESTA expresion .
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   62          | expresion . BT_MENORIGUAL expresion
-
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-
-    $default  reduce using rule 50 (expresion)
-
-
-State 119
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   49          | BT_INICIOPARENTESIS expresion . BT_FINPARENTESIS
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   62          | expresion . BT_MENORIGUAL expresion
-
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_FINPARENTESIS   shift, and go to state 160
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
-
-
-State 120
-
-   52 expresion: expresion BT_Y . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 161
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 121
-
-   53 expresion: expresion BT_O . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 162
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 122
-
-   43 expresion: expresion BT_SUMA . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 163
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 123
-
-   44 expresion: expresion BT_RESTA . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 164
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 124
-
-   47 expresion: expresion BT_DIV . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 165
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 125
-
-   48 expresion: expresion BT_MOD . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 166
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 126
-
-   46 expresion: expresion BT_DIVREAL . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 167
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 127
-
-   45 expresion: expresion BT_MULTIPLICACION . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 168
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 128
-
-   75 alternativa: BT_SI expresion BT_ENTONCES . instrucciones listaOpciones BT_FSI
-
-    BT_IDENTIFICADOR  shift, and go to state 39
-    BT_CONTINUAR      shift, and go to state 40
-    BT_SI             shift, and go to state 41
-    BT_MIENTRAS       shift, and go to state 42
-    BT_PARA           shift, and go to state 43
-
-    operando        go to state 44
-    instrucciones   go to state 169
-    instruccion     go to state 46
-    asignacion      go to state 47
-    alternativa     go to state 48
-    iteracion       go to state 49
-    itCotaVariable  go to state 50
-    itCotaFija      go to state 51
-    llamadaAccion   go to state 52
-
-
-State 129
-
-   57 expresion: expresion BT_MAYOR . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 170
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 130
-
-   58 expresion: expresion BT_MENOR . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 171
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 131
-
-   59 expresion: expresion BT_IGUAL . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 172
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 132
-
-   60 expresion: expresion BT_DISTINTO . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 173
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 133
-
-   61 expresion: expresion BT_MAYORIGUAL . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 174
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 134
-
-   62 expresion: expresion BT_MENORIGUAL . expresion
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 175
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 135
-
-   80 itCotaVariable: BT_MIENTRAS expresion BT_HACER . instrucciones BT_FMIENTRAS
-
-    BT_IDENTIFICADOR  shift, and go to state 39
-    BT_CONTINUAR      shift, and go to state 40
-    BT_SI             shift, and go to state 41
-    BT_MIENTRAS       shift, and go to state 42
-    BT_PARA           shift, and go to state 43
-
-    operando        go to state 44
-    instrucciones   go to state 176
-    instruccion     go to state 46
-    asignacion      go to state 47
-    alternativa     go to state 48
-    iteracion       go to state 49
-    itCotaVariable  go to state 50
-    itCotaFija      go to state 51
-    llamadaAccion   go to state 52
-
-
-State 136
-
-   81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION . expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 177
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 137
-
-   63 operando: BT_IDENTIFICADOR .
-
-    $default  reduce using rule 63 (operando)
-
-
-State 138
-
-   64 operando: operando . BT_PUNTO operando
-   64         | operando BT_PUNTO operando .
-   65         | operando . BT_INICIOARRAY expresion BT_FINARRAY
-   66         | operando . BT_REF
-
-    $default  reduce using rule 64 (operando)
-
-
-State 139
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   62          | expresion . BT_MENORIGUAL expresion
-   74 asignacion: operando BT_ASIGNACION expresion .
-
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
-
-    $default  reduce using rule 74 (asignacion)
-
-
-State 140
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   62          | expresion . BT_MENORIGUAL expresion
-   65 operando: operando BT_INICIOARRAY expresion . BT_FINARRAY
-
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_FINARRAY        shift, and go to state 178
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
-
-
-State 141
-
-   67 instrucciones: instruccion BT_COMPOSICIONSECUENCIAL instrucciones .
-
-    $default  reduce using rule 67 (instrucciones)
-
-
-State 142
-
-   89 dParForm: BT_ENT . listaId BT_DEFINICIONTIPOVARIABLE defTipo
-
-    BT_IDENTIFICADOR  shift, and go to state 34
-
-    listaId  go to state 179
-
-
-State 143
-
-   90 dParForm: BT_SAL . listaId BT_DEFINICIONTIPOVARIABLE defTipo
-
-    BT_IDENTIFICADOR  shift, and go to state 34
-
-    listaId  go to state 180
-
-
-State 144
-
-   91 dParForm: BT_ENTSAL . listaId BT_DEFINICIONTIPOVARIABLE defTipo
-
-    BT_IDENTIFICADOR  shift, and go to state 34
-
-    listaId  go to state 181
-
-
-State 145
-
-   84 cabeceraAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS defParForm . BT_FINPARENTESIS BT_COMPOSICIONSECUENCIAL
-
-    BT_FINPARENTESIS  shift, and go to state 182
-
-
-State 146
-
-   86 defParForm: dParForm . BT_COMPOSICIONSECUENCIAL defParForm
-   87           | dParForm .
-
-    BT_COMPOSICIONSECUENCIAL  shift, and go to state 183
-
-    $default  reduce using rule 87 (defParForm)
-
-
-State 147
-
-   82 defAccion: BT_ACCION cabeceraAccion bloque BT_FACCION .
-
-    $default  reduce using rule 82 (defAccion)
-
-
-State 148
-
-   85 cabeceraFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables . BT_FINPARENTESIS BT_DEV defTipo
-
-    BT_FINPARENTESIS  shift, and go to state 184
-
-
-State 149
-
-   83 defFuncion: BT_FUNCION cabeceraFuncion bloque BT_DEV . expresion BT_FFUNCION
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    expresion       go to state 185
-    operando        go to state 89
-    llamadaFuncion  go to state 90
-
-
-State 150
-
-   28 listaCampos: BT_IDENTIFICADOR BT_ASIGNACION . defTipo BT_COMPOSICIONSECUENCIAL listaCampos
-
-    BT_IDENTIFICADOR    shift, and go to state 67
-    BT_TUPLA            shift, and go to state 68
-    BT_TABLA            shift, and go to state 69
-    BT_REF              shift, and go to state 70
-    BT_TIPOBASE         shift, and go to state 71
-    BT_LITERALENTERO    shift, and go to state 72
-    BT_LITERALCARACTER  shift, and go to state 73
-
-    defTipo     go to state 186
-    expresionT  go to state 75
-
-
-State 151
-
-   20 defTipo: BT_TUPLA listaCampos BT_FTUPLA .
-
-    $default  reduce using rule 20 (defTipo)
-
-
-State 152
-
-   21 defTipo: BT_TABLA BT_INICIOARRAY expresionT . BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo
-
-    BT_SUBRANGO  shift, and go to state 187
-
-
-State 153
-
-   18 listaDefsTipo: BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIAL listaDefsTipo .
-
-    $default  reduce using rule 18 (listaDefsTipo)
-
-
-State 154
-
-   23 defTipo: expresionT BT_SUBRANGO expresionT .
-
-    $default  reduce using rule 23 (defTipo)
-
-
-State 155
-
-   30 listaDefsConstantes: BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSECUENCIAL listaDefsConstantes .
-
-    $default  reduce using rule 30 (listaDefsConstantes)
-
-
-State 156
-
-   32 listaDefsVariables: listaId BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL . listaDefsVariables
-
-    BT_IDENTIFICADOR  shift, and go to state 34
-
-    $default  reduce using rule 33 (listaDefsVariables)
-
-    listaDefsVariables  go to state 188
-    listaId             go to state 36
-
-
-State 157
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2200,35 +1559,35 @@ State 157
    94 parametrosReales: expresion . BT_SEPARADOR parametrosReales
    95                 | expresion .
 
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_SEPARADOR       shift, and go to state 189
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_SEPARADOR       shift, and go to state 158
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
     $default  reduce using rule 95 (parametrosReales)
 
 
-State 158
+State 116
 
-   92 llamadaAccion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales . BT_FINPARENTESIS
+   92 llamadaAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales . BT_FINPARENTESIS
 
-    BT_FINPARENTESIS  shift, and go to state 190
+    BT_FINPARENTESIS  shift, and go to state 159
 
 
-State 159
+State 117
 
-   93 llamadaFuncion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS . parametrosReales BT_FINPARENTESIS
+   93 llamadaFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS . parametrosReales BT_FINPARENTESIS
 
     BT_IDENTIFICADOR     shift, and go to state 81
     BT_VERDADERO         shift, and go to state 82
@@ -2240,20 +1599,677 @@ State 159
 
     $default  reduce using rule 96 (parametrosReales)
 
-    expresion         go to state 157
+    expresion         go to state 115
     operando          go to state 89
     llamadaFuncion    go to state 90
-    parametrosReales  go to state 191
+    parametrosReales  go to state 160
+
+
+State 118
+
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   54          | BT_NO expresion .
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
+   62          | expresion . BT_MENORIGUAL expresion
+
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
+
+    $default  reduce using rule 54 (expresion)
+
+
+State 119
+
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   50          | BT_RESTA expresion .
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
+   62          | expresion . BT_MENORIGUAL expresion
+
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+
+    $default  reduce using rule 50 (expresion)
+
+
+State 120
+
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   49          | BT_INICIOPARENTESIS expresion . BT_FINPARENTESIS
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
+   62          | expresion . BT_MENORIGUAL expresion
+
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_FINPARENTESIS   shift, and go to state 161
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
+
+
+State 121
+
+   52 expresion: expresion BT_Y . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 162
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 122
+
+   53 expresion: expresion BT_O . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 163
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 123
+
+   43 expresion: expresion BT_SUMA . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 164
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 124
+
+   44 expresion: expresion BT_RESTA . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 165
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 125
+
+   47 expresion: expresion BT_DIV . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 166
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 126
+
+   48 expresion: expresion BT_MOD . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 167
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 127
+
+   46 expresion: expresion BT_DIVREAL . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 168
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 128
+
+   45 expresion: expresion BT_MULTIPLICACION . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 169
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 129
+
+   75 alternativa: BT_SI expresion BT_ENTONCES . instrucciones listaOpciones BT_FSI
+
+    BT_IDENTIFICADOR  shift, and go to state 39
+    BT_CONTINUAR      shift, and go to state 40
+    BT_SI             shift, and go to state 41
+    BT_MIENTRAS       shift, and go to state 42
+    BT_PARA           shift, and go to state 43
+
+    operando        go to state 44
+    instrucciones   go to state 170
+    instruccion     go to state 46
+    asignacion      go to state 47
+    alternativa     go to state 48
+    iteracion       go to state 49
+    itCotaVariable  go to state 50
+    itCotaFija      go to state 51
+    llamadaAccion   go to state 52
+
+
+State 130
+
+   57 expresion: expresion BT_MAYOR . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 171
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 131
+
+   58 expresion: expresion BT_MENOR . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 172
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 132
+
+   59 expresion: expresion BT_IGUAL . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 173
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 133
+
+   60 expresion: expresion BT_DISTINTO . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 174
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 134
+
+   61 expresion: expresion BT_MAYORIGUAL . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 175
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 135
+
+   62 expresion: expresion BT_MENORIGUAL . expresion
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 176
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 136
+
+   80 itCotaVariable: BT_MIENTRAS expresion BT_HACER . instrucciones BT_FMIENTRAS
+
+    BT_IDENTIFICADOR  shift, and go to state 39
+    BT_CONTINUAR      shift, and go to state 40
+    BT_SI             shift, and go to state 41
+    BT_MIENTRAS       shift, and go to state 42
+    BT_PARA           shift, and go to state 43
+
+    operando        go to state 44
+    instrucciones   go to state 177
+    instruccion     go to state 46
+    asignacion      go to state 47
+    alternativa     go to state 48
+    iteracion       go to state 49
+    itCotaVariable  go to state 50
+    itCotaFija      go to state 51
+    llamadaAccion   go to state 52
+
+
+State 137
+
+   81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION . expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 178
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 138
+
+   63 operando: BT_IDENTIFICADOR .
+
+    $default  reduce using rule 63 (operando)
+
+
+State 139
+
+   64 operando: operando . BT_PUNTO operando
+   64         | operando BT_PUNTO operando .
+   65         | operando . BT_INICIOARRAY expresion BT_FINARRAY
+   66         | operando . BT_REF
+
+    $default  reduce using rule 64 (operando)
+
+
+State 140
+
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
+   62          | expresion . BT_MENORIGUAL expresion
+   74 asignacion: operando BT_ASIGNACION expresion .
+
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
+
+    $default  reduce using rule 74 (asignacion)
+
+
+State 141
+
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
+   62          | expresion . BT_MENORIGUAL expresion
+   65 operando: operando BT_INICIOARRAY expresion . BT_FINARRAY
+
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_FINARRAY        shift, and go to state 179
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
+
+
+State 142
+
+   67 instrucciones: instruccion BT_COMPOSICIONSECUENCIAL instrucciones .
+
+    $default  reduce using rule 67 (instrucciones)
+
+
+State 143
+
+   89 dParForm: BT_ENT . listaId BT_DEFINICIONTIPOVARIABLE defTipo
+
+    BT_IDENTIFICADOR  shift, and go to state 34
+
+    listaId  go to state 180
+
+
+State 144
+
+   90 dParForm: BT_SAL . listaId BT_DEFINICIONTIPOVARIABLE defTipo
+
+    BT_IDENTIFICADOR  shift, and go to state 34
+
+    listaId  go to state 181
+
+
+State 145
+
+   91 dParForm: BT_ENTSAL . listaId BT_DEFINICIONTIPOVARIABLE defTipo
+
+    BT_IDENTIFICADOR  shift, and go to state 34
+
+    listaId  go to state 182
+
+
+State 146
+
+   84 cabeceraAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS defParForm . BT_FINPARENTESIS BT_COMPOSICIONSECUENCIAL
+
+    BT_FINPARENTESIS  shift, and go to state 183
+
+
+State 147
+
+   86 defParForm: dParForm . BT_COMPOSICIONSECUENCIAL defParForm
+   87           | dParForm .
+
+    BT_COMPOSICIONSECUENCIAL  shift, and go to state 184
+
+    $default  reduce using rule 87 (defParForm)
+
+
+State 148
+
+   82 defAccion: BT_ACCION cabeceraAccion bloque BT_FACCION .
+
+    $default  reduce using rule 82 (defAccion)
+
+
+State 149
+
+   85 cabeceraFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables . BT_FINPARENTESIS BT_DEV defTipo
+
+    BT_FINPARENTESIS  shift, and go to state 185
+
+
+State 150
+
+   83 defFuncion: BT_FUNCION cabeceraFuncion bloque BT_DEV . expresion BT_FFUNCION
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    expresion       go to state 186
+    operando        go to state 89
+    llamadaFuncion  go to state 90
+
+
+State 151
+
+   28 listaCampos: BT_IDENTIFICADOR BT_ASIGNACION . defTipo BT_COMPOSICIONSECUENCIAL listaCampos
+
+    BT_IDENTIFICADOR    shift, and go to state 67
+    BT_TUPLA            shift, and go to state 68
+    BT_TABLA            shift, and go to state 69
+    BT_REF              shift, and go to state 70
+    BT_TIPOBASE         shift, and go to state 71
+    BT_LITERALENTERO    shift, and go to state 72
+    BT_LITERALCARACTER  shift, and go to state 73
+
+    defTipo     go to state 187
+    expresionT  go to state 75
+
+
+State 152
+
+   20 defTipo: BT_TUPLA listaCampos BT_FTUPLA .
+
+    $default  reduce using rule 20 (defTipo)
+
+
+State 153
+
+   21 defTipo: BT_TABLA BT_INICIOARRAY expresionT . BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo
+
+    BT_SUBRANGO  shift, and go to state 188
+
+
+State 154
+
+   18 listaDefsTipo: BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIAL listaDefsTipo .
+
+    $default  reduce using rule 18 (listaDefsTipo)
+
+
+State 155
+
+   23 defTipo: expresionT BT_SUBRANGO expresionT .
+
+    $default  reduce using rule 23 (defTipo)
+
+
+State 156
+
+   30 listaDefsConstantes: BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSECUENCIAL listaDefsConstantes .
+
+    $default  reduce using rule 30 (listaDefsConstantes)
+
+
+State 157
+
+   32 listaDefsVariables: listaId BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL . listaDefsVariables
+
+    BT_IDENTIFICADOR  shift, and go to state 34
+
+    $default  reduce using rule 33 (listaDefsVariables)
+
+    listaDefsVariables  go to state 189
+    listaId             go to state 36
+
+
+State 158
+
+   94 parametrosReales: expresion BT_SEPARADOR . parametrosReales
+
+    BT_IDENTIFICADOR     shift, and go to state 81
+    BT_VERDADERO         shift, and go to state 82
+    BT_FALSO             shift, and go to state 83
+    BT_LITERALNUMERICO   shift, and go to state 84
+    BT_NO                shift, and go to state 85
+    BT_RESTA             shift, and go to state 86
+    BT_INICIOPARENTESIS  shift, and go to state 87
+
+    $default  reduce using rule 96 (parametrosReales)
+
+    expresion         go to state 115
+    operando          go to state 89
+    llamadaFuncion    go to state 90
+    parametrosReales  go to state 190
+
+
+State 159
+
+   92 llamadaAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS .
+
+    $default  reduce using rule 92 (llamadaAccion)
 
 
 State 160
+
+   93 llamadaFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales . BT_FINPARENTESIS
+
+    BT_FINPARENTESIS  shift, and go to state 191
+
+
+State 161
 
    49 expresion: BT_INICIOPARENTESIS expresion BT_FINPARENTESIS .
 
     $default  reduce using rule 49 (expresion)
 
 
-State 161
+State 162
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2271,23 +2287,23 @@ State 161
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
     $default  reduce using rule 52 (expresion)
 
 
-State 162
+State 163
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2305,24 +2321,24 @@ State 162
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_Y               shift, and go to state 120
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_Y               shift, and go to state 121
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
     $default  reduce using rule 53 (expresion)
 
 
-State 163
+State 164
 
    43 expresion: expresion . BT_SUMA expresion
    43          | expresion BT_SUMA expresion .
@@ -2340,13 +2356,13 @@ State 163
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 43 (expresion)
 
 
-State 164
+State 165
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2364,13 +2380,13 @@ State 164
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 44 (expresion)
 
 
-State 165
+State 166
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2388,15 +2404,15 @@ State 165
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 47 (expresion)
 
 
-State 166
+State 167
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2414,15 +2430,15 @@ State 166
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 48 (expresion)
 
 
-State 167
+State 168
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2443,7 +2459,7 @@ State 167
     $default  reduce using rule 46 (expresion)
 
 
-State 168
+State 169
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2464,7 +2480,7 @@ State 168
     $default  reduce using rule 45 (expresion)
 
 
-State 169
+State 170
 
    75 alternativa: BT_SI expresion BT_ENTONCES instrucciones . listaOpciones BT_FSI
 
@@ -2475,7 +2491,7 @@ State 169
     listaOpciones  go to state 193
 
 
-State 170
+State 171
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2493,17 +2509,17 @@ State 170
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 57 (expresion)
 
 
-State 171
+State 172
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2521,17 +2537,17 @@ State 171
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 58 (expresion)
 
 
-State 172
+State 173
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2549,17 +2565,17 @@ State 172
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 59 (expresion)
 
 
-State 173
+State 174
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2577,42 +2593,14 @@ State 173
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 60 (expresion)
-
-
-State 174
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   61          | expresion BT_MAYORIGUAL expresion .
-   62          | expresion . BT_MENORIGUAL expresion
-
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-
-    $default  reduce using rule 61 (expresion)
 
 
 State 175
@@ -2630,27 +2618,55 @@ State 175
    59          | expresion . BT_IGUAL expresion
    60          | expresion . BT_DISTINTO expresion
    61          | expresion . BT_MAYORIGUAL expresion
+   61          | expresion BT_MAYORIGUAL expresion .
+   62          | expresion . BT_MENORIGUAL expresion
+
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+
+    $default  reduce using rule 61 (expresion)
+
+
+State 176
+
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
    62          | expresion BT_MENORIGUAL expresion .
 
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
 
     $default  reduce using rule 62 (expresion)
 
 
-State 176
+State 177
 
    80 itCotaVariable: BT_MIENTRAS expresion BT_HACER instrucciones . BT_FMIENTRAS
 
     BT_FMIENTRAS  shift, and go to state 194
 
 
-State 177
+State 178
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2668,80 +2684,80 @@ State 177
    62          | expresion . BT_MENORIGUAL expresion
    81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion . BT_HASTA expresion BT_HACER instrucciones BT_FPARA
 
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
     BT_HASTA           shift, and go to state 195
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
 
-State 178
+State 179
 
    65 operando: operando BT_INICIOARRAY expresion BT_FINARRAY .
 
     $default  reduce using rule 65 (operando)
 
 
-State 179
+State 180
 
    89 dParForm: BT_ENT listaId . BT_DEFINICIONTIPOVARIABLE defTipo
 
     BT_DEFINICIONTIPOVARIABLE  shift, and go to state 196
 
 
-State 180
+State 181
 
    90 dParForm: BT_SAL listaId . BT_DEFINICIONTIPOVARIABLE defTipo
 
     BT_DEFINICIONTIPOVARIABLE  shift, and go to state 197
 
 
-State 181
+State 182
 
    91 dParForm: BT_ENTSAL listaId . BT_DEFINICIONTIPOVARIABLE defTipo
 
     BT_DEFINICIONTIPOVARIABLE  shift, and go to state 198
 
 
-State 182
+State 183
 
    84 cabeceraAccion: BT_IDENTIFICADOR BT_INICIOPARENTESIS defParForm BT_FINPARENTESIS . BT_COMPOSICIONSECUENCIAL
 
     BT_COMPOSICIONSECUENCIAL  shift, and go to state 199
 
 
-State 183
+State 184
 
    86 defParForm: dParForm BT_COMPOSICIONSECUENCIAL . defParForm
 
-    BT_ENT     shift, and go to state 142
-    BT_SAL     shift, and go to state 143
-    BT_ENTSAL  shift, and go to state 144
+    BT_ENT     shift, and go to state 143
+    BT_SAL     shift, and go to state 144
+    BT_ENTSAL  shift, and go to state 145
 
     $default  reduce using rule 88 (defParForm)
 
     defParForm  go to state 200
-    dParForm    go to state 146
+    dParForm    go to state 147
 
 
-State 184
+State 185
 
    85 cabeceraFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FINPARENTESIS . BT_DEV defTipo
 
     BT_DEV  shift, and go to state 201
 
 
-State 185
+State 186
 
    43 expresion: expresion . BT_SUMA expresion
    44          | expresion . BT_RESTA expresion
@@ -2759,31 +2775,31 @@ State 185
    62          | expresion . BT_MENORIGUAL expresion
    83 defFuncion: BT_FUNCION cabeceraFuncion bloque BT_DEV expresion . BT_FFUNCION
 
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
     BT_FFUNCION        shift, and go to state 202
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
 
-State 186
+State 187
 
    28 listaCampos: BT_IDENTIFICADOR BT_ASIGNACION defTipo . BT_COMPOSICIONSECUENCIAL listaCampos
 
     BT_COMPOSICIONSECUENCIAL  shift, and go to state 203
 
 
-State 187
+State 188
 
    21 defTipo: BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO . expresionT BT_FINARRAY BT_DE defTipo
 
@@ -2793,45 +2809,25 @@ State 187
     expresionT  go to state 204
 
 
-State 188
+State 189
 
    32 listaDefsVariables: listaId BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL listaDefsVariables .
 
     $default  reduce using rule 32 (listaDefsVariables)
 
 
-State 189
-
-   94 parametrosReales: expresion BT_SEPARADOR . parametrosReales
-
-    BT_IDENTIFICADOR     shift, and go to state 81
-    BT_VERDADERO         shift, and go to state 82
-    BT_FALSO             shift, and go to state 83
-    BT_LITERALNUMERICO   shift, and go to state 84
-    BT_NO                shift, and go to state 85
-    BT_RESTA             shift, and go to state 86
-    BT_INICIOPARENTESIS  shift, and go to state 87
-
-    $default  reduce using rule 96 (parametrosReales)
-
-    expresion         go to state 157
-    operando          go to state 89
-    llamadaFuncion    go to state 90
-    parametrosReales  go to state 205
-
-
 State 190
 
-   92 llamadaAccion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS .
+   94 parametrosReales: expresion BT_SEPARADOR parametrosReales .
 
-    $default  reduce using rule 92 (llamadaAccion)
+    $default  reduce using rule 94 (parametrosReales)
 
 
 State 191
 
-   93 llamadaFuncion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales . BT_FINPARENTESIS
+   93 llamadaFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS .
 
-    BT_FINPARENTESIS  shift, and go to state 206
+    $default  reduce using rule 93 (llamadaFuncion)
 
 
 State 192
@@ -2846,7 +2842,7 @@ State 192
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 207
+    expresion       go to state 205
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -2855,7 +2851,7 @@ State 193
 
    75 alternativa: BT_SI expresion BT_ENTONCES instrucciones listaOpciones . BT_FSI
 
-    BT_FSI  shift, and go to state 208
+    BT_FSI  shift, and go to state 206
 
 
 State 194
@@ -2877,7 +2873,7 @@ State 195
     BT_RESTA             shift, and go to state 86
     BT_INICIOPARENTESIS  shift, and go to state 87
 
-    expresion       go to state 209
+    expresion       go to state 207
     operando        go to state 89
     llamadaFuncion  go to state 90
 
@@ -2894,7 +2890,7 @@ State 196
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    defTipo     go to state 210
+    defTipo     go to state 208
     expresionT  go to state 75
 
 
@@ -2910,7 +2906,7 @@ State 197
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    defTipo     go to state 211
+    defTipo     go to state 209
     expresionT  go to state 75
 
 
@@ -2926,7 +2922,7 @@ State 198
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    defTipo     go to state 212
+    defTipo     go to state 210
     expresionT  go to state 75
 
 
@@ -2956,7 +2952,7 @@ State 201
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    defTipo     go to state 213
+    defTipo     go to state 211
     expresionT  go to state 75
 
 
@@ -2975,28 +2971,56 @@ State 203
 
     $default  reduce using rule 29 (listaCampos)
 
-    listaCampos  go to state 214
+    listaCampos  go to state 212
 
 
 State 204
 
    21 defTipo: BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT . BT_FINARRAY BT_DE defTipo
 
-    BT_FINARRAY  shift, and go to state 215
+    BT_FINARRAY  shift, and go to state 213
 
 
 State 205
 
-   94 parametrosReales: expresion BT_SEPARADOR parametrosReales .
+   43 expresion: expresion . BT_SUMA expresion
+   44          | expresion . BT_RESTA expresion
+   45          | expresion . BT_MULTIPLICACION expresion
+   46          | expresion . BT_DIVREAL expresion
+   47          | expresion . BT_DIV expresion
+   48          | expresion . BT_MOD expresion
+   52          | expresion . BT_Y expresion
+   53          | expresion . BT_O expresion
+   57          | expresion . BT_MAYOR expresion
+   58          | expresion . BT_MENOR expresion
+   59          | expresion . BT_IGUAL expresion
+   60          | expresion . BT_DISTINTO expresion
+   61          | expresion . BT_MAYORIGUAL expresion
+   62          | expresion . BT_MENORIGUAL expresion
+   76 listaOpciones: BT_SINOSI expresion . BT_ENTONCES instrucciones listaOpciones
 
-    $default  reduce using rule 94 (parametrosReales)
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_ENTONCES        shift, and go to state 214
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
 
 State 206
 
-   93 llamadaFuncion: BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS .
+   75 alternativa: BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI .
 
-    $default  reduce using rule 93 (llamadaFuncion)
+    $default  reduce using rule 75 (alternativa)
 
 
 State 207
@@ -3015,110 +3039,68 @@ State 207
    60          | expresion . BT_DISTINTO expresion
    61          | expresion . BT_MAYORIGUAL expresion
    62          | expresion . BT_MENORIGUAL expresion
-   76 listaOpciones: BT_SINOSI expresion . BT_ENTONCES instrucciones listaOpciones
+   81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion . BT_HACER instrucciones BT_FPARA
 
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_ENTONCES        shift, and go to state 216
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
+    BT_Y               shift, and go to state 121
+    BT_O               shift, and go to state 122
+    BT_HACER           shift, and go to state 215
+    BT_SUMA            shift, and go to state 123
+    BT_RESTA           shift, and go to state 124
+    BT_DIV             shift, and go to state 125
+    BT_MOD             shift, and go to state 126
+    BT_DIVREAL         shift, and go to state 127
+    BT_MULTIPLICACION  shift, and go to state 128
+    BT_MAYOR           shift, and go to state 130
+    BT_MENOR           shift, and go to state 131
+    BT_IGUAL           shift, and go to state 132
+    BT_DISTINTO        shift, and go to state 133
+    BT_MAYORIGUAL      shift, and go to state 134
+    BT_MENORIGUAL      shift, and go to state 135
 
 
 State 208
-
-   75 alternativa: BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI .
-
-    $default  reduce using rule 75 (alternativa)
-
-
-State 209
-
-   43 expresion: expresion . BT_SUMA expresion
-   44          | expresion . BT_RESTA expresion
-   45          | expresion . BT_MULTIPLICACION expresion
-   46          | expresion . BT_DIVREAL expresion
-   47          | expresion . BT_DIV expresion
-   48          | expresion . BT_MOD expresion
-   52          | expresion . BT_Y expresion
-   53          | expresion . BT_O expresion
-   57          | expresion . BT_MAYOR expresion
-   58          | expresion . BT_MENOR expresion
-   59          | expresion . BT_IGUAL expresion
-   60          | expresion . BT_DISTINTO expresion
-   61          | expresion . BT_MAYORIGUAL expresion
-   62          | expresion . BT_MENORIGUAL expresion
-   81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion . BT_HACER instrucciones BT_FPARA
-
-    BT_Y               shift, and go to state 120
-    BT_O               shift, and go to state 121
-    BT_HACER           shift, and go to state 217
-    BT_SUMA            shift, and go to state 122
-    BT_RESTA           shift, and go to state 123
-    BT_DIV             shift, and go to state 124
-    BT_MOD             shift, and go to state 125
-    BT_DIVREAL         shift, and go to state 126
-    BT_MULTIPLICACION  shift, and go to state 127
-    BT_MAYOR           shift, and go to state 129
-    BT_MENOR           shift, and go to state 130
-    BT_IGUAL           shift, and go to state 131
-    BT_DISTINTO        shift, and go to state 132
-    BT_MAYORIGUAL      shift, and go to state 133
-    BT_MENORIGUAL      shift, and go to state 134
-
-
-State 210
 
    89 dParForm: BT_ENT listaId BT_DEFINICIONTIPOVARIABLE defTipo .
 
     $default  reduce using rule 89 (dParForm)
 
 
-State 211
+State 209
 
    90 dParForm: BT_SAL listaId BT_DEFINICIONTIPOVARIABLE defTipo .
 
     $default  reduce using rule 90 (dParForm)
 
 
-State 212
+State 210
 
    91 dParForm: BT_ENTSAL listaId BT_DEFINICIONTIPOVARIABLE defTipo .
 
     $default  reduce using rule 91 (dParForm)
 
 
-State 213
+State 211
 
    85 cabeceraFuncion: BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FINPARENTESIS BT_DEV defTipo .
 
     $default  reduce using rule 85 (cabeceraFuncion)
 
 
-State 214
+State 212
 
    28 listaCampos: BT_IDENTIFICADOR BT_ASIGNACION defTipo BT_COMPOSICIONSECUENCIAL listaCampos .
 
     $default  reduce using rule 28 (listaCampos)
 
 
-State 215
+State 213
 
    21 defTipo: BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY . BT_DE defTipo
 
-    BT_DE  shift, and go to state 218
+    BT_DE  shift, and go to state 216
 
 
-State 216
+State 214
 
    76 listaOpciones: BT_SINOSI expresion BT_ENTONCES . instrucciones listaOpciones
 
@@ -3129,7 +3111,7 @@ State 216
     BT_PARA           shift, and go to state 43
 
     operando        go to state 44
-    instrucciones   go to state 219
+    instrucciones   go to state 217
     instruccion     go to state 46
     asignacion      go to state 47
     alternativa     go to state 48
@@ -3139,7 +3121,7 @@ State 216
     llamadaAccion   go to state 52
 
 
-State 217
+State 215
 
    81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER . instrucciones BT_FPARA
 
@@ -3150,7 +3132,7 @@ State 217
     BT_PARA           shift, and go to state 43
 
     operando        go to state 44
-    instrucciones   go to state 220
+    instrucciones   go to state 218
     instruccion     go to state 46
     asignacion      go to state 47
     alternativa     go to state 48
@@ -3160,7 +3142,7 @@ State 217
     llamadaAccion   go to state 52
 
 
-State 218
+State 216
 
    21 defTipo: BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE . defTipo
 
@@ -3172,11 +3154,11 @@ State 218
     BT_LITERALENTERO    shift, and go to state 72
     BT_LITERALCARACTER  shift, and go to state 73
 
-    defTipo     go to state 221
+    defTipo     go to state 219
     expresionT  go to state 75
 
 
-State 219
+State 217
 
    76 listaOpciones: BT_SINOSI expresion BT_ENTONCES instrucciones . listaOpciones
 
@@ -3184,31 +3166,31 @@ State 219
 
     $default  reduce using rule 77 (listaOpciones)
 
-    listaOpciones  go to state 222
+    listaOpciones  go to state 220
 
 
-State 220
+State 218
 
    81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones . BT_FPARA
 
-    BT_FPARA  shift, and go to state 223
+    BT_FPARA  shift, and go to state 221
 
 
-State 221
+State 219
 
    21 defTipo: BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo .
 
     $default  reduce using rule 21 (defTipo)
 
 
-State 222
+State 220
 
    76 listaOpciones: BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones .
 
     $default  reduce using rule 76 (listaOpciones)
 
 
-State 223
+State 221
 
    81 itCotaFija: BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA .
 

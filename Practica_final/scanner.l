@@ -96,8 +96,8 @@ DR_OA_FINPARENTESIS \)
 {DR_LITERALBOOLEANO}	{printf("DR_LITERALBOOLEANO ");}
 {DR_LITERALCARACTER}	{printf("DR_LITERALCARACTER "); return BT_LITERALCARACTER;}
 {DR_LITERALCADENA}	{printf("DR_LITERALCADENA ");}
-{DR_LITERALENTERO}	{printf("DR_LITERALENTERO "); return BT_LITERALENTERO;}
-{DR_LITERALREAL}	{printf("DR_LITERALREAL ");}
+{DR_LITERALENTERO}	{printf("DR_LITERALENTERO "); return BT_LITERALNUMERICO;}
+{DR_LITERALREAL}	{printf("DR_LITERALREAL "); return BT_LITERALNUMERICO;}
 {DR_COMENTARIO}	{printf("DR_COMENTARIO "); return BT_COMENTARIO;}
 
 {DR_PR_ACCION}	{printf("DR_PR_ACCION "); return BT_ACCION;}
@@ -169,13 +169,3 @@ DR_OA_FINPARENTESIS \)
 
 %%
 
-int main(int argc, char **argv){
-
-	++argv, --argc;
-
-	if(argc > 0)
-		yyin = fopen(argv[0],"r");
-	else
-		yyin = stdin;
-	yylex();
-}

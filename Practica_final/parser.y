@@ -102,37 +102,30 @@
 
 descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO {printf("buenos dias\n");}
 
-
-cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO {printf("1\n");}
-bloqueAlgoritmo : bloque BT_COMENTARIO {printf("2\n");}
-defGlobales : definicionTipo defGlobales  {printf("3\n");}
-	| definicionConst defGlobales  {printf("4\n");}
-	| /* */  {printf("5\n");}
+cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO
+bloqueAlgoritmo : bloque BT_COMENTARIO
+defGlobales : definicionTipo defGlobales 
+	| definicionConst defGlobales 
+	| /* */ 
 	;
-defAccionesFunciones : defAccion defAccionesFunciones  {printf("6\n");}
-	| defFuncion defAccionesFunciones {printf("7\n");}
-	| /* */  {printf("8\n");}
-bloque : declaraciones instrucciones {printf("9\n");}
-declaraciones : definicionTipo declaraciones {printf("10\n");}
-	| definicionConst declaraciones {printf("11\n");}
- 	| definicionVar declaraciones {printf("12\n");}
-	| /* */  {printf("13\n");}
-
-
+defAccionesFunciones : defAccion defAccionesFunciones
+	| defFuncion defAccionesFunciones
+	| /* */
+bloque : declaraciones instrucciones
+declaraciones : definicionTipo declaraciones
+	| definicionConst declaraciones
+ 	| definicionVar declaraciones
+	| /* */ 
 
 definicionTipo : BT_TIPO listaDefsTipo BT_FTIPO
 definicionConst : BT_CONST listaDefsConstantes BT_FCONST
 definicionVar : BT_VAR listaDefsVariables BT_FVAR
-
-
 
 listaDefsTipo : BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIAL listaDefsTipo | /* */
 defTipo : BT_TUPLA listaCampos BT_FTUPLA | BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo
 defTipo : BT_IDENTIFICADOR | expresionT BT_SUBRANGO expresionT | BT_REF defTipo | BT_TIPOBASE
 expresionT : BT_LITERALENTERO | BT_LITERALCARACTER
 listaCampos : BT_IDENTIFICADOR BT_ASIGNACION defTipo BT_COMPOSICIONSECUENCIAL listaCampos | /* */
-
-
 
 listaDefsConstantes : BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSECUENCIAL listaDefsConstantes | /* */
 
@@ -146,7 +139,7 @@ defSalida : BT_SAL listaDefsVariables
 
 
 expresion : llamadaFuncion | operando
-expresion:  expresion BT_SUMA expresion | expresion BT_RESTA expresion | expresion BT_MULTIPLICACION expresion | expresion BT_DIVREAL expresion
+expresion : expresion BT_SUMA expresion | expresion BT_RESTA expresion | expresion BT_MULTIPLICACION expresion | expresion BT_DIVREAL expresion
 expresion : expresion BT_DIV expresion | expresion BT_MOD expresion | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS | BT_RESTA expresion
 expresion : BT_LITERALNUMERICO
 expresion : expresion BT_Y expresion | expresion BT_O expresion | BT_NO expresion | BT_VERDADERO | BT_FALSO
@@ -173,10 +166,9 @@ cabeceraFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FIN
 defParForm : dParForm BT_COMPOSICIONSECUENCIAL defParForm | dParForm | /* */
 dParForm : BT_ENT listaId BT_DEFINICIONTIPOVARIABLE defTipo | BT_SAL listaId BT_DEFINICIONTIPOVARIABLE defTipo | BT_ENTSAL listaId BT_DEFINICIONTIPOVARIABLE defTipo
 
-llamadaAccion : BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
-llamadaFuncion : BT_IDENTIFICADOR BT_ASIGNACION BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+llamadaAccion : BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
+llamadaFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS
 parametrosReales : expresion BT_SEPARADOR parametrosReales | expresion | /* */
-
 
 %%
 
@@ -191,9 +183,9 @@ int main(int argc, char **argv){
 		yyin = fopen(argv[0],"r");
 	else
 		yyin = stdin;
-	yylex();
+	yyparse();
 }
 
 void yyerror(const char *s){
-	printf("ERROR\n");
+	printf("ERROR %s\n", s);
 }
