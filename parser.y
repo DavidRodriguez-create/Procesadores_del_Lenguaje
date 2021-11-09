@@ -141,8 +141,8 @@ defSalida : BT_SAL listaDefsVariables
 expresion : llamadaFuncion | operando
 expresion : expresion BT_SUMA expresion | expresion BT_RESTA expresion | expresion BT_MULTIPLICACION expresion | expresion BT_DIVREAL expresion
 expresion : expresion BT_DIV expresion | expresion BT_MOD expresion | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS | BT_RESTA expresion
-expresion : BT_LITERALNUMERICO
-expresion : expresion BT_Y expresion | expresion BT_O expresion | BT_NO expresion | BT_VERDADERO | BT_FALSO
+expresion : BT_LITERALNUMERICO | BT_SUMA expresion
+expresion  : expresion BT_Y expresion | expresion BT_O expresion | BT_NO expresion | BT_VERDADERO | BT_FALSO
 expresion : expresion BT_MAYOR expresion | expresion BT_MENOR expresion | expresion BT_IGUAL expresion | expresion BT_DISTINTO expresion | expresion BT_MAYORIGUAL expresion | expresion BT_MENORIGUAL expresion
 operando : BT_IDENTIFICADOR | operando BT_PUNTO operando | operando BT_INICIOARRAY expresion BT_FINARRAY | operando BT_REF
 
@@ -156,7 +156,6 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones | /*
 iteracion : itCotaFija | itCotaVariable
 itCotaVariable : BT_MIENTRAS expresion BT_HACER instrucciones BT_FMIENTRAS
 itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA
-
 
 
 defAccion : BT_ACCION cabeceraAccion bloque BT_FACCION
