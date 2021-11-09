@@ -634,16 +634,12 @@ char *yytext;
  //Palabras reservadas
  // Otros Tokens
  // Operadores Relacionales
- //DR_OR_IGUAL	=
- //{DR_OR_IGUAL}	{printf("DR_OR_IGUAL ");}
-	//El DR_OR_IGUAL no esta en DR_OR ya que hay conflicto sintactico con DR_OT_CREACIONTIPO
-	//DR_OR DR_OR_MAYOR|DR_OR_MENOR|DR_OR_DISTINTO|DR_OR_MAYORIGUAL|DR_OR_MENORIGUAL
  // Operadores Aritmeticos
 	//{DR_LITERALBOOLEANO}	{printf("DR_LITERALBOOLEANO "); return BT_LITERALBOOLEANO;}
 	//{DR_LITERALCADENA}	{printf("DR_LITERALCADENA "); return BT_LITERALCADENA;}
 	//{DR_LITERALREAL}	{printf("DR_LITERALREAL "); return BT_LITERALREAL;}
  // en la parte de abajo la ordenacion importa (arriba importante)
-#line 647 "lex.yy.c"
+#line 643 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -860,9 +856,9 @@ YY_DECL
 		}
 
 	{
-#line 96 "scanner.l"
+#line 93 "scanner.l"
 
-#line 866 "lex.yy.c"
+#line 862 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -921,352 +917,352 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 97 "scanner.l"
+#line 94 "scanner.l"
 {printf("DR_LITERALBOOLEANO ");}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 98 "scanner.l"
+#line 95 "scanner.l"
 {printf("DR_LITERALCARACTER "); return BT_LITERALCARACTER;}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 99 "scanner.l"
+#line 96 "scanner.l"
 {printf("DR_LITERALCADENA ");}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 100 "scanner.l"
+#line 97 "scanner.l"
 {printf("DR_LITERALENTERO "); return BT_LITERALNUMERICO;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 101 "scanner.l"
+#line 98 "scanner.l"
 {printf("DR_LITERALREAL "); return BT_LITERALNUMERICO;}
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 102 "scanner.l"
+#line 99 "scanner.l"
 {printf("DR_COMENTARIO "); return BT_COMENTARIO;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 104 "scanner.l"
+#line 101 "scanner.l"
 {printf("DR_PR_ACCION "); return BT_ACCION;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 105 "scanner.l"
+#line 102 "scanner.l"
 {printf("DR_PR_ALGORITMO "); return BT_ALGORITMO;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 106 "scanner.l"
+#line 103 "scanner.l"
 {printf("DR_PR_BOOLEANO "); return BT_TIPOBASE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 107 "scanner.l"
+#line 104 "scanner.l"
 {printf("DR_PR_CADENA "); return BT_TIPOBASE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 108 "scanner.l"
+#line 105 "scanner.l"
 {printf("DR_PR_CARACTER "); return BT_TIPOBASE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 109 "scanner.l"
+#line 106 "scanner.l"
 {printf("DR_PR_CONST "); return BT_CONST;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 110 "scanner.l"
+#line 107 "scanner.l"
 {printf("DR_PR_CONTINUAR "); return BT_CONTINUAR;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 111 "scanner.l"
+#line 108 "scanner.l"
 {printf("DR_PR_DE "); return BT_DE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 112 "scanner.l"
+#line 109 "scanner.l"
 {printf("DR_PR_DEV "); return BT_DEV;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 113 "scanner.l"
+#line 110 "scanner.l"
 {printf("DR_PR_ENT "); return BT_ENT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 114 "scanner.l"
+#line 111 "scanner.l"
 {printf("DR_PR_ENTERO "); return BT_TIPOBASE;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 115 "scanner.l"
+#line 112 "scanner.l"
 {printf("DR_PR_ENTSAL "); return BT_ENTSAL;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 116 "scanner.l"
+#line 113 "scanner.l"
 {printf("DR_PR_FACCION "); return BT_FACCION;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 117 "scanner.l"
+#line 114 "scanner.l"
 {printf("DR_PR_FALGORITMO "); return BT_FALGORITMO;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 118 "scanner.l"
+#line 115 "scanner.l"
 {printf("DR_PR_FCONST "); return BT_FCONST;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 119 "scanner.l"
+#line 116 "scanner.l"
 {printf("DR_PR_FFUNCION "); return BT_FFUNCION;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 120 "scanner.l"
+#line 117 "scanner.l"
 {printf("DR_PR_FMIENTRAS "); return BT_FMIENTRAS;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 121 "scanner.l"
+#line 118 "scanner.l"
 {printf("DR_PR_FPARA "); return BT_FPARA;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 122 "scanner.l"
+#line 119 "scanner.l"
 {printf("DR_PR_FSI "); return BT_FSI;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 123 "scanner.l"
+#line 120 "scanner.l"
 {printf("DR_PR_FTIPO "); return BT_FTIPO;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 124 "scanner.l"
+#line 121 "scanner.l"
 {printf("DR_PR_FTUPLA "); return BT_FTUPLA;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 125 "scanner.l"
+#line 122 "scanner.l"
 {printf("DR_PR_FUNCION "); return BT_FUNCION;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 126 "scanner.l"
+#line 123 "scanner.l"
 {printf("DR_PR_FVAR "); return BT_FVAR;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 127 "scanner.l"
+#line 124 "scanner.l"
 {printf("DR_PR_HACER "); return BT_HACER;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 128 "scanner.l"
+#line 125 "scanner.l"
 {printf("DR_PR_HASTA "); return BT_HASTA;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 129 "scanner.l"
+#line 126 "scanner.l"
 {printf("DR_PR_MIENTRAS "); return BT_MIENTRAS;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 130 "scanner.l"
+#line 127 "scanner.l"
 {printf("DR_PR_NO "); return BT_NO;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 131 "scanner.l"
+#line 128 "scanner.l"
 {printf("DR_PR_O "); return BT_O;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 132 "scanner.l"
+#line 129 "scanner.l"
 {printf("DR_PR_PARA "); return BT_PARA;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 133 "scanner.l"
+#line 130 "scanner.l"
 {printf("DR_PR_REAL "); return BT_TIPOBASE;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 134 "scanner.l"
+#line 131 "scanner.l"
 {printf("DR_PR_REF "); return BT_REF;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 135 "scanner.l"
+#line 132 "scanner.l"
 {printf("DR_PR_SAL "); return BT_SAL;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 136 "scanner.l"
+#line 133 "scanner.l"
 {printf("DR_PR_SI "); return BT_SI;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 137 "scanner.l"
+#line 134 "scanner.l"
 {printf("DR_PR_TABLA "); return BT_TABLA;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 138 "scanner.l"
+#line 135 "scanner.l"
 {printf("DR_PR_TIPO "); return BT_TIPO;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 139 "scanner.l"
+#line 136 "scanner.l"
 {printf("DR_PR_TUPLA "); return BT_TUPLA;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 140 "scanner.l"
+#line 137 "scanner.l"
 {printf("DR_PR_VAR "); return BT_VAR;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 141 "scanner.l"
+#line 138 "scanner.l"
 {printf("DR_PR_Y "); return BT_Y;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 143 "scanner.l"
+#line 140 "scanner.l"
 {printf("DR_OT_ASIGNACION "); return BT_ASIGNACION;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 144 "scanner.l"
+#line 141 "scanner.l"
 {printf("DR_OT_COMPOSICIONSECUENCIAL "); return BT_COMPOSICIONSECUENCIAL;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 145 "scanner.l"
+#line 142 "scanner.l"
 {printf("DR_OT_DEFINICIONTIPOVARIABLE "); return BT_DEFINICIONTIPOVARIABLE;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 146 "scanner.l"
+#line 143 "scanner.l"
 {printf("DR_OT_ENTONCES "); return BT_ENTONCES;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 147 "scanner.l"
+#line 144 "scanner.l"
 {printf("DR_OT_INICIOARRAY "); return BT_INICIOARRAY;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 148 "scanner.l"
+#line 145 "scanner.l"
 {printf("DR_OT_FINARRAY "); return BT_FINARRAY;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 149 "scanner.l"
+#line 146 "scanner.l"
 {printf("DR_OT_CREACIONTIPO "); return BT_CREACIONTIPO;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 150 "scanner.l"
+#line 147 "scanner.l"
 {printf("DR_OT_SEPARADOR "); return BT_SEPARADOR;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 151 "scanner.l"
+#line 148 "scanner.l"
 {printf("DR_OT_SINOSI "); return BT_SINOSI;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 152 "scanner.l"
+#line 149 "scanner.l"
 {printf("DR_OT_SUBRANGO "); return BT_SUBRANGO;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 154 "scanner.l"
+#line 151 "scanner.l"
 {printf("DR_OR_MAYOR "); return BT_MAYOR;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 155 "scanner.l"
+#line 152 "scanner.l"
 {printf("DR_OR_MENOR "); return BT_MENOR;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 156 "scanner.l"
+#line 153 "scanner.l"
 {printf("DR_OR_DISTINTO "); return BT_DISTINTO;}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 157 "scanner.l"
+#line 154 "scanner.l"
 {printf("DR_OR_MAYORIGUAL "); return BT_MAYORIGUAL;}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 158 "scanner.l"
+#line 155 "scanner.l"
 {printf("DR_OR_MENORIGUAL "); return BT_MENORIGUAL;}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 160 "scanner.l"
+#line 157 "scanner.l"
 {printf("DR_OA_SUMA "); return BT_SUMA;}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 161 "scanner.l"
+#line 158 "scanner.l"
 {printf("DR_OA_RESTA "); return BT_RESTA;}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 162 "scanner.l"
+#line 159 "scanner.l"
 {printf("DR_OA_DIV "); return BT_DIV;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 163 "scanner.l"
+#line 160 "scanner.l"
 {printf("DR_OA_MOD "); return BT_MOD;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 164 "scanner.l"
+#line 161 "scanner.l"
 {printf("DR_OA_DIVREAL "); return BT_DIVREAL;}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 165 "scanner.l"
+#line 162 "scanner.l"
 {printf("DR_OA_MULTIPLICACION "); return BT_MULTIPLICACION;}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 166 "scanner.l"
+#line 163 "scanner.l"
 {printf("DR_OA_INICIOPARENTESIS "); return BT_INICIOPARENTESIS;}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 167 "scanner.l"
+#line 164 "scanner.l"
 {printf("DR_OA_FINPARENTESIS "); return BT_FINPARENTESIS;}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 169 "scanner.l"
+#line 166 "scanner.l"
 {printf("DR_IDENTIFICADOR "); return BT_IDENTIFICADOR;}
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 171 "scanner.l"
+#line 168 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1270 "lex.yy.c"
+#line 1266 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2271,7 +2267,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 171 "scanner.l"
+#line 168 "scanner.l"
 
 
 

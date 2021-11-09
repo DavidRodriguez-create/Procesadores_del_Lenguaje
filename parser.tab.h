@@ -117,7 +117,8 @@ extern int yydebug;
     BT_DISTINTO = 323,
     BT_MAYORIGUAL = 324,
     BT_MENORIGUAL = 325,
-    BT_SINOSI = 326
+    BT_OPREL = 326,
+    BT_SINOSI = 327
   };
 #endif
 

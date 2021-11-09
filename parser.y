@@ -81,6 +81,7 @@
 %token BT_DISTINTO
 %token BT_MAYORIGUAL
 %token BT_MENORIGUAL
+%token BT_OPREL
 
 %token BT_SINOSI
 
@@ -92,6 +93,9 @@
 %left BT_MOD BT_DIV
 %left BT_SUMA BT_RESTA
 %left BT_MULTIPLICACION BT_DIVREAL
+
+%left BT_OPREL
+
 %left BT_REF BT_INICIOARRAY BT_PUNTO
 
 
@@ -142,7 +146,8 @@ expresion : llamadaFuncion | operando
 expresion : expresion BT_SUMA expresion | expresion BT_RESTA expresion | expresion BT_MULTIPLICACION expresion | expresion BT_DIVREAL expresion
 expresion : expresion BT_DIV expresion | expresion BT_MOD expresion | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS | BT_RESTA expresion
 expresion : BT_LITERALNUMERICO | BT_SUMA expresion
-expresion  : expresion BT_Y expresion | expresion BT_O expresion | BT_NO expresion | BT_VERDADERO | BT_FALSO
+expresion : expresion BT_OPREL expresion
+expresion : expresion BT_Y expresion | expresion BT_O expresion | BT_NO expresion | BT_VERDADERO | BT_FALSO
 expresion : expresion BT_MAYOR expresion | expresion BT_MENOR expresion | expresion BT_IGUAL expresion | expresion BT_DISTINTO expresion | expresion BT_MAYORIGUAL expresion | expresion BT_MENORIGUAL expresion
 operando : BT_IDENTIFICADOR | operando BT_PUNTO operando | operando BT_INICIOARRAY expresion BT_FINARRAY | operando BT_REF
 

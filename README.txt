@@ -13,3 +13,5 @@ duda puede estar pegados?
 	comb := comb * (m - i - 1) div (i + 2);
 respuesta: 
 	si, quitamos en flex el +- en las expresiones regulares, y añadimos en bison la produccion BT_SUMA EXPRESION
+
+cambiar en la gramatica (bison) lo de los operadores relativos, ya que vamos a pasarlo por valores yyvalue
