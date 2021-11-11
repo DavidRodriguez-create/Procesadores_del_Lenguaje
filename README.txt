@@ -14,4 +14,9 @@ duda puede estar pegados?
 respuesta: 
 	si, quitamos en flex el +- en las expresiones regulares, y añadimos en bison la produccion BT_SUMA EXPRESION
 
-cambiar en la gramatica (bison) lo de los operadores relativos, ya que vamos a pasarlo por valores yyvalue
+cambiar en la gramatica (bison) lo de los operadores relativos, ya que vamos a pasarlo por valores yylvalue
+
+
+se carga el valor de las variables multivaluados en yylval antes de retornar el token, por ejemplo el token (identificardor nombrevariable)
+
+para optimizar -O[1,2,s....]
