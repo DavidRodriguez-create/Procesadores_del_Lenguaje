@@ -1,45 +1,37 @@
+#ifndef TABLA_DE_SIMBOLOS_H
+#define TABLA_DE_SIMBOLOS_H
 
-
-union simbolo{
-  variable var;
-
-};;
+#include "definiciones.h"
 
 struct variable{
-  char nombre[50];
-  char tipo[50];
+  char nombre[10];
+  char tipo[10];
   int ambito;
 } variable;
 
-struct constante{
-  char nombre[50];
-  char tipo[50];
-  int ambito;
-} constante;
+union simbolo{
+  variable var;
+};
 
-struct accion{
-  char nombre[50];
-  variable parametros[50];
-} accion;
-
-struct funcion{
-  char nombre[50];
-  variable parametros[50];
-  char tipo[50];
-} funcion;
-
-struct etiquetas{
-  char nombre[50];
-  char tipo[50];
-  int ambito;
-} etiquetas;
+struct tabla{
+  simbolo* primer_simbolo;
+};
 
 //----------------------------FUNCIONES
 
-tabla crear();
 
-void insertar_simbolo();
 
-simbolo coger_simbolo();
+simbolo new_temp();
+void insertar_id();
+void insertar_lista_simbolos();
+void modifica_tipo();
 
-# END
+char* consulta_tipo()
+
+// ------------------------
+
+tabla crear_tabla_de_simbolos();
+
+simbolo coger_simbolo(simbolo* s);
+
+#endif
