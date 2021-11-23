@@ -159,6 +159,7 @@ defVariablesInteraccion : defEntrada {}
 												| defEntrada defSalida {}
 												| defSalida {}
 	 										 	;
+
 defEntrada : BT_ENT listaDefsVariables {};
 defSalida : BT_SAL listaDefsVariables {};
 
@@ -174,8 +175,8 @@ expresion : expresion BT_SUMA expresion {$$ = $1 + $3;}
 					;
 expresion : expresion BT_DIV expresion {$$ = $1 / $3;}
 					| expresion BT_MOD expresion {$$ = $1 * $3;}
-					| BT_INICIOPARENTESIS expresion BT_FINPARENTESIS {$$ = $2}
-					| BT_RESTA expresion {$$ = -$2}
+					| BT_INICIOPARENTESIS expresion BT_FINPARENTESIS {$$ = $2;}
+					| BT_RESTA expresion {$$ = -$2;}
 					;
 expresion : BT_LITERALNUMERICO {}
 					| BT_SUMA expresion {}
@@ -226,7 +227,7 @@ itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion
 defAccion : BT_ACCION cabeceraAccion bloque BT_FACCION {};
 defFuncion : BT_FUNCION cabeceraFuncion bloque BT_DEV expresion BT_FFUNCION {};
 cabeceraAccion : BT_IDENTIFICADOR BT_INICIOPARENTESIS defParForm BT_FINPARENTESIS BT_COMPOSICIONSECUENCIAL {};
-cabeceraFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FINPARENTESIS BT_DEV defTipo; {};
+cabeceraFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FINPARENTESIS BT_DEV defTipo {};
 defParForm : dParForm BT_COMPOSICIONSECUENCIAL defParForm {}
 					 | dParForm {}
 					 | /* */ {}

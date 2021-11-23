@@ -16,7 +16,6 @@ respuesta:
 
 cambiar en la gramatica (bison) lo de los operadores relativos, ya que vamos a pasarlo por valores yylvalue
 
-
 se carga el valor de las variables multivaluados en yylval antes de retornar el token, por ejemplo el token (identificardor nombrevariable)
 
 para optimizar -O[1,2,s....]

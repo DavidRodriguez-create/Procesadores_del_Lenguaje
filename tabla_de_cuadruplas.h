@@ -7,21 +7,19 @@
 
 #define MAXCUADRUPLAS 1000
 
-typedef enum enumTipo {simbolo, booleano, entero, real} enumTipo;
+typedef enum enumType {simbolo, constant_bool, constant_int, contant_float} enumType;
 
 
 typedef struct dir_elemento{
-    enumTipo tipo;
+    enumType type;
     union {
 
-        int constante_entera;
-        float contante_real;
-        bool constante_bool; //E.TRUE ??????????
+        int constant_int;
+        float contant_float;
+        bool constant_bool; //E.TRUE ??????????
         struct simbolo* simbolo;
 
-    }valor;
-
-
+    }val;
 }dir_elemento;
 
 typedef struct cuadrupla{
@@ -38,7 +36,7 @@ typedef struct tablaCuadruplas{
 
 tablaCuadruplas inicializarTablaCuadruplas():
 
-void gen (tablaCuadruplas,cuadrupla); //añadir cuadrupla a la tabla de cuádruplas
+void gen(); //añadir cuadrupla a la tabla de cuádruplas
 makelist()
 merge()
 backpatch()
