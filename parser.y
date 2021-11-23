@@ -104,119 +104,144 @@
 
 
 
-descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO {printf("buenos dias\n");}
+descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO {printf("buenos dias\n");};
 
-cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO {}
-bloqueAlgoritmo : bloque BT_COMENTARIO {}
+cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO {};
+bloqueAlgoritmo : bloque BT_COMENTARIO {};
 defGlobales : definicionTipo defGlobales {}
 						| definicionConst defGlobales {}
 						| /* */ {}
+						;
 defAccionesFunciones : defAccion defAccionesFunciones {}
 										 | defFuncion defAccionesFunciones {}
 										 | /* */ {}
-bloque : declaraciones instrucciones {}
+										 ;
+bloque : declaraciones instrucciones {};
 declaraciones : definicionTipo declaraciones {}
 							| definicionConst declaraciones {}
- 						| definicionVar declaraciones {}
-						| /* */ 
+ 							| definicionVar declaraciones {}
+							| /* */ {}
+							;
 
-definicionTipo : BT_TIPO listaDefsTipo BT_FTIPO {}
-definicionConst : BT_CONST listaDefsConstantes BT_FCONST {}
-definicionVar : BT_VAR listaDefsVariables BT_FVAR {}
+definicionTipo : BT_TIPO listaDefsTipo BT_FTIPO {};
+definicionConst : BT_CONST listaDefsConstantes BT_FCONST {};
+definicionVar : BT_VAR listaDefsVariables BT_FVAR {};
 
 listaDefsTipo : BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIAL listaDefsTipo {}
 							| /* */ {}
+							;
 defTipo : BT_TUPLA listaCampos BT_FTUPLA {}
 				| BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo {}
+				;
 defTipo : BT_IDENTIFICADOR {}
 				| expresionT BT_SUBRANGO expresionT {}
 				| BT_REF defTipo {}
 				| BT_TIPOBASE {}
+				;
 expresionT : BT_LITERALENTERO {}
 					 | BT_LITERALCARACTER {}
+					 ;
 listaCampos : BT_IDENTIFICADOR BT_ASIGNACION defTipo BT_COMPOSICIONSECUENCIAL listaCampos {}
 						| /* */ {}
+						;
 
 listaDefsConstantes : BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSECUENCIAL listaDefsConstantes {}
 										| /* */ {}
-
+										;
 listaDefsVariables : listaId BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL listaDefsVariables {}
 									 | /* */ {}
+									 ;
 listaId : BT_IDENTIFICADOR BT_SEPARADOR listaId {}
 				| BT_IDENTIFICADOR {}
+				;
 
 defVariablesInteraccion : defEntrada {}
 												| defEntrada defSalida {}
 												| defSalida {}
-defEntrada : BT_ENT listaDefsVariables {}
-defSalida : BT_SAL listaDefsVariables {}
+	 										 	;
+defEntrada : BT_ENT listaDefsVariables {};
+defSalida : BT_SAL listaDefsVariables {};
 
 
 
 expresion : llamadaFuncion {}
 					| operando {}
-expresion : expresion BT_SUMA expresion {}
-					| expresion BT_RESTA expresion {}
-					| expresion BT_MULTIPLICACION expresion {}
-					| expresion BT_DIVREAL expresion {}
-expresion : expresion BT_DIV expresion {}
-					| expresion BT_MOD expresion {}
-					| BT_INICIOPARENTESIS expresion BT_FINPARENTESIS {}
-					| BT_RESTA expresion {}
+					;
+expresion : expresion BT_SUMA expresion {$$ = $1 + $3;}
+					| expresion BT_RESTA expresion {$$ = $1 - $3;}
+					| expresion BT_MULTIPLICACION expresion {$$ = $1 * $3;}
+					| expresion BT_DIVREAL expresion {$$ = $1 / $3;}
+					;
+expresion : expresion BT_DIV expresion {$$ = $1 / $3;}
+					| expresion BT_MOD expresion {$$ = $1 * $3;}
+					| BT_INICIOPARENTESIS expresion BT_FINPARENTESIS {$$ = $2}
+					| BT_RESTA expresion {$$ = -$2}
+					;
 expresion : BT_LITERALNUMERICO {}
 					| BT_SUMA expresion {}
+					;
 expresion : expresion BT_OPREL expresion {}
 expresion : expresion BT_Y expresion {}
 					| expresion BT_O expresion {}
 					| BT_NO expresion {}
 					| BT_VERDADERO {}
 					| BT_FALSO {}
+					;
 expresion : expresion BT_MAYOR expresion {}
 					| expresion BT_MENOR expresion {}
 					| expresion BT_IGUAL expresion {}
 					| expresion BT_DISTINTO expresion {}
 					| expresion BT_MAYORIGUAL expresion {}
 					| expresion BT_MENORIGUAL expresion {}
+					;
 operando : BT_IDENTIFICADOR {}
 					| operando BT_PUNTO operando {}
 					| operando BT_INICIOARRAY expresion BT_FINARRAY {}
 					| operando BT_REF {}
+					;
 
 
 
 instrucciones : instruccion BT_COMPOSICIONSECUENCIAL instrucciones {}
 							| instruccion {}
+							;
 instruccion : BT_CONTINUAR {}
 						| asignacion {}
 						| alternativa {}
 						| iteracion {}
 						| llamadaAccion {}
-asignacion : operando BT_ASIGNACION expresion {}
-alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {}
+						;
+asignacion : operando BT_ASIGNACION expresion {};
+alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {};
 listaOpciones : BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones {}
 							| /* */ {}
+							;
 iteracion : itCotaFija {}
 					| itCotaVariable {}
-itCotaVariable : BT_MIENTRAS expresion BT_HACER instrucciones BT_FMIENTRAS {}
-itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA {}
+					;
+itCotaVariable : BT_MIENTRAS expresion BT_HACER instrucciones BT_FMIENTRAS {};
+itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA {};
 
 
-defAccion : BT_ACCION cabeceraAccion bloque BT_FACCION {}
-defFuncion : BT_FUNCION cabeceraFuncion bloque BT_DEV expresion BT_FFUNCION {}
-cabeceraAccion : BT_IDENTIFICADOR BT_INICIOPARENTESIS defParForm BT_FINPARENTESIS BT_COMPOSICIONSECUENCIAL {}
-cabeceraFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FINPARENTESIS BT_DEV defTipo; {}
+defAccion : BT_ACCION cabeceraAccion bloque BT_FACCION {};
+defFuncion : BT_FUNCION cabeceraFuncion bloque BT_DEV expresion BT_FFUNCION {};
+cabeceraAccion : BT_IDENTIFICADOR BT_INICIOPARENTESIS defParForm BT_FINPARENTESIS BT_COMPOSICIONSECUENCIAL {};
+cabeceraFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS listaDefsVariables BT_FINPARENTESIS BT_DEV defTipo; {};
 defParForm : dParForm BT_COMPOSICIONSECUENCIAL defParForm {}
 					 | dParForm {}
 					 | /* */ {}
+					 ;
 dParForm : BT_ENT listaId BT_DEFINICIONTIPOVARIABLE defTipo {}
 				 | BT_SAL listaId BT_DEFINICIONTIPOVARIABLE defTipo {}
 				 | BT_ENTSAL listaId BT_DEFINICIONTIPOVARIABLE defTipo {}
+				 ;
 
-llamadaAccion : BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS {}
-llamadaFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS {}
+llamadaAccion : BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS {};
+llamadaFuncion : BT_IDENTIFICADOR BT_INICIOPARENTESIS parametrosReales BT_FINPARENTESIS {};
 parametrosReales : expresion BT_SEPARADOR parametrosReales {}
 								 | expresion {}
 								 | /* */ {}
+								 ;
 
 %%
 
