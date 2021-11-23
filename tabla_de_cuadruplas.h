@@ -9,13 +9,14 @@
 
 typedef enum enumTipo {simbolo, booleano, entero, real} enumTipo;
 
+
 typedef struct dir_elemento{
     enumTipo tipo;
     union {
 
         int constante_entera;
         float contante_real;
-        bool constante_bool;
+        bool constante_bool; //E.TRUE ??????????
         struct simbolo* simbolo;
 
     }valor;
@@ -35,6 +36,12 @@ typedef struct tablaCuadruplas{
     int nextquad;
 }tablaCuadruplas;
 
+tablaCuadruplas inicializarTablaCuadruplas():
+
+void gen (tablaCuadruplas,cuadrupla); //añadir cuadrupla a la tabla de cuádruplas
+makelist()
+merge()
+backpatch()
 
 
 #endif /* TABLACUADRUPLAS_H */
