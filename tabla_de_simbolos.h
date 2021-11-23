@@ -3,21 +3,24 @@
 
 #include "definiciones.h"
 
+typedef enum enumVar {entero, booleano, caracter, real, cadena} enumVar;
+typedef enum enumSimbolo {variable, constante, tipo} enumSimbolo;
+
 typedef struct variable{
-  char tipo[20];
+  enumVar type;
   int ambito;
 } variable;
 
 typedef struct simbolo{
   char nombre[20];
-  char tipo[10];
+  enumSimbolo type;
   union{
     variable var;
-  }var;
+  }val; //val de valor
 }simbolo;
 
 typedef struct tabla_de_simbolos{
-  simbolo tabla[1000];
+  simbolo *tabla[1000];
 };
 
 //----------------------------FUNCIONES

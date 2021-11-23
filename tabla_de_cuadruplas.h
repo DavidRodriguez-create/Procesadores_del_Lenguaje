@@ -6,6 +6,7 @@
 #include "tabla_de_simbolos.h"
 
 #define MAXCUADRUPLAS 1000
+//~ #define 
 
 typedef enum enumType {celda_TS, constant_bool, constant_int, contant_float} enumType;
 
