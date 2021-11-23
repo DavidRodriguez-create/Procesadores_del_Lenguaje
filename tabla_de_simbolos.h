@@ -3,35 +3,27 @@
 
 #include "definiciones.h"
 
-struct variable{
-  char nombre[10];
-  char tipo[10];
+typedef struct variable{
+  char nombre[20];
+  char tipo[20];
   int ambito;
 } variable;
 
-union simbolo{
+typedef union simbolo{
   variable var;
 };
 
-struct tabla{
-  simbolo* primer_simbolo;
+typedef struct tabla_de_simbolos{
+  simbolo[1000] tabla;
 };
 
 //----------------------------FUNCIONES
 
-
-
-simbolo new_temp();
-void insertar_id();
-void insertar_lista_simbolos();
-void modifica_tipo();
-
-char* consulta_tipo()
+void new_temp(tabla);
+void insertar_id(tabla,valor); // crea simbolo y le inserta un valor
+void modifica_tipo(tabla,simbolo,valor); // modifica el tipo del simbolo
+char* consulta_tipo(tabla,simbolo) //devuelve el tipo del simbolo especificado
 
 // ------------------------
-
-tabla crear_tabla_de_simbolos();
-
-simbolo coger_simbolo(simbolo* s);
 
 #endif
