@@ -2402,7 +2402,6 @@ int main(int argc, char **argv){
 		int yydebug = 1;
 	#endif
 	++argv, --argc;
-	char numeros[2];
 
 	if(argc > 0)
 		yyin = fopen(argv[0],"r");

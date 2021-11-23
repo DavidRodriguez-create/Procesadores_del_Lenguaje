@@ -181,7 +181,7 @@ expresion : expresion BT_DIV expresion {$$ = $1 / $3;}
 expresion : BT_LITERALNUMERICO {}
 					| BT_SUMA expresion {}
 					;
-expresion : expresion BT_OPREL expresion {}
+expresion : expresion BT_OPREL expresion {};
 expresion : expresion BT_Y expresion {}
 					| expresion BT_O expresion {}
 					| BT_NO expresion {}

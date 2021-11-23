@@ -19,3 +19,13 @@ cambiar en la gramatica (bison) lo de los operadores relativos, ya que vamos a p
 se carga el valor de las variables multivaluados en yylval antes de retornar el token, por ejemplo el token (identificardor nombrevariable)
 
 para optimizar -O[1,2,s....]
+
+
+
+expresion : expresion BT_MAYOR expresion {}
+					| expresion BT_MENOR expresion {}
+					| expresion BT_IGUAL expresion {}
+					| expresion BT_DISTINTO expresion {}
+					| expresion BT_MAYORIGUAL expresion {}
+					| expresion BT_MENORIGUAL expresion {}
+					;
