@@ -4,12 +4,12 @@
 #include "definiciones.h"
 
 typedef struct variable{
-  char nombre[20];
   char tipo[20];
   int ambito;
 } variable;
 
 typedef union simbolo{
+  char[20] nombre;
   variable var;
 };
 
