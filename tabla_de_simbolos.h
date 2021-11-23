@@ -9,15 +9,15 @@ typedef struct variable{
 } variable;
 
 typedef struct simbolo{
-  char[20] nombre;
-  char[10] tipo;
+  char nombre[20];
+  char tipo[10];
   union{
     variable var;
   };
 };
 
 typedef struct tabla_de_simbolos{
-  simbolo[1000] tabla;
+  simbolo tabla[1000];
 };
 
 //----------------------------FUNCIONES
