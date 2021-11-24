@@ -7,17 +7,16 @@ typedef enum enumVar {entero, booleano, caracter, real, cadena} enumVar;
 typedef enum enumSimbolo {variable, constante, tipo} enumSimbolo;
 
 typedef struct variable{
-  enumVar type;
-  int ambito;
+    enumVar type;
+    int ambito;
 } variable;
 
 typedef struct simbolo{
-  char nombre[20];
-  enumSimbolo type;
-  union{
-    variable var;
-    
-  }val; //val de valor
+    char nombre[20];
+    enumSimbolo type;
+    union{
+        variable var;
+    }val; //val de valor
 }simbolo;
 
 typedef struct tabla_de_simbolos{

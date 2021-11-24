@@ -73,3 +73,12 @@ int int main(int argc, char const *argv[]) {
   printf("%s\n",tablita->primer_simbolo->siguiente_simbolo.nombre);
   return 0;
 };
+
+
+/*listaDefsVariables : listaId BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL listaDefsVariables {}
+|   {}
+;
+
+listaId : BT_IDENTIFICADOR BT_SEPARADOR listaId {}
+| BT_IDENTIFICADOR {printf(" %s\n",yylval.str);}
+;*/
