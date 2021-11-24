@@ -82,3 +82,10 @@ int int main(int argc, char const *argv[]) {
 listaId : BT_IDENTIFICADOR BT_SEPARADOR listaId {}
 | BT_IDENTIFICADOR {printf(" %s\n",yylval.str);}
 ;*/
+/*
+BISON:
+    https://stackoverflow.com/questions/28786365/bison-union-use
+    https://www.usna.edu/Users/cs/roche/courses/f18si413/lab/04/
+STRDUP:
+    https://www.geeksforgeeks.org/strdup-strdndup-functions-c/
+*/
