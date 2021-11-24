@@ -16,12 +16,13 @@ typedef struct simbolo{
   enumSimbolo type;
   union{
     variable var;
+    
   }val; //val de valor
 }simbolo;
 
 typedef struct tabla_de_simbolos{
   simbolo *tabla[1000];
-};
+}tabla_de_simbolos;
 
 //----------------------------FUNCIONES
 
@@ -32,4 +33,8 @@ char* consulta_tipo_TS(tabla,simbolo) //devuelve el tipo del simbolo especificad
 
 // ------------------------
 
+char *str[5];
+
+
+str = "hola"
 #endif

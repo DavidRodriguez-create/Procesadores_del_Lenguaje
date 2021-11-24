@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 
-
 union simbolo{
   variable var;
 };

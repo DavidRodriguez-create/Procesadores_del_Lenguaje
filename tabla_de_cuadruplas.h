@@ -6,19 +6,26 @@
 #include "tabla_de_simbolos.h"
 
 #define MAXCUADRUPLAS 1000
-//~ #define 
+
+//~ #define op_asignacion 4
+//~ #define op_mayor 5
+//~ #define op_menor 6
+//~ #define op_distinto 7
+//~ #define op_mayorigual 8
+//~ #define op_menorigual 9
+//~ #define op_igual 10
+//~ #define op_goto  11
+
 
 typedef enum enumType {celda_TS, constant_bool, constant_int, contant_float} enumType;
 
 typedef struct dir_elemento{
     enumType type;
     union {
-
         int constant_int;
         float contant_float;
         bool constant_bool; //E.TRUE ??????????
         simbolo *celda_TS;
-
     }val;
 }dir_elemento;
 
