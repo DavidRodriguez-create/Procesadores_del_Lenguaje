@@ -98,7 +98,13 @@
 
 %left BT_REF BT_INICIOARRAY BT_PUNTO
 
+%union {
+	int val;
+	char sym;
+	char *str;
+}
 
+%type <str> listaId BT_IDENTIFICADOR
 
 %%
 
@@ -131,34 +137,34 @@ listaDefsTipo : BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIA
 							| /* */ {}
 							;
 defTipo : BT_TUPLA listaCampos BT_FTUPLA {}
-				| BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo {}
-				;
+	| BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo {}
+	;
 defTipo : BT_IDENTIFICADOR {}
-				| expresionT BT_SUBRANGO expresionT {}
-				| BT_REF defTipo {}
-				| BT_TIPOBASE {}
-				;
+	| expresionT BT_SUBRANGO expresionT {}
+	| BT_REF defTipo {}
+	| BT_TIPOBASE {}
+	;
 expresionT : BT_LITERALENTERO {}
-					 | BT_LITERALCARACTER {}
+	   | BT_LITERALCARACTER {}
 					 ;
 listaCampos : BT_IDENTIFICADOR BT_ASIGNACION defTipo BT_COMPOSICIONSECUENCIAL listaCampos {}
-						| /* */ {}
-						;
+	    | /* */ {}
+	    ;
 
 listaDefsConstantes : BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSECUENCIAL listaDefsConstantes {}
-										| /* */ {}
-										;
+		    | /* */ {}
+		    ;
 listaDefsVariables : listaId BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL listaDefsVariables {}
-									 | /* */ {}
-									 ;
+		   | /* */ {}
+		   ;
 listaId : BT_IDENTIFICADOR BT_SEPARADOR listaId {}
-				| BT_IDENTIFICADOR {}
-				;
+	| BT_IDENTIFICADOR {}
+	;
 
 defVariablesInteraccion : defEntrada {}
-												| defEntrada defSalida {}
-												| defSalida {}
-	 										 	;
+			| defEntrada defSalida {}
+			| defSalida {}
+			;
 
 defEntrada : BT_ENT listaDefsVariables {};
 defSalida : BT_SAL listaDefsVariables {};
@@ -196,10 +202,10 @@ expresion : expresion BT_MAYOR expresion {}
 					| expresion BT_MENORIGUAL expresion {}
 					;
 operando : BT_IDENTIFICADOR {}
-					| operando BT_PUNTO operando {}
-					| operando BT_INICIOARRAY expresion BT_FINARRAY {}
-					| operando BT_REF {}
-					;
+	 | operando BT_PUNTO operando {}
+	 | operando BT_INICIOARRAY expresion BT_FINARRAY {}
+	 | operando BT_REF {}
+	 ;
 
 
 

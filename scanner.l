@@ -90,7 +90,7 @@ DR_OA_FINPARENTESIS \)
 
  // en la parte de abajo la ordenacion importa (arriba importante)
 %%
-{DR_LITERALBOOLEANO}	{printf("DR_LITERALBOOLEANO ");}
+{DR_LITERALBOOLEANO}	{printf("DR_LITERALBOOLEANO ");  }
 {DR_LITERALCARACTER}	{printf("DR_LITERALCARACTER "); return BT_LITERALCARACTER;}
 {DR_LITERALCADENA}	{printf("DR_LITERALCADENA ");}
 {DR_LITERALENTERO}	{printf("DR_LITERALENTERO "); return BT_LITERALNUMERICO;}
@@ -162,7 +162,9 @@ DR_OA_FINPARENTESIS \)
 {DR_OA_INICIOPARENTESIS}	{printf("DR_OA_INICIOPARENTESIS "); return BT_INICIOPARENTESIS;}
 {DR_OA_FINPARENTESIS}		{printf("DR_OA_FINPARENTESIS "); return BT_FINPARENTESIS;}
 
-{DR_IDENTIFICADOR}		{printf("DR_IDENTIFICADOR "); return BT_IDENTIFICADOR;}
+{DR_IDENTIFICADOR}      {printf("DR_IDENTIFICADOR ");
+                         yylval.str = strdup(yytext);
+                         return BT_IDENTIFICADOR;}
 
 %%
 
