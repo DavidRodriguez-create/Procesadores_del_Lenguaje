@@ -1,10 +1,12 @@
 %{
     #include <ctype.h>
 	#include <stdio.h>
+	#include "tabla_de_simbolos.h"
+
 	int yylex();
 	void yyerror(const char *s);
 	extern FILE *yyin;
-
+	tabla_de_simbolos* tablaSimbolos;
 %}
 
 %token BT_ALGORITMO
@@ -99,12 +101,15 @@
 %left BT_REF BT_INICIOARRAY BT_PUNTO
 
 %union {
-	int val;
-	char sym;
-	char *str;
+	int intval;
+	float floatval;
+	char charval;
+	char *strval;
 }
 
 %type <str> BT_IDENTIFICADOR
+%type <str> BT_TIPOBASE
+
 
 %%
 
@@ -138,11 +143,10 @@ listaDefsTipo : BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIA
 							;
 defTipo : BT_TUPLA listaCampos BT_FTUPLA {}
 	| BT_TABLA BT_INICIOARRAY expresionT BT_SUBRANGO expresionT BT_FINARRAY BT_DE defTipo {}
-	;
-defTipo : BT_IDENTIFICADOR {}
+	| BT_IDENTIFICADOR {}
 	| expresionT BT_SUBRANGO expresionT {}
 	| BT_REF defTipo {}
-	| BT_TIPOBASE {}
+	| BT_TIPOBASE { printf("%s ", $<strval>1);}
 	;
 expresionT : BT_LITERALENTERO {}
 	   | BT_LITERALCARACTER {}
@@ -158,8 +162,8 @@ listaDefsConstantes : BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSE
 listaDefsVariables : listaId listaDefsVariables {}
 		   | /* */ {}
 		   ;
-listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL {}
-        | BT_IDENTIFICADOR BT_SEPARADOR listaId {}
+listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL {printf("%s ", $<strval>1);}
+        | BT_IDENTIFICADOR BT_SEPARADOR listaId {printf("%s ", $<strval>1);}
 
 defVariablesInteraccion : defEntrada {}
 			| defEntrada defSalida {}
@@ -247,16 +251,17 @@ parametrosReales : expresion BT_SEPARADOR parametrosReales {}
 %%
 
 int main(int argc, char **argv){
-
 	#ifdef YYDEBUG
 		int yydebug = 1;
 	#endif
 	++argv, --argc;
-
 	if(argc > 0)
 		yyin = fopen(argv[0],"r");
 	else
 		yyin = stdin;
+
+	tablaSimbolos = nueva_tabla_de_simbolos();
+
 	yyparse();
 }
 

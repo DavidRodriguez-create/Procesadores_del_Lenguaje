@@ -166,7 +166,7 @@ Terminals, with rules where they appear
     BT_DE (271) 21
     BT_DEV (272) 85 87
     BT_REF (273) 24 68
-    BT_TIPOBASE (274) 25
+    BT_TIPOBASE <str> (274) 25
     BT_LITERALENTERO (275) 26
     BT_LITERALCARACTER (276) 27
     BT_VERDADERO (277) 57

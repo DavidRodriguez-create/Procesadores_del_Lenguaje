@@ -100,15 +100,28 @@ DR_OA_FINPARENTESIS \)
 
 {DR_PR_ACCION}	{printf("DR_PR_ACCION "); return BT_ACCION;}
 {DR_PR_ALGORITMO}	{printf("DR_PR_ALGORITMO "); return BT_ALGORITMO;}
-{DR_PR_BOOLEANO}	{printf("DR_PR_BOOLEANO "); return BT_TIPOBASE;}
-{DR_PR_CADENA}	{printf("DR_PR_CADENA "); return BT_TIPOBASE;}
-{DR_PR_CARACTER}	{printf("DR_PR_CARACTER "); return BT_TIPOBASE;}
+{DR_PR_BOOLEANO}	{printf("DR_PR_BOOLEANO ");
+                    yylval.strval = strdup(yytext);
+                    return BT_TIPOBASE;}
+{DR_PR_CADENA}	{printf("DR_PR_CADENA ");
+                 yylval.strval = strdup(yytext);
+                 return BT_TIPOBASE;}
+{DR_PR_CARACTER}	{printf("DR_PR_CARACTER ");
+                     yylval.strval = strdup(yytext);
+                     return BT_TIPOBASE;}
+{DR_PR_ENTERO}	{printf("DR_PR_ENTERO ");
+                 yylval.strval = strdup(yytext);
+                 return BT_TIPOBASE;  }
+{DR_PR_REAL}	{printf("DR_PR_REAL ");
+                 yylval.strval = strdup(yytext);
+                 return BT_TIPOBASE; }
+
 {DR_PR_CONST}	{printf("DR_PR_CONST "); return BT_CONST;}
 {DR_PR_CONTINUAR}	{printf("DR_PR_CONTINUAR "); return BT_CONTINUAR;}
 {DR_PR_DE}	{printf("DR_PR_DE "); return BT_DE;}
 {DR_PR_DEV}	{printf("DR_PR_DEV "); return BT_DEV;}
 {DR_PR_ENT}	{printf("DR_PR_ENT "); return BT_ENT;}
-{DR_PR_ENTERO}	{printf("DR_PR_ENTERO "); return BT_TIPOBASE;}
+
 {DR_PR_ENTSAL}	{printf("DR_PR_ENTSAL "); return BT_ENTSAL;}
 {DR_PR_FACCION}	{printf("DR_PR_FACCION "); return BT_FACCION;}
 {DR_PR_FALGORITMO}	{printf("DR_PR_FALGORITMO "); return BT_FALGORITMO;}
@@ -127,7 +140,6 @@ DR_OA_FINPARENTESIS \)
 {DR_PR_NO}	{printf("DR_PR_NO "); return BT_NO;}
 {DR_PR_O}	{printf("DR_PR_O "); return BT_O;}
 {DR_PR_PARA}	{printf("DR_PR_PARA "); return BT_PARA;}
-{DR_PR_REAL}	{printf("DR_PR_REAL "); return BT_TIPOBASE;}
 {DR_PR_REF}	{printf("DR_PR_REF "); return BT_REF;}
 {DR_PR_SAL}	{printf("DR_PR_SAL "); return BT_SAL;}
 {DR_PR_SI}	{printf("DR_PR_SI "); return BT_SI;}
@@ -164,7 +176,7 @@ DR_OA_FINPARENTESIS \)
 {DR_OA_FINPARENTESIS}		{printf("DR_OA_FINPARENTESIS "); return BT_FINPARENTESIS;}
 
 {DR_IDENTIFICADOR}      {printf("DR_IDENTIFICADOR ");
-                         yylval.str = strdup(yytext);
+                         yylval.strval = strdup(yytext);
                          return BT_IDENTIFICADOR;}
 
 %%

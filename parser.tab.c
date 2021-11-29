@@ -70,12 +70,14 @@
 
     #include <ctype.h>
 	#include <stdio.h>
+	#include "tabla_de_simbolos.h"
+
 	int yylex();
 	void yyerror(const char *s);
 	extern FILE *yyin;
+	tabla_de_simbolos* tablaSimbolos;
 
-
-#line 79 "parser.tab.c"
+#line 81 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -200,13 +202,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 101 "parser.y"
+#line 103 "parser.y"
 
-	int val;
-	char sym;
-	char *str;
+	int intval;
+	float floatval;
+	char charval;
+	char *strval;
 
-#line 210 "parser.tab.c"
+#line 213 "parser.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -588,16 +591,16 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   113,   113,   115,   116,   117,   118,   119,   121,   122,
-     123,   125,   126,   127,   128,   129,   132,   133,   134,   136,
-     137,   139,   140,   142,   143,   144,   145,   147,   148,   150,
-     151,   154,   155,   158,   159,   161,   162,   164,   165,   166,
-     169,   170,   173,   174,   175,   176,   177,   178,   179,   180,
-     181,   182,   183,   184,   185,   186,   187,   188,   189,   190,
-     191,   192,   193,   194,   195,   196,   198,   199,   200,   201,
-     206,   207,   209,   210,   211,   212,   213,   215,   216,   217,
-     218,   220,   221,   223,   224,   227,   228,   229,   230,   231,
-     232,   233,   235,   236,   237,   240,   241,   242,   243,   244
+       0,   118,   118,   120,   121,   122,   123,   124,   126,   127,
+     128,   130,   131,   132,   133,   134,   137,   138,   139,   141,
+     142,   144,   145,   146,   147,   148,   149,   151,   152,   154,
+     155,   158,   159,   162,   163,   165,   166,   168,   169,   170,
+     173,   174,   177,   178,   179,   180,   181,   182,   183,   184,
+     185,   186,   187,   188,   189,   190,   191,   192,   193,   194,
+     195,   196,   197,   198,   199,   200,   202,   203,   204,   205,
+     210,   211,   213,   214,   215,   216,   217,   219,   220,   221,
+     222,   224,   225,   227,   228,   231,   232,   233,   234,   235,
+     236,   237,   239,   240,   241,   244,   245,   246,   247,   248
 };
 #endif
 
@@ -1584,595 +1587,595 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 113 "parser.y"
+#line 118 "parser.y"
                                                                                                                        {printf("buenos dias\n");}
-#line 1590 "parser.tab.c"
+#line 1593 "parser.tab.c"
     break;
 
   case 3:
-#line 115 "parser.y"
+#line 120 "parser.y"
                                                                                            {}
-#line 1596 "parser.tab.c"
+#line 1599 "parser.tab.c"
     break;
 
   case 4:
-#line 116 "parser.y"
+#line 121 "parser.y"
                                        {}
-#line 1602 "parser.tab.c"
+#line 1605 "parser.tab.c"
     break;
 
   case 5:
-#line 117 "parser.y"
+#line 122 "parser.y"
                                          {}
-#line 1608 "parser.tab.c"
+#line 1611 "parser.tab.c"
     break;
 
   case 6:
-#line 118 "parser.y"
+#line 123 "parser.y"
                                           {}
-#line 1614 "parser.tab.c"
+#line 1617 "parser.tab.c"
     break;
 
   case 7:
-#line 119 "parser.y"
+#line 124 "parser.y"
                     {}
-#line 1620 "parser.tab.c"
+#line 1623 "parser.tab.c"
     break;
 
   case 8:
-#line 121 "parser.y"
+#line 126 "parser.y"
                                                       {}
-#line 1626 "parser.tab.c"
+#line 1629 "parser.tab.c"
     break;
 
   case 9:
-#line 122 "parser.y"
+#line 127 "parser.y"
                                                        {}
-#line 1632 "parser.tab.c"
+#line 1635 "parser.tab.c"
     break;
 
   case 10:
-#line 123 "parser.y"
+#line 128 "parser.y"
                              {}
-#line 1638 "parser.tab.c"
+#line 1641 "parser.tab.c"
     break;
 
   case 11:
-#line 125 "parser.y"
+#line 130 "parser.y"
                                      {}
-#line 1644 "parser.tab.c"
+#line 1647 "parser.tab.c"
     break;
 
   case 12:
-#line 126 "parser.y"
+#line 131 "parser.y"
                                              {}
-#line 1650 "parser.tab.c"
+#line 1653 "parser.tab.c"
     break;
 
   case 13:
-#line 127 "parser.y"
+#line 132 "parser.y"
                                             {}
-#line 1656 "parser.tab.c"
+#line 1659 "parser.tab.c"
     break;
 
   case 14:
-#line 128 "parser.y"
+#line 133 "parser.y"
                                           {}
-#line 1662 "parser.tab.c"
+#line 1665 "parser.tab.c"
     break;
 
   case 15:
-#line 129 "parser.y"
+#line 134 "parser.y"
                     {}
-#line 1668 "parser.tab.c"
+#line 1671 "parser.tab.c"
     break;
 
   case 16:
-#line 132 "parser.y"
+#line 137 "parser.y"
                                                 {}
-#line 1674 "parser.tab.c"
+#line 1677 "parser.tab.c"
     break;
 
   case 17:
-#line 133 "parser.y"
+#line 138 "parser.y"
                                                          {}
-#line 1680 "parser.tab.c"
+#line 1683 "parser.tab.c"
     break;
 
   case 18:
-#line 134 "parser.y"
+#line 139 "parser.y"
                                                   {}
-#line 1686 "parser.tab.c"
+#line 1689 "parser.tab.c"
     break;
 
   case 19:
-#line 136 "parser.y"
+#line 141 "parser.y"
                                                                                                 {}
-#line 1692 "parser.tab.c"
+#line 1695 "parser.tab.c"
     break;
 
   case 20:
-#line 137 "parser.y"
+#line 142 "parser.y"
                                                                 {}
-#line 1698 "parser.tab.c"
+#line 1701 "parser.tab.c"
     break;
 
   case 21:
-#line 139 "parser.y"
+#line 144 "parser.y"
                                          {}
-#line 1704 "parser.tab.c"
+#line 1707 "parser.tab.c"
     break;
 
   case 22:
-#line 140 "parser.y"
+#line 145 "parser.y"
                                                                                               {}
-#line 1710 "parser.tab.c"
+#line 1713 "parser.tab.c"
     break;
 
   case 23:
-#line 142 "parser.y"
-                           {printf(" %s\n",yylval.str);}
-#line 1716 "parser.tab.c"
+#line 146 "parser.y"
+                           {}
+#line 1719 "parser.tab.c"
     break;
 
   case 24:
-#line 143 "parser.y"
+#line 147 "parser.y"
                                             {}
-#line 1722 "parser.tab.c"
+#line 1725 "parser.tab.c"
     break;
 
   case 25:
-#line 144 "parser.y"
+#line 148 "parser.y"
                          {}
-#line 1728 "parser.tab.c"
+#line 1731 "parser.tab.c"
     break;
 
   case 26:
-#line 145 "parser.y"
-                      {}
-#line 1734 "parser.tab.c"
+#line 149 "parser.y"
+                      { printf("%s ", (yyvsp[0].strval));}
+#line 1737 "parser.tab.c"
     break;
 
   case 27:
-#line 147 "parser.y"
+#line 151 "parser.y"
                               {}
-#line 1740 "parser.tab.c"
+#line 1743 "parser.tab.c"
     break;
 
   case 28:
-#line 148 "parser.y"
+#line 152 "parser.y"
                                 {}
-#line 1746 "parser.tab.c"
+#line 1749 "parser.tab.c"
     break;
 
   case 29:
-#line 150 "parser.y"
+#line 154 "parser.y"
                                                                                           {}
-#line 1752 "parser.tab.c"
+#line 1755 "parser.tab.c"
     break;
 
   case 30:
-#line 151 "parser.y"
+#line 155 "parser.y"
                     {}
-#line 1758 "parser.tab.c"
+#line 1761 "parser.tab.c"
     break;
 
   case 31:
-#line 154 "parser.y"
+#line 158 "parser.y"
                                                                                                              {}
-#line 1764 "parser.tab.c"
+#line 1767 "parser.tab.c"
     break;
 
   case 32:
-#line 155 "parser.y"
+#line 159 "parser.y"
                             {}
-#line 1770 "parser.tab.c"
+#line 1773 "parser.tab.c"
     break;
 
   case 33:
-#line 158 "parser.y"
+#line 162 "parser.y"
                                                 {}
-#line 1776 "parser.tab.c"
+#line 1779 "parser.tab.c"
     break;
 
   case 34:
-#line 159 "parser.y"
+#line 163 "parser.y"
                            {}
-#line 1782 "parser.tab.c"
+#line 1785 "parser.tab.c"
     break;
 
   case 35:
-#line 161 "parser.y"
-                                                                                      {}
-#line 1788 "parser.tab.c"
+#line 165 "parser.y"
+                                                                                      {printf("%s ", (yyvsp[-3].strval));}
+#line 1791 "parser.tab.c"
     break;
 
   case 36:
-#line 162 "parser.y"
-                                                {}
-#line 1794 "parser.tab.c"
+#line 166 "parser.y"
+                                                {printf("%s ", (yyvsp[-2].strval));}
+#line 1797 "parser.tab.c"
     break;
 
   case 37:
-#line 164 "parser.y"
+#line 168 "parser.y"
                                      {}
-#line 1800 "parser.tab.c"
+#line 1803 "parser.tab.c"
     break;
 
   case 38:
-#line 165 "parser.y"
+#line 169 "parser.y"
                                                {}
-#line 1806 "parser.tab.c"
+#line 1809 "parser.tab.c"
     break;
 
   case 39:
-#line 166 "parser.y"
+#line 170 "parser.y"
                                     {}
-#line 1812 "parser.tab.c"
+#line 1815 "parser.tab.c"
     break;
 
   case 40:
-#line 169 "parser.y"
+#line 173 "parser.y"
                                        {}
-#line 1818 "parser.tab.c"
+#line 1821 "parser.tab.c"
     break;
 
   case 41:
-#line 170 "parser.y"
+#line 174 "parser.y"
                                       {}
-#line 1824 "parser.tab.c"
+#line 1827 "parser.tab.c"
     break;
 
   case 42:
-#line 173 "parser.y"
+#line 177 "parser.y"
                            {}
-#line 1830 "parser.tab.c"
+#line 1833 "parser.tab.c"
     break;
 
   case 43:
-#line 174 "parser.y"
+#line 178 "parser.y"
                {}
-#line 1836 "parser.tab.c"
+#line 1839 "parser.tab.c"
     break;
 
   case 44:
-#line 175 "parser.y"
+#line 179 "parser.y"
                                   {}
-#line 1842 "parser.tab.c"
+#line 1845 "parser.tab.c"
     break;
 
   case 45:
-#line 176 "parser.y"
+#line 180 "parser.y"
                                    {}
-#line 1848 "parser.tab.c"
+#line 1851 "parser.tab.c"
     break;
 
   case 46:
-#line 177 "parser.y"
+#line 181 "parser.y"
                                             {}
-#line 1854 "parser.tab.c"
+#line 1857 "parser.tab.c"
     break;
 
   case 47:
-#line 178 "parser.y"
+#line 182 "parser.y"
                                      {}
-#line 1860 "parser.tab.c"
+#line 1863 "parser.tab.c"
     break;
 
   case 48:
-#line 179 "parser.y"
+#line 183 "parser.y"
                                  {}
-#line 1866 "parser.tab.c"
+#line 1869 "parser.tab.c"
     break;
 
   case 49:
-#line 180 "parser.y"
+#line 184 "parser.y"
                                  {}
-#line 1872 "parser.tab.c"
+#line 1875 "parser.tab.c"
     break;
 
   case 50:
-#line 181 "parser.y"
+#line 185 "parser.y"
                                                      {}
-#line 1878 "parser.tab.c"
+#line 1881 "parser.tab.c"
     break;
 
   case 51:
-#line 182 "parser.y"
+#line 186 "parser.y"
                          {}
-#line 1884 "parser.tab.c"
+#line 1887 "parser.tab.c"
     break;
 
   case 52:
-#line 183 "parser.y"
+#line 187 "parser.y"
                          {}
-#line 1890 "parser.tab.c"
+#line 1893 "parser.tab.c"
     break;
 
   case 53:
-#line 184 "parser.y"
+#line 188 "parser.y"
                         {}
-#line 1896 "parser.tab.c"
+#line 1899 "parser.tab.c"
     break;
 
   case 54:
-#line 185 "parser.y"
+#line 189 "parser.y"
                                    {}
-#line 1902 "parser.tab.c"
+#line 1905 "parser.tab.c"
     break;
 
   case 55:
-#line 186 "parser.y"
+#line 190 "parser.y"
                                {}
-#line 1908 "parser.tab.c"
+#line 1911 "parser.tab.c"
     break;
 
   case 56:
-#line 187 "parser.y"
+#line 191 "parser.y"
                                {}
-#line 1914 "parser.tab.c"
+#line 1917 "parser.tab.c"
     break;
 
   case 57:
-#line 188 "parser.y"
+#line 192 "parser.y"
                       {}
-#line 1920 "parser.tab.c"
+#line 1923 "parser.tab.c"
     break;
 
   case 58:
-#line 189 "parser.y"
+#line 193 "parser.y"
                    {}
-#line 1926 "parser.tab.c"
+#line 1929 "parser.tab.c"
     break;
 
   case 59:
-#line 190 "parser.y"
+#line 194 "parser.y"
                {}
-#line 1932 "parser.tab.c"
+#line 1935 "parser.tab.c"
     break;
 
   case 60:
-#line 191 "parser.y"
+#line 195 "parser.y"
                                    {}
-#line 1938 "parser.tab.c"
+#line 1941 "parser.tab.c"
     break;
 
   case 61:
-#line 192 "parser.y"
+#line 196 "parser.y"
                                    {}
-#line 1944 "parser.tab.c"
+#line 1947 "parser.tab.c"
     break;
 
   case 62:
-#line 193 "parser.y"
+#line 197 "parser.y"
                                    {}
-#line 1950 "parser.tab.c"
+#line 1953 "parser.tab.c"
     break;
 
   case 63:
-#line 194 "parser.y"
+#line 198 "parser.y"
                                       {}
-#line 1956 "parser.tab.c"
+#line 1959 "parser.tab.c"
     break;
 
   case 64:
-#line 195 "parser.y"
+#line 199 "parser.y"
                                         {}
-#line 1962 "parser.tab.c"
+#line 1965 "parser.tab.c"
     break;
 
   case 65:
-#line 196 "parser.y"
+#line 200 "parser.y"
                                         {}
-#line 1968 "parser.tab.c"
+#line 1971 "parser.tab.c"
     break;
 
   case 66:
-#line 198 "parser.y"
+#line 202 "parser.y"
                             {}
-#line 1974 "parser.tab.c"
+#line 1977 "parser.tab.c"
     break;
 
   case 67:
-#line 199 "parser.y"
+#line 203 "parser.y"
                                  {}
-#line 1980 "parser.tab.c"
+#line 1983 "parser.tab.c"
     break;
 
   case 68:
-#line 200 "parser.y"
+#line 204 "parser.y"
                                                     {}
-#line 1986 "parser.tab.c"
+#line 1989 "parser.tab.c"
     break;
 
   case 69:
-#line 201 "parser.y"
+#line 205 "parser.y"
                       {}
-#line 1992 "parser.tab.c"
+#line 1995 "parser.tab.c"
     break;
 
   case 70:
-#line 206 "parser.y"
+#line 210 "parser.y"
                                                                    {}
-#line 1998 "parser.tab.c"
+#line 2001 "parser.tab.c"
     break;
 
   case 71:
-#line 207 "parser.y"
+#line 211 "parser.y"
                           {}
-#line 2004 "parser.tab.c"
+#line 2007 "parser.tab.c"
     break;
 
   case 72:
-#line 209 "parser.y"
+#line 213 "parser.y"
                            {}
-#line 2010 "parser.tab.c"
+#line 2013 "parser.tab.c"
     break;
 
   case 73:
-#line 210 "parser.y"
+#line 214 "parser.y"
                          {}
-#line 2016 "parser.tab.c"
+#line 2019 "parser.tab.c"
     break;
 
   case 74:
-#line 211 "parser.y"
+#line 215 "parser.y"
                           {}
-#line 2022 "parser.tab.c"
+#line 2025 "parser.tab.c"
     break;
 
   case 75:
-#line 212 "parser.y"
+#line 216 "parser.y"
                         {}
-#line 2028 "parser.tab.c"
+#line 2031 "parser.tab.c"
     break;
 
   case 76:
-#line 213 "parser.y"
+#line 217 "parser.y"
                             {}
-#line 2034 "parser.tab.c"
+#line 2037 "parser.tab.c"
     break;
 
   case 77:
-#line 215 "parser.y"
+#line 219 "parser.y"
                                               {}
-#line 2040 "parser.tab.c"
+#line 2043 "parser.tab.c"
     break;
 
   case 78:
-#line 216 "parser.y"
+#line 220 "parser.y"
                                                                              {}
-#line 2046 "parser.tab.c"
+#line 2049 "parser.tab.c"
     break;
 
   case 79:
-#line 217 "parser.y"
+#line 221 "parser.y"
                                                                             {}
-#line 2052 "parser.tab.c"
+#line 2055 "parser.tab.c"
     break;
 
   case 80:
-#line 218 "parser.y"
+#line 222 "parser.y"
                                   {}
-#line 2058 "parser.tab.c"
+#line 2061 "parser.tab.c"
     break;
 
   case 81:
-#line 220 "parser.y"
+#line 224 "parser.y"
                        {}
-#line 2064 "parser.tab.c"
+#line 2067 "parser.tab.c"
     break;
 
   case 82:
-#line 221 "parser.y"
+#line 225 "parser.y"
                                    {}
-#line 2070 "parser.tab.c"
+#line 2073 "parser.tab.c"
     break;
 
   case 83:
-#line 223 "parser.y"
+#line 227 "parser.y"
                                                                            {}
-#line 2076 "parser.tab.c"
+#line 2079 "parser.tab.c"
     break;
 
   case 84:
-#line 224 "parser.y"
+#line 228 "parser.y"
                                                                                                                  {}
-#line 2082 "parser.tab.c"
+#line 2085 "parser.tab.c"
     break;
 
   case 85:
-#line 227 "parser.y"
+#line 231 "parser.y"
                                                        {}
-#line 2088 "parser.tab.c"
+#line 2091 "parser.tab.c"
     break;
 
   case 86:
-#line 228 "parser.y"
+#line 232 "parser.y"
                                                                             {}
-#line 2094 "parser.tab.c"
+#line 2097 "parser.tab.c"
     break;
 
   case 87:
-#line 229 "parser.y"
+#line 233 "parser.y"
                                                                                                            {}
-#line 2100 "parser.tab.c"
+#line 2103 "parser.tab.c"
     break;
 
   case 88:
-#line 230 "parser.y"
+#line 234 "parser.y"
                                                                                                           {}
-#line 2106 "parser.tab.c"
+#line 2109 "parser.tab.c"
     break;
 
   case 89:
-#line 231 "parser.y"
+#line 235 "parser.y"
                                                           {}
-#line 2112 "parser.tab.c"
+#line 2115 "parser.tab.c"
     break;
 
   case 90:
-#line 232 "parser.y"
+#line 236 "parser.y"
                               {}
-#line 2118 "parser.tab.c"
+#line 2121 "parser.tab.c"
     break;
 
   case 91:
-#line 233 "parser.y"
+#line 237 "parser.y"
                            {}
-#line 2124 "parser.tab.c"
+#line 2127 "parser.tab.c"
     break;
 
   case 92:
-#line 235 "parser.y"
+#line 239 "parser.y"
                                                             {}
-#line 2130 "parser.tab.c"
+#line 2133 "parser.tab.c"
     break;
 
   case 93:
-#line 236 "parser.y"
+#line 240 "parser.y"
                                                                     {}
-#line 2136 "parser.tab.c"
+#line 2139 "parser.tab.c"
     break;
 
   case 94:
-#line 237 "parser.y"
+#line 241 "parser.y"
                                                                        {}
-#line 2142 "parser.tab.c"
+#line 2145 "parser.tab.c"
     break;
 
   case 95:
-#line 240 "parser.y"
+#line 244 "parser.y"
                                                                                        {}
-#line 2148 "parser.tab.c"
+#line 2151 "parser.tab.c"
     break;
 
   case 96:
-#line 241 "parser.y"
+#line 245 "parser.y"
                                                                                         {}
-#line 2154 "parser.tab.c"
+#line 2157 "parser.tab.c"
     break;
 
   case 97:
-#line 242 "parser.y"
+#line 246 "parser.y"
                                                            {}
-#line 2160 "parser.tab.c"
+#line 2163 "parser.tab.c"
     break;
 
   case 98:
-#line 243 "parser.y"
+#line 247 "parser.y"
                                              {}
-#line 2166 "parser.tab.c"
+#line 2169 "parser.tab.c"
     break;
 
   case 99:
-#line 244 "parser.y"
+#line 248 "parser.y"
                                          {}
-#line 2172 "parser.tab.c"
+#line 2175 "parser.tab.c"
     break;
 
 
-#line 2176 "parser.tab.c"
+#line 2179 "parser.tab.c"
 
       default: break;
     }
@@ -2404,20 +2407,21 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 247 "parser.y"
+#line 251 "parser.y"
 
 
 int main(int argc, char **argv){
-
 	#ifdef YYDEBUG
 		int yydebug = 1;
 	#endif
 	++argv, --argc;
-
 	if(argc > 0)
 		yyin = fopen(argv[0],"r");
 	else
 		yyin = stdin;
+
+	tablaSimbolos = nueva_tabla_de_simbolos();
+
 	yyparse();
 }
 

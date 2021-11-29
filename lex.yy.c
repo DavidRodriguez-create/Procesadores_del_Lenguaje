@@ -365,28 +365,28 @@ static const flex_int16_t yy_accept[231] =
         0,    0,   70,   69,   69,   69,   66,   67,   65,   60,
        52,   61,   69,   64,    4,   47,   46,   56,   51,   55,
        68,   68,   68,   68,   68,   68,   68,   68,   68,   68,
-       34,   68,   68,   68,   68,   68,   44,   49,   50,   69,
+       35,   68,   68,   68,   68,   68,   44,   49,   50,   69,
         0,    0,    3,    0,   48,   54,    0,    4,    0,   45,
-       59,   57,   58,   68,   68,   68,   68,   68,   68,   14,
+       59,   57,   58,   68,   68,   68,   68,   68,   68,   16,
        68,    0,   68,   68,   68,   68,   68,   68,   68,   68,
-       68,   68,   68,   68,   68,   33,   68,   68,   68,   39,
+       68,   68,   68,   68,   68,   34,   68,   68,   68,   39,
        68,   68,   68,   68,   68,   53,    0,    0,    6,    2,
         3,    5,    0,    4,   68,   68,   68,   68,   68,   68,
 
-       15,   62,   18,   16,   68,   68,   68,   68,   68,   68,
-       25,   68,   68,   68,   68,   68,   68,   68,   63,   68,
+       17,   62,   19,   18,   68,   68,   68,   68,   68,   68,
+       26,   68,   68,   68,   68,   68,   68,   68,   63,   68,
        68,   37,   38,   68,   68,   68,   43,   68,    6,    5,
         0,    4,   68,   68,   68,   68,   68,   68,   68,   68,
        68,   68,   68,   68,   68,   68,   68,   68,   68,   68,
-       29,   68,   68,   68,   35,   36,   68,   41,   68,   68,
-        0,    5,   68,   68,   68,   68,   68,   12,   68,   68,
-       68,   68,    1,   68,   68,   68,   24,   26,   68,   68,
-       30,   31,   68,   40,   42,   68,    5,    7,   68,   68,
-       10,   68,   68,   17,   68,   68,   21,   68,   68,   27,
+       30,   68,   68,   68,   36,   13,   68,   41,   68,   68,
+        0,    5,   68,   68,   68,   68,   68,   14,   68,   68,
+       68,   68,    1,   68,   68,   68,   25,   27,   68,   68,
+       31,   32,   68,   40,   42,   68,    5,    7,   68,   68,
+       10,   68,   68,   12,   68,   68,   22,   68,   68,   28,
 
-       68,   68,   68,   68,   68,   68,   68,   19,   68,   68,
-       68,   28,   68,   68,   68,    9,   11,   68,   68,   22,
-       68,   32,   68,    8,   13,   68,   23,    1,   20,    0
+       68,   68,   68,   68,   68,   68,   68,   20,   68,   68,
+       68,   29,   68,   68,   68,    9,   11,   68,   68,   23,
+       68,   33,   68,    8,   15,   68,   24,    1,   21,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -961,311 +961,321 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 104 "scanner.l"
-{printf("DR_PR_BOOLEANO "); return BT_TIPOBASE;}
+{printf("DR_PR_BOOLEANO ");
+                    yylval.strval = strdup(yytext);
+                    return BT_TIPOBASE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 105 "scanner.l"
-{printf("DR_PR_CADENA "); return BT_TIPOBASE;}
+#line 107 "scanner.l"
+{printf("DR_PR_CADENA ");
+                 yylval.strval = strdup(yytext);
+                 return BT_TIPOBASE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 106 "scanner.l"
-{printf("DR_PR_CARACTER "); return BT_TIPOBASE;}
+#line 110 "scanner.l"
+{printf("DR_PR_CARACTER ");
+                     yylval.strval = strdup(yytext);
+                     return BT_TIPOBASE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 107 "scanner.l"
-{printf("DR_PR_CONST "); return BT_CONST;}
+#line 113 "scanner.l"
+{printf("DR_PR_ENTERO ");
+                 yylval.strval = strdup(yytext);
+                 return BT_TIPOBASE;  }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 108 "scanner.l"
-{printf("DR_PR_CONTINUAR "); return BT_CONTINUAR;}
+#line 116 "scanner.l"
+{printf("DR_PR_REAL ");
+                 yylval.strval = strdup(yytext);
+                 return BT_TIPOBASE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 109 "scanner.l"
-{printf("DR_PR_DE "); return BT_DE;}
+#line 120 "scanner.l"
+{printf("DR_PR_CONST "); return BT_CONST;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 110 "scanner.l"
-{printf("DR_PR_DEV "); return BT_DEV;}
+#line 121 "scanner.l"
+{printf("DR_PR_CONTINUAR "); return BT_CONTINUAR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 111 "scanner.l"
-{printf("DR_PR_ENT "); return BT_ENT;}
+#line 122 "scanner.l"
+{printf("DR_PR_DE "); return BT_DE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 112 "scanner.l"
-{printf("DR_PR_ENTERO "); return BT_TIPOBASE;}
+#line 123 "scanner.l"
+{printf("DR_PR_DEV "); return BT_DEV;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 113 "scanner.l"
-{printf("DR_PR_ENTSAL "); return BT_ENTSAL;}
+#line 124 "scanner.l"
+{printf("DR_PR_ENT "); return BT_ENT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 114 "scanner.l"
-{printf("DR_PR_FACCION "); return BT_FACCION;}
+#line 126 "scanner.l"
+{printf("DR_PR_ENTSAL "); return BT_ENTSAL;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 115 "scanner.l"
-{printf("DR_PR_FALGORITMO "); return BT_FALGORITMO;}
+#line 127 "scanner.l"
+{printf("DR_PR_FACCION "); return BT_FACCION;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 116 "scanner.l"
-{printf("DR_PR_FCONST "); return BT_FCONST;}
+#line 128 "scanner.l"
+{printf("DR_PR_FALGORITMO "); return BT_FALGORITMO;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 117 "scanner.l"
-{printf("DR_PR_FFUNCION "); return BT_FFUNCION;}
+#line 129 "scanner.l"
+{printf("DR_PR_FCONST "); return BT_FCONST;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 118 "scanner.l"
-{printf("DR_PR_FMIENTRAS "); return BT_FMIENTRAS;}
+#line 130 "scanner.l"
+{printf("DR_PR_FFUNCION "); return BT_FFUNCION;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 119 "scanner.l"
-{printf("DR_PR_FPARA "); return BT_FPARA;}
+#line 131 "scanner.l"
+{printf("DR_PR_FMIENTRAS "); return BT_FMIENTRAS;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 120 "scanner.l"
-{printf("DR_PR_FSI "); return BT_FSI;}
+#line 132 "scanner.l"
+{printf("DR_PR_FPARA "); return BT_FPARA;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 121 "scanner.l"
-{printf("DR_PR_FTIPO "); return BT_FTIPO;}
+#line 133 "scanner.l"
+{printf("DR_PR_FSI "); return BT_FSI;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 122 "scanner.l"
-{printf("DR_PR_FTUPLA "); return BT_FTUPLA;}
+#line 134 "scanner.l"
+{printf("DR_PR_FTIPO "); return BT_FTIPO;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 123 "scanner.l"
-{printf("DR_PR_FUNCION "); return BT_FUNCION;}
+#line 135 "scanner.l"
+{printf("DR_PR_FTUPLA "); return BT_FTUPLA;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 124 "scanner.l"
-{printf("DR_PR_FVAR "); return BT_FVAR;}
+#line 136 "scanner.l"
+{printf("DR_PR_FUNCION "); return BT_FUNCION;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 125 "scanner.l"
-{printf("DR_PR_HACER "); return BT_HACER;}
+#line 137 "scanner.l"
+{printf("DR_PR_FVAR "); return BT_FVAR;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 126 "scanner.l"
-{printf("DR_PR_HASTA "); return BT_HASTA;}
+#line 138 "scanner.l"
+{printf("DR_PR_HACER "); return BT_HACER;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 127 "scanner.l"
-{printf("DR_PR_MIENTRAS "); return BT_MIENTRAS;}
+#line 139 "scanner.l"
+{printf("DR_PR_HASTA "); return BT_HASTA;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 128 "scanner.l"
-{printf("DR_PR_NO "); return BT_NO;}
+#line 140 "scanner.l"
+{printf("DR_PR_MIENTRAS "); return BT_MIENTRAS;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 129 "scanner.l"
-{printf("DR_PR_O "); return BT_O;}
+#line 141 "scanner.l"
+{printf("DR_PR_NO "); return BT_NO;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 130 "scanner.l"
-{printf("DR_PR_PARA "); return BT_PARA;}
+#line 142 "scanner.l"
+{printf("DR_PR_O "); return BT_O;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 131 "scanner.l"
-{printf("DR_PR_REAL "); return BT_TIPOBASE;}
+#line 143 "scanner.l"
+{printf("DR_PR_PARA "); return BT_PARA;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 132 "scanner.l"
+#line 144 "scanner.l"
 {printf("DR_PR_REF "); return BT_REF;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 133 "scanner.l"
+#line 145 "scanner.l"
 {printf("DR_PR_SAL "); return BT_SAL;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 134 "scanner.l"
+#line 146 "scanner.l"
 {printf("DR_PR_SI "); return BT_SI;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 135 "scanner.l"
+#line 147 "scanner.l"
 {printf("DR_PR_TABLA "); return BT_TABLA;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 136 "scanner.l"
+#line 148 "scanner.l"
 {printf("DR_PR_TIPO "); return BT_TIPO;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 137 "scanner.l"
+#line 149 "scanner.l"
 {printf("DR_PR_TUPLA "); return BT_TUPLA;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 138 "scanner.l"
+#line 150 "scanner.l"
 {printf("DR_PR_VAR "); return BT_VAR;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 139 "scanner.l"
+#line 151 "scanner.l"
 {printf("DR_PR_Y "); return BT_Y;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 141 "scanner.l"
+#line 153 "scanner.l"
 {printf("DR_OT_ASIGNACION "); return BT_ASIGNACION;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 142 "scanner.l"
+#line 154 "scanner.l"
 {printf("DR_OT_COMPOSICIONSECUENCIAL "); return BT_COMPOSICIONSECUENCIAL;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 143 "scanner.l"
+#line 155 "scanner.l"
 {printf("DR_OT_DEFINICIONTIPOVARIABLE "); return BT_DEFINICIONTIPOVARIABLE;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 144 "scanner.l"
+#line 156 "scanner.l"
 {printf("DR_OT_ENTONCES "); return BT_ENTONCES;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 145 "scanner.l"
+#line 157 "scanner.l"
 {printf("DR_OT_INICIOARRAY "); return BT_INICIOARRAY;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 146 "scanner.l"
+#line 158 "scanner.l"
 {printf("DR_OT_FINARRAY "); return BT_FINARRAY;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 147 "scanner.l"
+#line 159 "scanner.l"
 {printf("DR_OT_CREACIONTIPO "); return BT_CREACIONTIPO;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 148 "scanner.l"
+#line 160 "scanner.l"
 {printf("DR_OT_SEPARADOR "); return BT_SEPARADOR;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 149 "scanner.l"
+#line 161 "scanner.l"
 {printf("DR_OT_SINOSI "); return BT_SINOSI;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 150 "scanner.l"
+#line 162 "scanner.l"
 {printf("DR_OT_SUBRANGO "); return BT_SUBRANGO;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 152 "scanner.l"
+#line 164 "scanner.l"
 {printf("DR_OR_MAYOR "); return BT_MAYOR;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 153 "scanner.l"
+#line 165 "scanner.l"
 {printf("DR_OR_MENOR "); return BT_MENOR;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 154 "scanner.l"
+#line 166 "scanner.l"
 {printf("DR_OR_DISTINTO "); return BT_DISTINTO;}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 155 "scanner.l"
+#line 167 "scanner.l"
 {printf("DR_OR_MAYORIGUAL "); return BT_MAYORIGUAL;}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 156 "scanner.l"
+#line 168 "scanner.l"
 {printf("DR_OR_MENORIGUAL "); return BT_MENORIGUAL;}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 158 "scanner.l"
+#line 170 "scanner.l"
 {printf("DR_OA_SUMA "); return BT_SUMA;}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 159 "scanner.l"
+#line 171 "scanner.l"
 {printf("DR_OA_RESTA "); return BT_RESTA;}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 160 "scanner.l"
+#line 172 "scanner.l"
 {printf("DR_OA_DIV "); return BT_DIV;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 161 "scanner.l"
+#line 173 "scanner.l"
 {printf("DR_OA_MOD "); return BT_MOD;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 162 "scanner.l"
+#line 174 "scanner.l"
 {printf("DR_OA_DIVREAL "); return BT_DIVREAL;}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 163 "scanner.l"
+#line 175 "scanner.l"
 {printf("DR_OA_MULTIPLICACION "); return BT_MULTIPLICACION;}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 164 "scanner.l"
+#line 176 "scanner.l"
 {printf("DR_OA_INICIOPARENTESIS "); return BT_INICIOPARENTESIS;}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 165 "scanner.l"
+#line 177 "scanner.l"
 {printf("DR_OA_FINPARENTESIS "); return BT_FINPARENTESIS;}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 167 "scanner.l"
+#line 179 "scanner.l"
 {printf("DR_IDENTIFICADOR ");
-                         yylval.str = strdup(yytext);
+                         yylval.strval = strdup(yytext);
                          return BT_IDENTIFICADOR;}
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 171 "scanner.l"
+#line 183 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1269 "lex.yy.c"
+#line 1279 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2270,7 +2280,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 171 "scanner.l"
+#line 183 "scanner.l"
 
 
 
