@@ -34,7 +34,7 @@ typedef struct dir_elemento{
 }dir_elemento;
 
 typedef struct cuadrupla{
-    int operador;
+    int *operador;
     dir_elemento *operando1;
     dir_elemento *operando2;
     dir_elemento *resultado;
@@ -47,7 +47,7 @@ typedef struct tabla_de_cuadruplas{
 
 tabla_de_cuadruplas* nueva_tabla_de_cuadruplas();
 cuadrupla* nueva_cuadrupla(int op, dir_elemento *op1, dir_elemento *op2, dir_elemento *res);
-void insertar_cuadrupla(tabla_de_cuadruplas* TC, cuadrupla *quad);
+void insertar_cuadrupla(tabla_de_cuadruplas* TC, cuadrupla *quad, int nextQuad);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();
 void gen(); //añadir cuadrupla a la tabla de cuádruplas
