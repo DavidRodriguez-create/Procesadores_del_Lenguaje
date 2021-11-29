@@ -1,14 +1,13 @@
 //
 // Created by David on 29/11/2021.
 //
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "tabla_de_cuadruplas.h"
 
 tabla_de_cuadruplas* nueva_tabla_de_cuadruplas(){
     tabla_de_cuadruplas *TC = (tabla_de_cuadruplas*) malloc(sizeof(tabla_de_cuadruplas));
     if(TC == NULL){
-        printf("ERROR -> Fallo en malloc (nueva_tabla_de_cuadruplas)\n");
+        printf("Fallo en nueva_tabla_de_cuadruplas -> MALLOC\n");
     }
     TC->next_quad = 0;
     return TC;
@@ -17,7 +16,7 @@ cuadrupla* nueva_cuadrupla(int op, dir_elemento *op1, dir_elemento *op2, dir_ele
 
     cuadrupla* quad = (cuadrupla*) malloc(sizeof(cuadrupla));
     if(quad == NULL){
-        printf("ERROR -> Fallo en malloc (nueva_cuadrupla)\n");
+        printf("Fallo en nueva_cuadrupla -> MALLOC\n");
     }
     quad->operador = op;
     quad->operando1 = op1;
@@ -28,11 +27,13 @@ cuadrupla* nueva_cuadrupla(int op, dir_elemento *op1, dir_elemento *op2, dir_ele
 
 }
 
-void insertar_cuadrupla(tabla_de_cuadruplas* TC, cuadrupla *quad, int nextQuad){
-    
-    TC->TC[nextQuad] = quad;
-
-
+void gen(tabla_de_cuadruplas* TC, cuadrupla *quad){
+    int nextQuad = TC->next_quad;
+    if (MAX_TABLA_CUADRUPLAS < nextQuad ){
+        printf("Se ha llenado la tabla de cuadruplas\n");
+    }
+    TC->tabla[nextQuad] = quad;
+    TC->next_quad = nextQuad + 1;
 
 }
 

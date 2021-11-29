@@ -2,6 +2,9 @@
 #define TABLA_DE_SIMBOLOS_H
 
 #include "definiciones.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #define MAX_TABLA_SIMBOLOS 1000
 
 //tipos de variables
