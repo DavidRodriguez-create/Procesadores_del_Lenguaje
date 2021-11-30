@@ -25,6 +25,7 @@ typedef struct variable{
 } variable;
 
 typedef struct simbolo{
+    int id;
     char nombre[20];
     int tipo;
     union{
@@ -40,8 +41,8 @@ typedef struct tabla_de_simbolos{
 //----------------------------FUNCIONES
 
 tabla_de_simbolos* nueva_tabla_de_simbolos();
-simbolo* nuevo_simbolo(char* nombre, int tipo_simbolo, int tipo_variable);
-void insertar_simbolo(tabla_de_simbolos* TS, simbolo *sim);
+simbolo* new_temp(tabla_de_simbolos* TS);
+simbolo* nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable);
 void ver_simbolo_por_pantalla(simbolo *sim);
 int existe_simbolo(tabla_de_simbolos* TS, char* nombre);
 //ver_simbolo_por_pantalla(tabla_simbolos->tabla[(tabla_simbolos->pos_libre)-1]);

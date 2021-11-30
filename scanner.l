@@ -166,7 +166,9 @@ DR_OA_FINPARENTESIS \)
 {DR_OR_MAYORIGUAL}	{printf("DR_OR_MAYORIGUAL "); return BT_MAYORIGUAL;}
 {DR_OR_MENORIGUAL}	{printf("DR_OR_MENORIGUAL "); return BT_MENORIGUAL;}
 
-{DR_OA_SUMA}	{printf("DR_OA_SUMA "); return BT_SUMA;}
+{DR_OA_SUMA}	{printf("DR_OA_SUMA ");
+
+                return BT_SUMA;}
 {DR_OA_RESTA}	{printf("DR_OA_RESTA "); return BT_RESTA;}
 {DR_OA_DIV}		{printf("DR_OA_DIV "); return BT_DIV;}
 {DR_OA_MOD}		{printf("DR_OA_MOD "); return BT_MOD;}

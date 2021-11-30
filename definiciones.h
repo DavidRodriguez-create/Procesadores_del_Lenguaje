@@ -1,11 +1,7 @@
 #ifndef DEFINICIONES
 #define DEFINICIONES
 
-#define type_int 0
-#define type_float 1
-#define type_bool 2
-#define type_char 3
-#define type_string 4
+
 
 #define op_mayor 5
 #define op_menor 6

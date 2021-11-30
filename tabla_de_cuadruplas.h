@@ -8,7 +8,10 @@
 
 #define MAX_TABLA_CUADRUPLAS 1000
 
-//~ #define op_asignacion 4
+
+
+
+#define OP_ASIGNACION 4
 //~ #define op_mayor 5
 //~ #define op_menor 6
 //~ #define op_distinto 7
@@ -16,6 +19,11 @@
 //~ #define op_menorigual 9
 //~ #define op_igual 10
 //~ #define op_goto  11
+#define OP_SUMA 12
+#define OP_RESTA 13
+#define OP_MULTIPLICACION 14
+#define OP_DIVISION 15
+
 
 // TIPOS DIR_ELEMENTO
 #define CELDA_TS 0

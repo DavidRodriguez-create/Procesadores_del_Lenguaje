@@ -163,32 +163,32 @@ listaDefsVariables : listaId listaDefsVariables {}
 		   | /* */ {}
 		   ;
 listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL
-	{
-	simbolo *sim;
-	int tipo_variable;
-	if (strcasecmp($<strval>3,"entero")==0){
-		tipo_variable = ENTERO;
-	} else if (strcasecmp($<strval>3,"real")==0) {
-		tipo_variable = REAL;
-	} else if (strcasecmp($<strval>3,"booleano")==0) {
-		tipo_variable = BOOLEANO;
-        } else if (strcasecmp($<strval>3,"caracter")==0) {
-		tipo_variable = CARACTER;
-        } else if (strcasecmp($<strval>3,"cadena")==0) {
-		tipo_variable = CADENA;
+		{
+		int tipo_variable;
+		if (strcasecmp($<strval>3,"entero")==0){
+			tipo_variable = ENTERO;
+		} else if (strcasecmp($<strval>3,"real")==0) {
+			tipo_variable = REAL;
+		} else if (strcasecmp($<strval>3,"booleano")==0) {
+			tipo_variable = BOOLEANO;
+	    } else if (strcasecmp($<strval>3,"caracter")==0) {
+			tipo_variable = CARACTER;
+	    } else if (strcasecmp($<strval>3,"cadena")==0) {
+			tipo_variable = CADENA;
+        } else {
+        	tipo_variable = -1;
+        	printf("%s\n",$<strval>3);
         }
-        sim = nuevo_simbolo($<strval>1, VARIABLE, tipo_variable);
-        insertar_simbolo(tabla_simbolos,sim);
+		ver_simbolo_por_pantalla(nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable));
+
         $<intval>$ = tipo_variable;
-	printf("%s ", $<strval>1);
-	printf("%s ", $<strval>3);}
+
+		printf("%s ", $<strval>3);}
         | BT_IDENTIFICADOR BT_SEPARADOR listaId {
-        simbolo *sim;
-        sim = nuevo_simbolo($<strval>1, VARIABLE, $<intval>3);
-        insertar_simbolo(tabla_simbolos,sim);
+        ver_simbolo_por_pantalla(nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3));
         $<intval>$ = $<intval>3;
-        printf("%d ", $<intval>$);
         printf("%s ", $<strval>1);
+        printf("%d ", $<intval>$);
         }
 
 defVariablesInteraccion : defEntrada {}
