@@ -4,6 +4,7 @@ sal a, b: entero;
 {Prec: a= A AND b = B}
 var
 aux: entero;
+aux: real;
 fvar
 aux:= a;
 a:= b;

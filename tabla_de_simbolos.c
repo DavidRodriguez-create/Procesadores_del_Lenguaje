@@ -42,6 +42,13 @@ void ver_simbolo_por_pantalla(simbolo *sim){
     printf("> %s tipo_sim:%d otro_tipo:%d \n",sim->nombre,sim->tipo,sim->val.var.tipo);
     printf("-------------------------\n");
 }
+
+int existe_simbolo(tabla_de_simbolos* TS, char* nombre){
+    int pos = 0;
+    while (strcmp(TS->tabla[pos],nombre)){
+
+    }
+}
 /*
 void new_temp(tabla){
     simbolo *simb = (simbolo*) malloc()
