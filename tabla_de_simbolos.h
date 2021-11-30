@@ -42,6 +42,8 @@ typedef struct tabla_de_simbolos{
 tabla_de_simbolos* nueva_tabla_de_simbolos();
 simbolo* nuevo_simbolo(char* nombre, int tipo_simbolo, int tipo_variable);
 void insertar_simbolo(tabla_de_simbolos* TS, simbolo *sim);
+void ver_simbolo_por_pantalla(simbolo *sim);
+//ver_simbolo_por_pantalla(tabla_simbolos->tabla[(tabla_simbolos->pos_libre)-1]);
 /*
 void new_temp(tabla);
 void insertar_id_TS(tabla,valor); // crea simbolo y le inserta un valor

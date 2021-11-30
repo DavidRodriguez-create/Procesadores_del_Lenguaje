@@ -17,6 +17,7 @@
 //~ #define op_igual 10
 //~ #define op_goto  11
 
+// TIPOS DIR_ELEMENTO
 #define CELDA_TS 0
 #define CONSTANTE_INT 1
 #define CONSTANTE_FLOAT 2

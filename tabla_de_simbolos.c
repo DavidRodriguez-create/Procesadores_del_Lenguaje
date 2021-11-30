@@ -37,6 +37,11 @@ void insertar_simbolo(tabla_de_simbolos* TS, simbolo *sim){
     }
 }; // crea simbolo y le inserta un valor
 
+void ver_simbolo_por_pantalla(simbolo *sim){
+    printf("\n-------------------------\n");
+    printf("> %s tipo_sim:%d otro_tipo:%d \n",sim->nombre,sim->tipo,sim->val.var.tipo);
+    printf("-------------------------\n");
+}
 /*
 void new_temp(tabla){
     simbolo *simb = (simbolo*) malloc()

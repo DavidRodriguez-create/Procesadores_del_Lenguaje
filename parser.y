@@ -6,7 +6,7 @@
 	int yylex();
 	void yyerror(const char *s);
 	extern FILE *yyin;
-	tabla_de_simbolos* tablaSimbolos;
+	tabla_de_simbolos* tabla_simbolos;
 %}
 
 %token BT_ALGORITMO
@@ -146,7 +146,7 @@ defTipo : BT_TUPLA listaCampos BT_FTUPLA {}
 	| BT_IDENTIFICADOR {}
 	| expresionT BT_SUBRANGO expresionT {}
 	| BT_REF defTipo {}
-	| BT_TIPOBASE { printf("%s ", $<strval>1);}
+	| BT_TIPOBASE { $<strval>$ = $<strval>1;}
 	;
 expresionT : BT_LITERALENTERO {}
 	   | BT_LITERALCARACTER {}
@@ -162,8 +162,34 @@ listaDefsConstantes : BT_IDENTIFICADOR BT_ASIGNACION BT_LITERAL BT_COMPOSICIONSE
 listaDefsVariables : listaId listaDefsVariables {}
 		   | /* */ {}
 		   ;
-listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL {printf("%s ", $<strval>1);}
-        | BT_IDENTIFICADOR BT_SEPARADOR listaId {printf("%s ", $<strval>1);}
+listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUENCIAL
+	{
+	simbolo *sim;
+	int tipo_variable;
+	if (strcasecmp($<strval>3,"entero")==0){
+		tipo_variable = ENTERO;
+	} else if (strcasecmp($<strval>3,"real")==0) {
+		tipo_variable = REAL;
+	} else if (strcasecmp($<strval>3,"booleano")==0) {
+		tipo_variable = BOOLEANO;
+        } else if (strcasecmp($<strval>3,"caracter")==0) {
+		tipo_variable = CARACTER;
+        } else if (strcasecmp($<strval>3,"cadena")==0) {
+		tipo_variable = CADENA;
+        }
+        sim = nuevo_simbolo($<strval>1, VARIABLE, tipo_variable);
+        insertar_simbolo(tabla_simbolos,sim);
+        $<intval>$ = tipo_variable;
+	printf("%s ", $<strval>1);
+	printf("%s ", $<strval>3);}
+        | BT_IDENTIFICADOR BT_SEPARADOR listaId {
+        simbolo *sim;
+        sim = nuevo_simbolo($<strval>1, VARIABLE, $<intval>3);
+        insertar_simbolo(tabla_simbolos,sim);
+        $<intval>$ = $<intval>3;
+        printf("%d ", $<intval>$);
+        printf("%s ", $<strval>1);
+        }
 
 defVariablesInteraccion : defEntrada {}
 			| defEntrada defSalida {}
@@ -260,7 +286,7 @@ int main(int argc, char **argv){
 	else
 		yyin = stdin;
 
-	tablaSimbolos = nueva_tabla_de_simbolos();
+	tabla_simbolos = nueva_tabla_de_simbolos();
 
 	yyparse();
 }
