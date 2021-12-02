@@ -46,7 +46,14 @@ void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC){
     printf("\n-------------------------\n");
     printf("TABLA DE CUADRUPLAS \n");
     for (int i = 0; i < TC->next_quad; ++i) {
-        printf("> operador:%d op1:%s op2:%p resultado:%s \n",TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->nombre,TC->tabla[i]->operando2, TC->tabla[i]->resultado->val.celda_TS->nombre);
+//        printf("operador: %d\n",TC->tabla[i]->operador);
+        if (TC->tabla[i]->operador<0){
+            printf("> quad:%d operador:%d op1:%d op2:%d resultado:%d\n",i,TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->id,-1,TC->tabla[i]->resultado->val.celda_TS->id);
+//            printf("> quad:%d operador:%d op1:%d op2:%d\n",i,TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->id,-1);
+        }
+        else{
+            printf("> quad:%d operador:%d op1:%d op2:%d resultado:%d\n",i,TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->id,TC->tabla[i]->operando2->val.celda_TS->id, TC->tabla[i]->resultado->val.celda_TS->id);
+        }
     }
 };
 

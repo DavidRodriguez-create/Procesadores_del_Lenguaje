@@ -15,6 +15,7 @@
 #define CADENA 4
 
 //tipos de simbolos
+#define TEMPORAL -1
 #define VARIABLE 0
 #define CONSTANTE 1
 #define TIPO 2

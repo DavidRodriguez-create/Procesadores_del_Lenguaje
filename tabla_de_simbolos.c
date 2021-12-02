@@ -18,6 +18,7 @@ simbolo* new_temp(tabla_de_simbolos* TS){
     }
     // le ponemos un id
     sim->id = TS->pos_libre;
+    sim->tipo = TEMPORAL;
     if (TS->pos_libre < MAX_TABLA_SIMBOLOS){
         TS->tabla[TS->pos_libre] = sim;
 
@@ -94,7 +95,13 @@ void imprime_tabla_simbolos(tabla_de_simbolos* TS){
     printf("\n-------------------------\n");
     printf("TABLA DE SIMBOLOS \n");
     for (int i = 0; i < TS->pos_libre; ++i) {
-        printf("> %s id:%d tipo_sim:%d otro_tipo:%d \n",TS->tabla[i]->nombre,TS->tabla[i]->id,TS->tabla[i]->tipo,TS->tabla[i]->val.var.tipo);
+        if (TS->tabla[i]->tipo == TEMPORAL){
+            printf("> id:%d nombre:%s tipo_sim:%d tipo_var:%d \n",TS->tabla[i]->id,"tmp",TS->tabla[i]->tipo,TS->tabla[i]->val.var.tipo);
+        }
+        else{
+            printf("> id:%d nombre:%s tipo_sim:%d tipo_var:%d \n",TS->tabla[i]->id,TS->tabla[i]->nombre,TS->tabla[i]->tipo,TS->tabla[i]->val.var.tipo);
+        }
+
     }
 }
 /*

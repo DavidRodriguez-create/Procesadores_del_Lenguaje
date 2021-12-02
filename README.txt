@@ -29,3 +29,5 @@ expresion : expresion BT_MAYOR expresion {}
 					| expresion BT_MAYORIGUAL expresion {}
 					| expresion BT_MENORIGUAL expresion {}
 					;
+
+****comenatr operadores aritmeticos

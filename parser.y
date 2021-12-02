@@ -17,6 +17,7 @@
 	char charval;
 	char *strval;
 	struct simbolo * simval;
+	struct dir_elemento* dirval;
 }
 
 %token BT_ALGORITMO
@@ -188,12 +189,11 @@ listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUE
 
         $<intval>$ = tipo_variable;
 
-		imprime_tabla_simbolos(tabla_simbolos);
 		}
         | BT_IDENTIFICADOR BT_SEPARADOR listaId {
         nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3);
         $<intval>$ = $<intval>3;
-        imprime_tabla_simbolos(tabla_simbolos);
+
         }
 
 defVariablesInteraccion : defEntrada {}
@@ -206,51 +206,70 @@ defSalida : BT_SAL listaDefsVariables {};
 
 
 expresion : llamadaFuncion {}
-    | operando {}
+    | operando {
+    	dir_elemento* exp1 = nuevo_dir_elemento_celda_TS($<simval>1);
+    	$<dirval>$ = exp1;
+    }
     | expresion BT_SUMA expresion {
-	      simbolo* sim_temporal  = new_temp(tabla_simbolos);
-	      simbolo* exp1 = $<simval>1;
-	      simbolo* exp2 = $<simval>3;
-	      sim_temporal->val.var.tipo = ENTERO;
-	      $<simval>$ = sim_temporal;
-	      gen(tabla_cuadruplas, OP_SUMA, exp1, exp2, sim_temporal);
-	      imprime_tabla_cuadruplas(tabla_cuadruplas);
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>1;
+	dir_elemento* exp2 = $<dirval>3;
+	$<dirval>$ = sim_temporal;
+//	gen(tabla_cuadruplas, $<intval>2, exp1, exp2, sim_temporal);
+	gen(tabla_cuadruplas, OP_SUMA, exp1, exp2, sim_temporal);
 
     }
     | expresion BT_RESTA expresion {
-
-    	simbolo* sim_temporal  = new_temp(tabla_simbolos);
-		simbolo* exp1 = $<simval>1;
-		simbolo* exp2 = $<simval>3;
-		sim_temporal->val.var.tipo = ENTERO;
-		$<simval>$ = sim_temporal;
-		gen(tabla_cuadruplas, OP_RESTA, exp1, exp2, sim_temporal);
-		imprime_tabla_cuadruplas(tabla_cuadruplas);
-
-
-
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>1;
+	dir_elemento* exp2 = $<dirval>3;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_RESTA, exp1, exp2, sim_temporal);
     }
-    | expresion BT_MULTIPLICACION expresion {	
-    	simbolo* sim_temporal  = new_temp(tabla_simbolos);
-		simbolo* exp1 = $<simval>1;
-		simbolo* exp2 = $<simval>3;
-		sim_temporal->val.var.tipo = ENTERO;
-		$<simval>$ = sim_temporal;
-		gen(tabla_cuadruplas, OP_MULTIPLICACION, exp1, exp2, sim_temporal);
-		imprime_tabla_cuadruplas(tabla_cuadruplas);
-    
-    
-    
-    
+    | expresion BT_MULTIPLICACION expresion {
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>1;
+	dir_elemento* exp2 = $<dirval>3;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_MULTIPLICACION, exp1, exp2, sim_temporal);
     }
-    | expresion BT_DIVREAL expresion {}
-    | expresion BT_DIV expresion {}
-    | expresion BT_MOD expresion {}
+    | expresion BT_DIVREAL expresion {
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>1;
+	dir_elemento* exp2 = $<dirval>3;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, sim_temporal);
+    }
+    | expresion BT_DIV expresion {
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>1;
+	dir_elemento* exp2 = $<dirval>3;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_DIV, exp1, exp2, sim_temporal);
+    }
+    | expresion BT_MOD expresion {
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>1;
+	dir_elemento* exp2 = $<dirval>3;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_MOD, exp1, exp2, sim_temporal);
+    }
     | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS {}
-    | BT_RESTA expresion {}
+    | BT_RESTA expresion {
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>2;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, sim_temporal);
+    }
     | BT_LITERALNUMERICO {}
-    | BT_SUMA expresion {}
+    | BT_SUMA expresion {
+	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* exp1 = $<dirval>2;
+	$<dirval>$ = sim_temporal;
+	gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, sim_temporal);
+    }
     | expresion BT_OPREL expresion {}
+
     | expresion BT_Y expresion {}
     | expresion BT_O expresion {}
     | BT_NO expresion {}
@@ -283,12 +302,8 @@ instruccion : BT_CONTINUAR {}
             | llamadaAccion {}
             ;
 asignacion : operando BT_ASIGNACION expresion {
-		dir_elemento* op1;
-		dir_elemento* res;
-		op1 = nuevo_dir_elemento_celda_TS($<simval>3);
-		res = nuevo_dir_elemento_celda_TS($<simval>1);
-		gen(tabla_cuadruplas, $<intval>2, op1, NULL, res);
-		imprime_tabla_cuadruplas(tabla_cuadruplas);
+		dir_elemento* res = nuevo_dir_elemento_celda_TS($<simval>1);
+		gen(tabla_cuadruplas, $<intval>2, $<dirval>3, NULL, res);
 		};
 alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {};
 listaOpciones : BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones {}
@@ -337,6 +352,8 @@ int main(int argc, char **argv){
 	tabla_cuadruplas = nueva_tabla_de_cuadruplas();
 
 	yyparse();
+	imprime_tabla_simbolos(tabla_simbolos);
+	imprime_tabla_cuadruplas(tabla_cuadruplas);
 }
 
 void yyerror(const char *s){

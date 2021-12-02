@@ -1,0 +1,12 @@
+algoritmo variables;
+ent a: entero;
+sal a: entero;
+{Prec: a= A}
+var
+aux: entero;
+fvar
+
+a := a + aux + aux + aux + aux;
+
+{Post: a=A }
+falgoritmo

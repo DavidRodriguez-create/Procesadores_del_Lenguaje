@@ -11,7 +11,9 @@
 
 
 
-#define OP_ASIGNACION 4
+#define OP_ASIGNACION -1
+#define OP_SUMA_UNARIA -2
+#define OP_RESTA_UNARIA -3
 //~ #define op_mayor 5
 //~ #define op_menor 6
 //~ #define op_distinto 7
@@ -25,6 +27,7 @@
 #define OP_DIVREAL 15
 #define OP_MOD 16
 #define OP_DIV 17
+
 
 // TIPOS DIR_ELEMENTO
 #define CELDA_TS 0
