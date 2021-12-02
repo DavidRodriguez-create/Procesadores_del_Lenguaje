@@ -1,5 +1,6 @@
 %{
 	#include "parser.tab.h"
+	#include "tabla_de_cuadruplas.h"
 %}
 
 DR_CIFRA	[0-9]
@@ -149,7 +150,9 @@ DR_OA_FINPARENTESIS \)
 {DR_PR_VAR}	{printf("DR_PR_VAR "); return BT_VAR;}
 {DR_PR_Y}	{printf("DR_PR_Y "); return BT_Y;}
 
-{DR_OT_ASIGNACION}	{printf("DR_OT_ASIGNACION "); return BT_ASIGNACION;}
+{DR_OT_ASIGNACION}	{printf("DR_OT_ASIGNACION ");
+                    yylval.intval = OP_ASIGNACION;
+                    return BT_ASIGNACION;}
 {DR_OT_COMPOSICIONSECUENCIAL}	{printf("DR_OT_COMPOSICIONSECUENCIAL "); return BT_COMPOSICIONSECUENCIAL;}
 {DR_OT_DEFINICIONTIPOVARIABLE}	{printf("DR_OT_DEFINICIONTIPOVARIABLE "); return BT_DEFINICIONTIPOVARIABLE;}
 {DR_OT_ENTONCES}	{printf("DR_OT_ENTONCES "); return BT_ENTONCES;}
@@ -167,13 +170,23 @@ DR_OA_FINPARENTESIS \)
 {DR_OR_MENORIGUAL}	{printf("DR_OR_MENORIGUAL "); return BT_MENORIGUAL;}
 
 {DR_OA_SUMA}	{printf("DR_OA_SUMA ");
-
+                yylval.intval = OP_SUMA;
                 return BT_SUMA;}
-{DR_OA_RESTA}	{printf("DR_OA_RESTA "); return BT_RESTA;}
-{DR_OA_DIV}		{printf("DR_OA_DIV "); return BT_DIV;}
-{DR_OA_MOD}		{printf("DR_OA_MOD "); return BT_MOD;}
-{DR_OA_DIVREAL}	{printf("DR_OA_DIVREAL "); return BT_DIVREAL;}
-{DR_OA_MULTIPLICACION}	{printf("DR_OA_MULTIPLICACION "); return BT_MULTIPLICACION;}
+{DR_OA_RESTA}	{printf("DR_OA_RESTA ");
+                yylval.intval = OP_RESTA;
+                return BT_RESTA;}
+{DR_OA_DIV}		{printf("DR_OA_DIV ");
+                yylval.intval = OP_DIV;
+                return BT_DIV;}
+{DR_OA_MOD}		{printf("DR_OA_MOD ");
+                yylval.intval = OP_MOD;
+                return BT_MOD;}
+{DR_OA_DIVREAL}	{printf("DR_OA_DIVREAL ");
+                yylval.intval = OP_DIVREAL;
+                return BT_DIVREAL;}
+{DR_OA_MULTIPLICACION}	{printf("DR_OA_MULTIPLICACION ");
+                yylval.intval = OP_MULTIPLICACION;
+                return BT_MULTIPLICACION;}
 {DR_OA_INICIOPARENTESIS}	{printf("DR_OA_INICIOPARENTESIS "); return BT_INICIOPARENTESIS;}
 {DR_OA_FINPARENTESIS}		{printf("DR_OA_FINPARENTESIS "); return BT_FINPARENTESIS;}
 

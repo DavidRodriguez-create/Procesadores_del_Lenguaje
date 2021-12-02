@@ -22,8 +22,9 @@
 #define OP_SUMA 12
 #define OP_RESTA 13
 #define OP_MULTIPLICACION 14
-#define OP_DIVISION 15
-
+#define OP_DIVREAL 15
+#define OP_MOD 16
+#define OP_DIV 17
 
 // TIPOS DIR_ELEMENTO
 #define CELDA_TS 0
@@ -55,8 +56,10 @@ typedef struct tabla_de_cuadruplas{
 }tabla_de_cuadruplas;
 
 tabla_de_cuadruplas* nueva_tabla_de_cuadruplas();
-cuadrupla* nueva_cuadrupla(int op, dir_elemento *op1, dir_elemento *op2, dir_elemento *res);
-void gen(tabla_de_cuadruplas* TC, cuadrupla *quad);
+dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim);
+cuadrupla* gen(tabla_de_cuadruplas* TC, int op, dir_elemento *op1, dir_elemento *op2, dir_elemento *res);
+dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim);
+void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC);
 
 /*
 tablaCuadruplas inicializarTablaCuadruplas();

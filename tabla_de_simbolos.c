@@ -56,9 +56,9 @@ simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, i
 };
 
 void ver_simbolo_por_pantalla(simbolo *sim){
-    printf("\n-------------------------\n");
-    printf("> %s id:%d tipo_sim:%d otro_tipo:%d \n",sim->nombre,sim->id,sim->tipo,sim->val.var.tipo);
-    printf("-------------------------\n");
+
+    printf("\n> %s id:%d tipo_sim:%d otro_tipo:%d \n",sim->nombre,sim->id,sim->tipo,sim->val.var.tipo);
+
 }
 
 int existe_simbolo(tabla_de_simbolos* TS, char* nombre){
@@ -76,15 +76,26 @@ int existe_simbolo(tabla_de_simbolos* TS, char* nombre){
 simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre){
     int pos = 0;
     simbolo *sim;
-    while (pos<MAX_TABLA_SIMBOLOS && !strcmp(TS->tabla[pos]->nombre,nombre)){
+    //printf("\nEstoy buscando: %s\n",nombre);
+    while (pos<MAX_TABLA_SIMBOLOS && strcmp(TS->tabla[pos]->nombre,nombre)!=0){
+        //printf("\n %s vs %s\n",TS->tabla[pos]->nombre,nombre);
         pos = pos + 1;
     }
     if (pos<MAX_TABLA_SIMBOLOS){
         sim = TS->tabla[pos];
+        //printf("Encontrado: %s\n",sim->nombre);
     } else {
         printf("No existe el simbolo con nombre: %s", nombre);
     }
     return sim;
+}
+
+void imprime_tabla_simbolos(tabla_de_simbolos* TS){
+    printf("\n-------------------------\n");
+    printf("TABLA DE SIMBOLOS \n");
+    for (int i = 0; i < TS->pos_libre; ++i) {
+        printf("> %s id:%d tipo_sim:%d otro_tipo:%d \n",TS->tabla[i]->nombre,TS->tabla[i]->id,TS->tabla[i]->tipo,TS->tabla[i]->val.var.tipo);
+    }
 }
 /*
 void new_temp(tabla){

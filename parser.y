@@ -2,12 +2,22 @@
     #include <ctype.h>
 	#include <stdio.h>
 	#include "tabla_de_simbolos.h"
+	#include "tabla_de_cuadruplas.h"
 
 	int yylex();
 	void yyerror(const char *s);
 	extern FILE *yyin;
 	tabla_de_simbolos* tabla_simbolos;
+	tabla_de_cuadruplas* tabla_cuadruplas;
 %}
+
+%union {
+	int intval;
+	float floatval;
+	char charval;
+	char *strval;
+	struct simbolo * simval;
+}
 
 %token BT_ALGORITMO
 %token BT_FALGORITMO
@@ -100,12 +110,6 @@
 
 %left BT_REF BT_INICIOARRAY BT_PUNTO
 
-%union {
-	int intval;
-	float floatval;
-	char charval;
-	char *strval;
-}
 
 %type <str> BT_IDENTIFICADOR
 %type <str> BT_TIPOBASE
@@ -177,18 +181,19 @@ listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUE
 			tipo_variable = CADENA;
         } else {
         	tipo_variable = -1;
-        	printf("%s\n",$<strval>3);
+        	printf("ERROR def tipo\n");
         }
-		ver_simbolo_por_pantalla(nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable));
+
+		nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable);
 
         $<intval>$ = tipo_variable;
 
-		printf("%s ", $<strval>3);}
+		imprime_tabla_simbolos(tabla_simbolos);
+		}
         | BT_IDENTIFICADOR BT_SEPARADOR listaId {
-        ver_simbolo_por_pantalla(nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3));
+        nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3);
         $<intval>$ = $<intval>3;
-        printf("%s ", $<strval>1);
-        printf("%d ", $<intval>$);
+        imprime_tabla_simbolos(tabla_simbolos);
         }
 
 defVariablesInteraccion : defEntrada {}
@@ -202,9 +207,42 @@ defSalida : BT_SAL listaDefsVariables {};
 
 expresion : llamadaFuncion {}
     | operando {}
-    | expresion BT_SUMA expresion {}
-    | expresion BT_RESTA expresion {}
-    | expresion BT_MULTIPLICACION expresion {}
+    | expresion BT_SUMA expresion {
+	      simbolo* sim_temporal  = new_temp(tabla_simbolos);
+	      simbolo* exp1 = $<simval>1;
+	      simbolo* exp2 = $<simval>3;
+	      sim_temporal->val.var.tipo = ENTERO;
+	      $<simval>$ = sim_temporal;
+	      gen(tabla_cuadruplas, OP_SUMA, exp1, exp2, sim_temporal);
+	      imprime_tabla_cuadruplas(tabla_cuadruplas);
+
+    }
+    | expresion BT_RESTA expresion {
+
+    	simbolo* sim_temporal  = new_temp(tabla_simbolos);
+		simbolo* exp1 = $<simval>1;
+		simbolo* exp2 = $<simval>3;
+		sim_temporal->val.var.tipo = ENTERO;
+		$<simval>$ = sim_temporal;
+		gen(tabla_cuadruplas, OP_RESTA, exp1, exp2, sim_temporal);
+		imprime_tabla_cuadruplas(tabla_cuadruplas);
+
+
+
+    }
+    | expresion BT_MULTIPLICACION expresion {	
+    	simbolo* sim_temporal  = new_temp(tabla_simbolos);
+		simbolo* exp1 = $<simval>1;
+		simbolo* exp2 = $<simval>3;
+		sim_temporal->val.var.tipo = ENTERO;
+		$<simval>$ = sim_temporal;
+		gen(tabla_cuadruplas, OP_MULTIPLICACION, exp1, exp2, sim_temporal);
+		imprime_tabla_cuadruplas(tabla_cuadruplas);
+    
+    
+    
+    
+    }
     | expresion BT_DIVREAL expresion {}
     | expresion BT_DIV expresion {}
     | expresion BT_MOD expresion {}
@@ -225,7 +263,9 @@ expresion : llamadaFuncion {}
     | expresion BT_MAYORIGUAL expresion {}
     | expresion BT_MENORIGUAL expresion {}
     ;
-operando : BT_IDENTIFICADOR {}
+operando : BT_IDENTIFICADOR {
+	$<simval>$ = buscar_sim_nombre(tabla_simbolos, $<strval>1 );
+	}
     | operando BT_PUNTO operando {}
     | operando BT_INICIOARRAY expresion BT_FINARRAY {}
     | operando BT_REF {}
@@ -242,7 +282,14 @@ instruccion : BT_CONTINUAR {}
             | iteracion {}
             | llamadaAccion {}
             ;
-asignacion : operando BT_ASIGNACION expresion {};
+asignacion : operando BT_ASIGNACION expresion {
+		dir_elemento* op1;
+		dir_elemento* res;
+		op1 = nuevo_dir_elemento_celda_TS($<simval>3);
+		res = nuevo_dir_elemento_celda_TS($<simval>1);
+		gen(tabla_cuadruplas, $<intval>2, op1, NULL, res);
+		imprime_tabla_cuadruplas(tabla_cuadruplas);
+		};
 alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {};
 listaOpciones : BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones {}
 			  | /* */ {}
@@ -287,6 +334,7 @@ int main(int argc, char **argv){
 		yyin = stdin;
 
 	tabla_simbolos = nueva_tabla_de_simbolos();
+	tabla_cuadruplas = nueva_tabla_de_cuadruplas();
 
 	yyparse();
 }

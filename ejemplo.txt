@@ -3,9 +3,9 @@ ent a: entero;
 sal a: entero;
 {Prec: a= A}
 var
-aux, aux2, aux3: entero;
+d,e: entero;
 fvar
-aux:= a;
-a:= aux
+d:= a;
+a:= d
 {Post: a=A }
 falgoritmo

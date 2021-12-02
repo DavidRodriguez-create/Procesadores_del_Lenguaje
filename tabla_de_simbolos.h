@@ -45,6 +45,8 @@ simbolo* new_temp(tabla_de_simbolos* TS);
 simbolo* nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable);
 void ver_simbolo_por_pantalla(simbolo *sim);
 int existe_simbolo(tabla_de_simbolos* TS, char* nombre);
+simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre);
+void imprime_tabla_simbolos(tabla_de_simbolos* TS);
 //ver_simbolo_por_pantalla(tabla_simbolos->tabla[(tabla_simbolos->pos_libre)-1]);
 /*
 void new_temp(tabla);
