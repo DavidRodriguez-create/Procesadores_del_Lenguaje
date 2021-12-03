@@ -91,6 +91,8 @@ simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre){
     return sim;
 }
 
+
+
 void imprime_tabla_simbolos(tabla_de_simbolos* TS){
     printf("\n-------------------------\n");
     printf("TABLA DE SIMBOLOS \n");

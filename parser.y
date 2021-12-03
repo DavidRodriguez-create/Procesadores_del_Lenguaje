@@ -112,8 +112,8 @@
 %left BT_REF BT_INICIOARRAY BT_PUNTO
 
 
-%type <str> BT_IDENTIFICADOR
-%type <str> BT_TIPOBASE
+%type <strval> BT_IDENTIFICADOR
+%type <strval> BT_TIPOBASE
 
 
 %%
@@ -211,18 +211,43 @@ expresion : llamadaFuncion {}
     	$<dirval>$ = exp1;
     }
     | expresion BT_SUMA expresion {
-	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* exp1 = $<dirval>1;
-	dir_elemento* exp2 = $<dirval>3;
-	$<dirval>$ = sim_temporal;
+
+    	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+		dir_elemento* exp1 = $<dirval>1;
+		dir_elemento* exp2 = $<dirval>3;
+		int tipo = ENTERO;
+		if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
+			tipo = REAL;
+			dir_temporal->val.celda_TS->val.var.tipo = tipo;
+			gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+			gen(tabla_cuadruplas, OP_SUMA_REAL, exp2,dir_temporal,dir_temporal);
+
+		}else if(exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == ENTERO){
+			tipo = REAL;
+			dir_temporal->val.celda_TS->val.var.tipo = tipo;
+			gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+			gen(tabla_cuadruplas, OP_SUMA_REAL, exp1,dir_temporal,dir_temporal);
+		}else if(exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL){
+			tipo = REAL;
+			dir_temporal->val.celda_TS->val.var.tipo = tipo;
+			gen(tabla_cuadruplas, OP_SUMA_REAL, exp1,exp2,dir_temporal);
+		}else{
+			tipo = ENTERO;
+			dir_temporal->val.celda_TS->val.var.tipo = tipo;
+			gen(tabla_cuadruplas, OP_SUMA, exp1, exp2, dir_temporal);
+
+	}
+
+	$<dirval>$ = dir_temporal;
 //	gen(tabla_cuadruplas, $<intval>2, exp1, exp2, sim_temporal);
-	gen(tabla_cuadruplas, OP_SUMA, exp1, exp2, sim_temporal);
+
 
     }
     | expresion BT_RESTA expresion {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>1;
 	dir_elemento* exp2 = $<dirval>3;
+	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
 	$<dirval>$ = sim_temporal;
 	gen(tabla_cuadruplas, OP_RESTA, exp1, exp2, sim_temporal);
     }
@@ -230,27 +255,60 @@ expresion : llamadaFuncion {}
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>1;
 	dir_elemento* exp2 = $<dirval>3;
+	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
 	$<dirval>$ = sim_temporal;
 	gen(tabla_cuadruplas, OP_MULTIPLICACION, exp1, exp2, sim_temporal);
     }
     | expresion BT_DIVREAL expresion {
-	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* dir_temporal2  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>1;
 	dir_elemento* exp2 = $<dirval>3;
-	$<dirval>$ = sim_temporal;
-	gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, sim_temporal);
+	if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
+
+		dir_temporal->val.celda_TS->val.var.tipo = REAL;
+		dir_temporal2->val.celda_TS->val.var.tipo = REAL;
+		gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+		gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal2);
+		gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal,dir_temporal2,dir_temporal);
+
+	}else if(exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == ENTERO){
+		dir_temporal->val.celda_TS->val.var.tipo = REAL;
+		gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+		gen(tabla_cuadruplas, OP_DIVREAL, exp1,dir_temporal,dir_temporal);
+
+
+	}else if(exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
+		dir_temporal->val.celda_TS->val.var.tipo = REAL;
+		gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+		gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal ,exp2,dir_temporal);
+	}else{
+		dir_temporal->val.celda_TS->val.var.tipo = REAL;
+		gen(tabla_cuadruplas, OP_DIVREAL, exp1 ,exp2,dir_temporal);
+	}
+	$<dirval>$ = dir_temporal;
     }
     | expresion BT_DIV expresion {
-	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>1;
 	dir_elemento* exp2 = $<dirval>3;
-	$<dirval>$ = sim_temporal;
-	gen(tabla_cuadruplas, OP_DIV, exp1, exp2, sim_temporal);
+	if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
+
+		dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
+		gen(tabla_cuadruplas, OP_DIV, exp1, exp2, dir_temporal);
+
+	}else{
+		printf("Error expresion BT_DIV expresion: tipos incorrectos");
+	}
+
+	$<dirval>$ = dir_temporal;
+
     }
     | expresion BT_MOD expresion {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>1;
 	dir_elemento* exp2 = $<dirval>3;
+	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
 	$<dirval>$ = sim_temporal;
 	gen(tabla_cuadruplas, OP_MOD, exp1, exp2, sim_temporal);
     }
@@ -258,6 +316,7 @@ expresion : llamadaFuncion {}
     | BT_RESTA expresion {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>2;
+	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
 	$<dirval>$ = sim_temporal;
 	gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, sim_temporal);
     }
@@ -265,6 +324,7 @@ expresion : llamadaFuncion {}
     | BT_SUMA expresion {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>2;
+	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
 	$<dirval>$ = sim_temporal;
 	gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, sim_temporal);
     }

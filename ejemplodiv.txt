@@ -9,11 +9,11 @@ t: entero;
 t2: entero;
 fvar
 
-a := a + aux2;
-a := aux2 + t;
-a := a + a;
-t := t2 + t;
-a := t
+a := a div aux;
+a := a / aux2;
+a := t / a;
+t := t2 / t;
+a := a div aux2
 
 {Post: a=A }
 falgoritmo

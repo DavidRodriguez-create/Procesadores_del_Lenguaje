@@ -152,7 +152,7 @@ Terminals, with rules where they appear
     error (256)
     BT_ALGORITMO (258) 1
     BT_FALGORITMO (259) 1
-    BT_IDENTIFICADOR <str> (260) 1 18 22 28 30 34 35 65 83 86 87 94 95
+    BT_IDENTIFICADOR <strval> (260) 1 18 22 28 30 34 35 65 83 86 87 94 95
     BT_COMENTARIO (261) 2 3
     BT_TIPO (262) 15
     BT_FTIPO (263) 15
@@ -166,7 +166,7 @@ Terminals, with rules where they appear
     BT_DE (271) 21
     BT_DEV (272) 85 87
     BT_REF (273) 24 68
-    BT_TIPOBASE <str> (274) 25
+    BT_TIPOBASE <strval> (274) 25
     BT_LITERALENTERO (275) 26
     BT_LITERALCARACTER (276) 27
     BT_VERDADERO (277) 57

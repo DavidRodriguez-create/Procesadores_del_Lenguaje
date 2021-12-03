@@ -14,6 +14,7 @@
 #define OP_ASIGNACION -1
 #define OP_SUMA_UNARIA -2
 #define OP_RESTA_UNARIA -3
+#define OP_INTTOREAL -4
 //~ #define op_mayor 5
 //~ #define op_menor 6
 //~ #define op_distinto 7
@@ -27,6 +28,8 @@
 #define OP_DIVREAL 15
 #define OP_MOD 16
 #define OP_DIV 17
+
+#define OP_SUMA_REAL 18
 
 
 // TIPOS DIR_ELEMENTO
@@ -63,7 +66,8 @@ dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim);
 cuadrupla* gen(tabla_de_cuadruplas* TC, int op, dir_elemento *op1, dir_elemento *op2, dir_elemento *res);
 dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim);
 void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC);
-
+dir_elemento*  operacion_aritmetica (int op,dir_elemento* exp1,dir_elemento* exp2,tabla_de_simbolos * tabla_simbolos,tabla_de_cuadruplas* tabla_cuadruplas);
+void get_nombre_sim(simbolo * sim, char * nombre);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();
 void gen(); //añadir cuadrupla a la tabla de cuádruplas

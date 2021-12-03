@@ -3,6 +3,7 @@
 //
 
 #include "tabla_de_cuadruplas.h"
+#include <stdio.h>
 
 tabla_de_cuadruplas* nueva_tabla_de_cuadruplas(){
     tabla_de_cuadruplas *TC = (tabla_de_cuadruplas*) malloc(sizeof(tabla_de_cuadruplas));
@@ -43,10 +44,32 @@ dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim){
 }
 
 void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC){
+    int operador;
+    int tipo_operando1, tipo_operando2, tipo_resultado;
     printf("\n-------------------------\n");
     printf("TABLA DE CUADRUPLAS \n");
     for (int i = 0; i < TC->next_quad; ++i) {
-//        printf("operador: %d\n",TC->tabla[i]->operador);
+        operador = TC->tabla[i]->operador;
+        tipo_operando1 = TC->tabla[i]->operando1->tipo;
+//        tipo_operando2 = TC->tabla[i]->operando1->tipo;
+        tipo_resultado = TC->tabla[i]->operando1->tipo;
+
+        switch (tipo_operando1) {
+            char nombre_operando1[100];
+            case CELDA_TS:
+                get_nombre_sim(TC->tabla[i]->operando1->val.celda_TS,nombre_operando1);
+                break;
+            case CONSTANTE_INT:
+                break;
+            case CONSTANTE_FLOAT:
+                break;
+            case CONSTANTE_BOOL:
+                break;
+            default:
+                printf("Error en imprime_tabla_cuadruplas: El tipo del operando1 no esta declarado\n");
+                break;
+        }
+
         if (TC->tabla[i]->operador<0){
             printf("> quad:%d operador:%d op1:%d op2:%d resultado:%d\n",i,TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->id,-1,TC->tabla[i]->resultado->val.celda_TS->id);
 //            printf("> quad:%d operador:%d op1:%d op2:%d\n",i,TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->id,-1);
@@ -55,6 +78,28 @@ void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC){
             printf("> quad:%d operador:%d op1:%d op2:%d resultado:%d\n",i,TC->tabla[i]->operador,TC->tabla[i]->operando1->val.celda_TS->id,TC->tabla[i]->operando2->val.celda_TS->id, TC->tabla[i]->resultado->val.celda_TS->id);
         }
     }
+};
+
+void get_nombre_sim(simbolo * sim, char * nombre){
+    /*
+     * Funcion que devuelve el nombre del simbolo
+     * Si no tiene nombre, devuelve t+id (es decir, un simbolo temporal)
+     */
+    if (sim->tipo == TEMPORAL){
+        sprintf(nombre, "t%d", sim->id);
+    }
+    else{
+        sprintf(nombre, "%s", sim->nombre);
+    }
+
+}
+
+dir_elemento* operacion_aritmetica(int op,dir_elemento * exp1, dir_elemento * exp2, tabla_de_simbolos * tabla_simbolos, tabla_de_cuadruplas * tabla_cuadruplas){
+   dir_elemento * res = nuevo_dir_elemento_celda_TS(new_temp(tabla_simbolos));
+   //asignar tipo a la variable temporal
+   res->val.celda_TS->val.var.tipo = ENTERO;
+   gen(tabla_cuadruplas,op,exp1,exp2,res);
+   return res;
 };
 
 
