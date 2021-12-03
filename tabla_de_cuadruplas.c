@@ -42,6 +42,18 @@ dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim){
     dir_elem->val.celda_TS = sim;
     return dir_elem;
 }
+dir_elemento* nuevo_dir_elemento_constante_entero(int num){
+    dir_elemento* dir_elem = (dir_elemento*) malloc(sizeof(dir_elemento));
+    dir_elem->tipo = CONSTANTE_INT;
+    dir_elem->val.cons_int = num;
+    return dir_elem;
+}
+dir_elemento* nuevo_dir_elemento_constante_float(float num){
+    dir_elemento* dir_elem = (dir_elemento*) malloc(sizeof(dir_elemento));
+    dir_elem->tipo = CONSTANTE_FLOAT;
+    dir_elem->val.cons_float = num;
+    return dir_elem;
+}
 
 void imprime_tabla_cuadruplas(tabla_de_cuadruplas* tc){
     char nombre_operador[100];

@@ -1,6 +1,7 @@
 %{
     #include <ctype.h>
 	#include <stdio.h>
+	#include <stdlib.h>
 	#include "tabla_de_simbolos.h"
 	#include "tabla_de_cuadruplas.h"
 
@@ -46,6 +47,8 @@
 %token BT_SAL
 %token BT_ENTSAL
 %token BT_LITERALNUMERICO
+%token BT_LITERALENTERO
+%token BT_LITERALREAL
 %token BT_Y
 %token BT_O
 %token BT_NO
@@ -114,6 +117,8 @@
 
 %type <strval> BT_IDENTIFICADOR
 %type <strval> BT_TIPOBASE
+%type <floatval> BT_LITERALREAL
+%type <intval> BT_LITERALENTERO
 
 
 %%
@@ -375,7 +380,23 @@ expresion : llamadaFuncion {}
 		$<dirval>$ = dir_temporal;
 
     }
-    | BT_LITERALNUMERICO {}
+    | BT_LITERALNUMERICO {
+    
+    
+    
+    
+    
+    }
+    |BT_LITERALREAL {
+    dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+    
+    
+    
+    }
+    |BT_LITERALETERO{
+    
+    
+    }
     | BT_SUMA expresion {
     	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
     	dir_elemento* exp1 = $<dirval>2;

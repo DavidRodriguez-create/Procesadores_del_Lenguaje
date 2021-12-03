@@ -13,7 +13,8 @@ a := a div aux;
 a := a / aux2;
 a := t / a;
 t := t2 / t;
-a := a div aux2
+t := + aux;
+a := ( ( a div aux2 ) * ( t + t2 ) ) * aux )
 
 {Post: a=A }
 falgoritmo

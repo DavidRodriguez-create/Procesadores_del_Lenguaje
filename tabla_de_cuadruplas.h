@@ -45,8 +45,8 @@
 typedef struct dir_elemento{
     int tipo;
     union {
-        //int cons_int;
-        //float cons_float;
+        int cons_int;
+        float cons_float;
         //bool cons_bool; //E.TRUE ??????????
         simbolo *celda_TS;
     }val;
@@ -74,6 +74,8 @@ void get_nombre_sim(char * nombre,simbolo * sim);
 void get_nombre_dir(char * nombre, dir_elemento * dir);
 void get_nombre_operador(char * nombre, int op);
 void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc);
+dir_elemento* nuevo_dir_elemento_constante_entero(int num);
+dir_elemento* nuevo_dir_elemento_constante_real(float num);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();
 void gen(); //añadir cuadrupla a la tabla de cuádruplas

@@ -95,8 +95,11 @@ DR_OA_FINPARENTESIS \)
 {DR_LITERALCARACTER}	{printf("DR_LITERALCARACTER "); return BT_LITERALCARACTER;}
 {DR_LITERALCADENA}	{printf("DR_LITERALCADENA ");}
 {DR_LITERALENTERO}	{printf("DR_LITERALENTERO ");
-                      return BT_LITERALNUMERICO;}
-{DR_LITERALREAL}	{printf("DR_LITERALREAL "); return BT_LITERALNUMERICO;}
+                       yylval.intval = atoi(strdup(yytext));
+                      return BT_LITERALENTERO;}
+{DR_LITERALREAL}	{printf("DR_LITERALREAL "); 
+                     yylval.floatval = atof(strdup(yytext));
+                    return BT_LITERALREAL;}
 {DR_COMENTARIO}	{printf("DR_COMENTARIO "); return BT_COMENTARIO;}
 
 {DR_PR_ACCION}	{printf("DR_PR_ACCION "); return BT_ACCION;}
