@@ -15,4 +15,4 @@ tablaCuadruplas: tabla_de_cuadruplas.c tabla_de_cuadruplas.h
 	gcc -c tabla_de_cuadruplas.c tabla_de_cuadruplas.h
 
 clean:
-	rm parser.tab.h parser.output lex.yy.c parser.tab.c lex.yy.o
+	rm parser.tab.h parser.output lex.yy.c parser.tab.c lex.yy.o tabla_de_simbolos.h.gch tabla_de_cuadruplas.h.gch tabla_de_cuadruplas.o tabla_de_simbolos.o 
