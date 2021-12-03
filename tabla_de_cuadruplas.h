@@ -11,10 +11,22 @@
 
 
 
-#define OP_ASIGNACION -1
-#define OP_SUMA_UNARIA -2
-#define OP_RESTA_UNARIA -3
-#define OP_INTTOREAL -4
+#define OP_ASIGNACION 1
+
+// Operadores aritmeticos
+#define OP_SUMA_UNARIA 2
+#define OP_SUMA 3
+#define OP_SUMA_REAL 4
+#define OP_RESTA_UNARIA 5
+#define OP_RESTA 6
+#define OP_RESTA_REAL 7
+#define OP_MULTIPLICACION 8
+#define OP_MULTIPLICACION_REAL 9
+#define OP_DIVREAL 10
+#define OP_MOD 11
+#define OP_DIV 12
+#define OP_INTTOREAL 13
+
 //~ #define op_mayor 5
 //~ #define op_menor 6
 //~ #define op_distinto 7
@@ -22,15 +34,6 @@
 //~ #define op_menorigual 9
 //~ #define op_igual 10
 //~ #define op_goto  11
-#define OP_SUMA 12
-#define OP_RESTA 13
-#define OP_MULTIPLICACION 14
-#define OP_DIVREAL 15
-#define OP_MOD 16
-#define OP_DIV 17
-
-#define OP_SUMA_REAL 18
-
 
 // TIPOS DIR_ELEMENTO
 #define CELDA_TS 0
@@ -67,7 +70,10 @@ cuadrupla* gen(tabla_de_cuadruplas* TC, int op, dir_elemento *op1, dir_elemento 
 dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim);
 void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC);
 dir_elemento*  operacion_aritmetica (int op,dir_elemento* exp1,dir_elemento* exp2,tabla_de_simbolos * tabla_simbolos,tabla_de_cuadruplas* tabla_cuadruplas);
-void get_nombre_sim(simbolo * sim, char * nombre);
+void get_nombre_sim(char * nombre,simbolo * sim);
+void get_nombre_dir(char * nombre, dir_elemento * dir);
+void get_nombre_operador(char * nombre, int op);
+void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();
 void gen(); //añadir cuadrupla a la tabla de cuádruplas

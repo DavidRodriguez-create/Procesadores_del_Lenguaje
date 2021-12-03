@@ -600,11 +600,11 @@ static const yytype_int16 yyrline[] =
      147,   149,   150,   151,   152,   153,   154,   156,   157,   159,
      160,   163,   164,   167,   168,   170,   193,   199,   200,   201,
      204,   205,   208,   209,   213,   246,   254,   262,   291,   307,
-     315,   316,   323,   324,   331,   333,   334,   335,   336,   337,
-     338,   339,   340,   341,   342,   343,   345,   348,   349,   350,
-     355,   356,   358,   359,   360,   361,   362,   364,   368,   369,
-     370,   372,   373,   375,   376,   379,   380,   381,   382,   383,
-     384,   385,   387,   388,   389,   392,   393,   394,   395,   396
+     322,   323,   330,   331,   338,   340,   341,   342,   343,   344,
+     345,   346,   347,   348,   349,   350,   352,   355,   356,   357,
+     362,   363,   365,   366,   367,   368,   369,   371,   375,   376,
+     377,   379,   380,   382,   383,   386,   387,   388,   389,   390,
+     391,   392,   394,   395,   396,   399,   400,   401,   402,   403
 };
 #endif
 
@@ -1992,24 +1992,31 @@ yyreduce:
   case 49:
 #line 307 "parser.y"
                                  {
-	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* exp1 = (yyvsp[-2].dirval);
-	dir_elemento* exp2 = (yyvsp[0].dirval);
-	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
-	(yyval.dirval) = sim_temporal;
-	gen(tabla_cuadruplas, OP_MOD, exp1, exp2, sim_temporal);
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+		dir_elemento* exp1 = (yyvsp[-2].dirval);
+		dir_elemento* exp2 = (yyvsp[0].dirval);
+		if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
+
+			dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
+			gen(tabla_cuadruplas, OP_MOD, exp1, exp2, dir_temporal);
+
+		}else{
+			printf("Error expresion BT_MOD expresion: tipos incorrectos");
+		}
+
+		(yyval.dirval) = dir_temporal;
     }
-#line 2003 "parser.tab.c"
+#line 2010 "parser.tab.c"
     break;
 
   case 50:
-#line 315 "parser.y"
-                                                     {}
-#line 2009 "parser.tab.c"
+#line 322 "parser.y"
+                                                     { (yyval.dirval) = (yyvsp[-1].dirval); }
+#line 2016 "parser.tab.c"
     break;
 
   case 51:
-#line 316 "parser.y"
+#line 323 "parser.y"
                          {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = (yyvsp[0].dirval);
@@ -2017,17 +2024,17 @@ yyreduce:
 	(yyval.dirval) = sim_temporal;
 	gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, sim_temporal);
     }
-#line 2021 "parser.tab.c"
+#line 2028 "parser.tab.c"
     break;
 
   case 52:
-#line 323 "parser.y"
+#line 330 "parser.y"
                          {}
-#line 2027 "parser.tab.c"
+#line 2034 "parser.tab.c"
     break;
 
   case 53:
-#line 324 "parser.y"
+#line 331 "parser.y"
                         {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = (yyvsp[0].dirval);
@@ -2035,292 +2042,292 @@ yyreduce:
 	(yyval.dirval) = sim_temporal;
 	gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, sim_temporal);
     }
-#line 2039 "parser.tab.c"
+#line 2046 "parser.tab.c"
     break;
 
   case 54:
-#line 331 "parser.y"
+#line 338 "parser.y"
                                    {}
-#line 2045 "parser.tab.c"
+#line 2052 "parser.tab.c"
     break;
 
   case 55:
-#line 333 "parser.y"
+#line 340 "parser.y"
                                {}
-#line 2051 "parser.tab.c"
+#line 2058 "parser.tab.c"
     break;
 
   case 56:
-#line 334 "parser.y"
+#line 341 "parser.y"
                                {}
-#line 2057 "parser.tab.c"
+#line 2064 "parser.tab.c"
     break;
 
   case 57:
-#line 335 "parser.y"
+#line 342 "parser.y"
                       {}
-#line 2063 "parser.tab.c"
+#line 2070 "parser.tab.c"
     break;
 
   case 58:
-#line 336 "parser.y"
+#line 343 "parser.y"
                    {}
-#line 2069 "parser.tab.c"
+#line 2076 "parser.tab.c"
     break;
 
   case 59:
-#line 337 "parser.y"
+#line 344 "parser.y"
                {}
-#line 2075 "parser.tab.c"
+#line 2082 "parser.tab.c"
     break;
 
   case 60:
-#line 338 "parser.y"
+#line 345 "parser.y"
                                    {}
-#line 2081 "parser.tab.c"
+#line 2088 "parser.tab.c"
     break;
 
   case 61:
-#line 339 "parser.y"
+#line 346 "parser.y"
                                    {}
-#line 2087 "parser.tab.c"
+#line 2094 "parser.tab.c"
     break;
 
   case 62:
-#line 340 "parser.y"
+#line 347 "parser.y"
                                    {}
-#line 2093 "parser.tab.c"
+#line 2100 "parser.tab.c"
     break;
 
   case 63:
-#line 341 "parser.y"
+#line 348 "parser.y"
                                       {}
-#line 2099 "parser.tab.c"
+#line 2106 "parser.tab.c"
     break;
 
   case 64:
-#line 342 "parser.y"
+#line 349 "parser.y"
                                         {}
-#line 2105 "parser.tab.c"
+#line 2112 "parser.tab.c"
     break;
 
   case 65:
-#line 343 "parser.y"
+#line 350 "parser.y"
                                         {}
-#line 2111 "parser.tab.c"
+#line 2118 "parser.tab.c"
     break;
 
   case 66:
-#line 345 "parser.y"
+#line 352 "parser.y"
                             {
 	(yyval.simval) = buscar_sim_nombre(tabla_simbolos, (yyvsp[0].strval) );
 	}
-#line 2119 "parser.tab.c"
+#line 2126 "parser.tab.c"
     break;
 
   case 67:
-#line 348 "parser.y"
+#line 355 "parser.y"
                                  {}
-#line 2125 "parser.tab.c"
+#line 2132 "parser.tab.c"
     break;
 
   case 68:
-#line 349 "parser.y"
+#line 356 "parser.y"
                                                     {}
-#line 2131 "parser.tab.c"
+#line 2138 "parser.tab.c"
     break;
 
   case 69:
-#line 350 "parser.y"
+#line 357 "parser.y"
                       {}
-#line 2137 "parser.tab.c"
+#line 2144 "parser.tab.c"
     break;
 
   case 70:
-#line 355 "parser.y"
+#line 362 "parser.y"
                                                                    {}
-#line 2143 "parser.tab.c"
+#line 2150 "parser.tab.c"
     break;
 
   case 71:
-#line 356 "parser.y"
+#line 363 "parser.y"
                           {}
-#line 2149 "parser.tab.c"
+#line 2156 "parser.tab.c"
     break;
 
   case 72:
-#line 358 "parser.y"
+#line 365 "parser.y"
                            {}
-#line 2155 "parser.tab.c"
+#line 2162 "parser.tab.c"
     break;
 
   case 73:
-#line 359 "parser.y"
+#line 366 "parser.y"
                          {}
-#line 2161 "parser.tab.c"
+#line 2168 "parser.tab.c"
     break;
 
   case 74:
-#line 360 "parser.y"
+#line 367 "parser.y"
                           {}
-#line 2167 "parser.tab.c"
+#line 2174 "parser.tab.c"
     break;
 
   case 75:
-#line 361 "parser.y"
+#line 368 "parser.y"
                         {}
-#line 2173 "parser.tab.c"
+#line 2180 "parser.tab.c"
     break;
 
   case 76:
-#line 362 "parser.y"
+#line 369 "parser.y"
                             {}
-#line 2179 "parser.tab.c"
+#line 2186 "parser.tab.c"
     break;
 
   case 77:
-#line 364 "parser.y"
+#line 371 "parser.y"
                                               {
 		dir_elemento* res = nuevo_dir_elemento_celda_TS((yyvsp[-2].simval));
 		gen(tabla_cuadruplas, (yyvsp[-1].intval), (yyvsp[0].dirval), NULL, res);
 		}
-#line 2188 "parser.tab.c"
+#line 2195 "parser.tab.c"
     break;
 
   case 78:
-#line 368 "parser.y"
+#line 375 "parser.y"
                                                                              {}
-#line 2194 "parser.tab.c"
+#line 2201 "parser.tab.c"
     break;
 
   case 79:
-#line 369 "parser.y"
+#line 376 "parser.y"
                                                                             {}
-#line 2200 "parser.tab.c"
+#line 2207 "parser.tab.c"
     break;
 
   case 80:
-#line 370 "parser.y"
+#line 377 "parser.y"
                                   {}
-#line 2206 "parser.tab.c"
+#line 2213 "parser.tab.c"
     break;
 
   case 81:
-#line 372 "parser.y"
+#line 379 "parser.y"
                        {}
-#line 2212 "parser.tab.c"
+#line 2219 "parser.tab.c"
     break;
 
   case 82:
-#line 373 "parser.y"
+#line 380 "parser.y"
                                    {}
-#line 2218 "parser.tab.c"
+#line 2225 "parser.tab.c"
     break;
 
   case 83:
-#line 375 "parser.y"
+#line 382 "parser.y"
                                                                            {}
-#line 2224 "parser.tab.c"
+#line 2231 "parser.tab.c"
     break;
 
   case 84:
-#line 376 "parser.y"
+#line 383 "parser.y"
                                                                                                                  {}
-#line 2230 "parser.tab.c"
+#line 2237 "parser.tab.c"
     break;
 
   case 85:
-#line 379 "parser.y"
+#line 386 "parser.y"
                                                        {}
-#line 2236 "parser.tab.c"
+#line 2243 "parser.tab.c"
     break;
 
   case 86:
-#line 380 "parser.y"
+#line 387 "parser.y"
                                                                             {}
-#line 2242 "parser.tab.c"
+#line 2249 "parser.tab.c"
     break;
 
   case 87:
-#line 381 "parser.y"
+#line 388 "parser.y"
                                                                                                            {}
-#line 2248 "parser.tab.c"
+#line 2255 "parser.tab.c"
     break;
 
   case 88:
-#line 382 "parser.y"
+#line 389 "parser.y"
                                                                                                           {}
-#line 2254 "parser.tab.c"
+#line 2261 "parser.tab.c"
     break;
 
   case 89:
-#line 383 "parser.y"
+#line 390 "parser.y"
                                                           {}
-#line 2260 "parser.tab.c"
+#line 2267 "parser.tab.c"
     break;
 
   case 90:
-#line 384 "parser.y"
+#line 391 "parser.y"
                               {}
-#line 2266 "parser.tab.c"
+#line 2273 "parser.tab.c"
     break;
 
   case 91:
-#line 385 "parser.y"
+#line 392 "parser.y"
                            {}
-#line 2272 "parser.tab.c"
+#line 2279 "parser.tab.c"
     break;
 
   case 92:
-#line 387 "parser.y"
+#line 394 "parser.y"
                                                             {}
-#line 2278 "parser.tab.c"
+#line 2285 "parser.tab.c"
     break;
 
   case 93:
-#line 388 "parser.y"
+#line 395 "parser.y"
                                                                     {}
-#line 2284 "parser.tab.c"
+#line 2291 "parser.tab.c"
     break;
 
   case 94:
-#line 389 "parser.y"
+#line 396 "parser.y"
                                                                        {}
-#line 2290 "parser.tab.c"
+#line 2297 "parser.tab.c"
     break;
 
   case 95:
-#line 392 "parser.y"
+#line 399 "parser.y"
                                                                                        {}
-#line 2296 "parser.tab.c"
+#line 2303 "parser.tab.c"
     break;
 
   case 96:
-#line 393 "parser.y"
+#line 400 "parser.y"
                                                                                         {}
-#line 2302 "parser.tab.c"
+#line 2309 "parser.tab.c"
     break;
 
   case 97:
-#line 394 "parser.y"
+#line 401 "parser.y"
                                                            {}
-#line 2308 "parser.tab.c"
+#line 2315 "parser.tab.c"
     break;
 
   case 98:
-#line 395 "parser.y"
+#line 402 "parser.y"
                                              {}
-#line 2314 "parser.tab.c"
+#line 2321 "parser.tab.c"
     break;
 
   case 99:
-#line 396 "parser.y"
+#line 403 "parser.y"
                                          {}
-#line 2320 "parser.tab.c"
+#line 2327 "parser.tab.c"
     break;
 
 
-#line 2324 "parser.tab.c"
+#line 2331 "parser.tab.c"
 
       default: break;
     }
@@ -2552,7 +2559,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 399 "parser.y"
+#line 406 "parser.y"
 
 
 int main(int argc, char **argv){
@@ -2571,6 +2578,7 @@ int main(int argc, char **argv){
 	yyparse();
 	imprime_tabla_simbolos(tabla_simbolos);
 	imprime_tabla_cuadruplas(tabla_cuadruplas);
+	generar_codigo_tres_direcciones(tabla_cuadruplas);
 }
 
 void yyerror(const char *s){

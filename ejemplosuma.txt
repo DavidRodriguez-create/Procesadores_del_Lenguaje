@@ -5,15 +5,12 @@ sal a: entero;
 var
 aux: entero;
 aux2: real;
-t: entero;
-t2: entero;
+
 fvar
 
-a := a + aux2;
-a := aux2 + t;
-a := a + a;
-t := t2 + t;
-a := t
+a := ( ( a + aux2 ) + aux );
+a := aux
+
 
 {Post: a=A }
 falgoritmo

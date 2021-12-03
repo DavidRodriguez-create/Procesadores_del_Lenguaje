@@ -305,14 +305,21 @@ expresion : llamadaFuncion {}
 
     }
     | expresion BT_MOD expresion {
-	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* exp1 = $<dirval>1;
-	dir_elemento* exp2 = $<dirval>3;
-	sim_temporal->val.celda_TS->val.var.tipo = ENTERO;
-	$<dirval>$ = sim_temporal;
-	gen(tabla_cuadruplas, OP_MOD, exp1, exp2, sim_temporal);
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+		dir_elemento* exp1 = $<dirval>1;
+		dir_elemento* exp2 = $<dirval>3;
+		if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
+
+			dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
+			gen(tabla_cuadruplas, OP_MOD, exp1, exp2, dir_temporal);
+
+		}else{
+			printf("Error expresion BT_MOD expresion: tipos incorrectos");
+		}
+
+		$<dirval>$ = dir_temporal;
     }
-    | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS {}
+    | BT_INICIOPARENTESIS expresion BT_FINPARENTESIS { $<dirval>$ = $<dirval>2; }
     | BT_RESTA expresion {
 	dir_elemento* sim_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* exp1 = $<dirval>2;
@@ -414,6 +421,7 @@ int main(int argc, char **argv){
 	yyparse();
 	imprime_tabla_simbolos(tabla_simbolos);
 	imprime_tabla_cuadruplas(tabla_cuadruplas);
+	generar_codigo_tres_direcciones(tabla_cuadruplas);
 }
 
 void yyerror(const char *s){
