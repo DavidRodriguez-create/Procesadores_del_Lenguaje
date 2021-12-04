@@ -36,10 +36,11 @@
 //~ #define op_goto  11
 
 // TIPOS DIR_ELEMENTO
-#define CELDA_TS 0
-#define CONSTANTE_INT 1
-#define CONSTANTE_FLOAT 2
-#define CONSTANTE_BOOL 3
+
+#define CONSTANTE_INT 0
+#define CONSTANTE_FLOAT 1
+#define CONSTANTE_BOOL 2
+#define CELDA_TS 3
 
 
 typedef struct dir_elemento{
@@ -47,7 +48,7 @@ typedef struct dir_elemento{
     union {
         int cons_int;
         float cons_float;
-        //bool cons_bool; //E.TRUE ??????????
+        bool cons_bool;
         simbolo *celda_TS;
     }val;
 }dir_elemento;
@@ -70,11 +71,11 @@ cuadrupla* gen(tabla_de_cuadruplas* TC, int op, dir_elemento *op1, dir_elemento 
 dir_elemento* nuevo_dir_elemento_celda_TS(simbolo* sim);
 void imprime_tabla_cuadruplas(tabla_de_cuadruplas* TC);
 dir_elemento*  operacion_aritmetica (int op,dir_elemento* exp1,dir_elemento* exp2,tabla_de_simbolos * tabla_simbolos,tabla_de_cuadruplas* tabla_cuadruplas);
-void get_nombre_sim(char * nombre,simbolo * sim);
 void get_nombre_dir(char * nombre, dir_elemento * dir);
 void get_nombre_operador(char * nombre, int op);
 void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc);
 dir_elemento* nuevo_dir_elemento_constante_entero(int num);
+dir_elemento* nuevo_dir_elemento_constante_booleano(char* nombre);
 dir_elemento* nuevo_dir_elemento_constante_real(float num);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();

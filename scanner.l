@@ -91,7 +91,10 @@ DR_OA_FINPARENTESIS \)
 
  // en la parte de abajo la ordenacion importa (arriba importante)
 %%
-{DR_LITERALBOOLEANO}	{printf("DR_LITERALBOOLEANO ");  }
+{DR_LITERALBOOLEANO}	{printf("DR_LITERALBOOLEANO ");
+                        yylval.strval = strdup(yytext);
+                        return BT_LITERALBOOLEANO;
+                        }
 {DR_LITERALCARACTER}	{printf("DR_LITERALCARACTER "); return BT_LITERALCARACTER;}
 {DR_LITERALCADENA}	{printf("DR_LITERALCADENA ");}
 {DR_LITERALENTERO}	{printf("DR_LITERALENTERO ");

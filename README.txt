@@ -30,4 +30,11 @@ expresion : expresion BT_MAYOR expresion {}
 					| expresion BT_MENORIGUAL expresion {}
 					;
 
-****comenatr operadores aritmeticos
+****comentar operadores aritmeticos
+
+Hemos decidido separarlos para que sea mas sencillo coger los valores de cada tipo y pasarselos
+a bison. (LITERALNUMERICO-> LITERALENTERO y LITERALREAL
+
+--------------------------------DUDAS-------------------------------
+into_real() cuando en asignacion queremos transformar un int en real.
+    asignacion : operando BT_ASIGNACION expresion

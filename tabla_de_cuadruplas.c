@@ -48,6 +48,16 @@ dir_elemento* nuevo_dir_elemento_constante_entero(int num){
     dir_elem->val.cons_int = num;
     return dir_elem;
 }
+dir_elemento* nuevo_dir_elemento_constante_booleano(char* nombre){
+    dir_elemento* dir_elem = (dir_elemento*) malloc(sizeof(dir_elemento));
+    dir_elem->tipo = CONSTANTE_BOOL;
+    if ((strcasecmp(nombre,"verdadero"))==0){
+        dir_elem->val.cons_bool = true;
+    }else {
+        dir_elem->val.cons_bool = false;
+    }
+    return dir_elem;
+}
 dir_elemento* nuevo_dir_elemento_constante_real(float num){
     dir_elemento* dir_elem = (dir_elemento*) malloc(sizeof(dir_elemento));
     dir_elem->tipo = CONSTANTE_FLOAT;
@@ -214,6 +224,13 @@ void get_nombre_dir(char * nombre, dir_elemento * dir){
                 sprintf(nombre, "%.2f", dir->val.cons_float);
                 break;
             case CONSTANTE_BOOL:
+                if (dir->val.cons_bool == 0){
+                    strcpy(nombre, "false");
+                }
+                else{
+                    strcpy(nombre, "true");
+                }
+
                 break;
             default:
                 printf("Error en get_nombre_dir: El tipo del dir_elemento no esta declarado\n");
@@ -222,19 +239,6 @@ void get_nombre_dir(char * nombre, dir_elemento * dir){
     }
 }
 
-void get_nombre_sim(char * nombre, simbolo * sim){
-    /*
-     * Accion que guarda el nombre del simbolo en nombre.
-     * Si no tiene nombre, guarda t+id (es decir, un simbolo temporal)
-     */
-    if (sim->tipo == TEMPORAL){
-        sprintf(nombre, "t%d", sim->id);
-    }
-    else{
-        sprintf(nombre, "%s", sim->nombre);
-    }
-
-}
 
 //Esto no se usa
 dir_elemento* operacion_aritmetica(int op,dir_elemento * exp1, dir_elemento * exp2, tabla_de_simbolos * tabla_simbolos, tabla_de_cuadruplas * tabla_cuadruplas){

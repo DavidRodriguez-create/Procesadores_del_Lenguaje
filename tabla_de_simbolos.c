@@ -6,7 +6,7 @@
 tabla_de_simbolos* nueva_tabla_de_simbolos(){
     tabla_de_simbolos *TS = (tabla_de_simbolos*) malloc(sizeof(tabla_de_simbolos));
     if(TS == NULL){
-        printf("Fallo en nueva_tabla_de_simbolos -> MALLOC\n");
+        error("Fallo en nueva_tabla_de_simbolos -> MALLOC");
     }
     TS->pos_libre = 0;
     return TS;
@@ -14,7 +14,7 @@ tabla_de_simbolos* nueva_tabla_de_simbolos(){
 simbolo* new_temp(tabla_de_simbolos* TS){
     simbolo *sim = (simbolo*) malloc(sizeof(simbolo));
     if(sim == NULL){
-        printf("Fallo en nuevo_simbolo -> MALLOC\n");
+        error("Fallo en nuevo_simbolo -> MALLOC");
     }
     // le ponemos un id
     sim->id = TS->pos_libre;
@@ -25,15 +25,14 @@ simbolo* new_temp(tabla_de_simbolos* TS){
         // calculamos el siguiente vacio
         TS->pos_libre = TS->pos_libre + 1;
     } else {
-        //error
-        printf("Se ha llenado la tabla de simbolos\n");
+        error("Se ha llenado la tabla de simbolos");
     }
     return sim;
 };
 simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable){
     simbolo *sim = (simbolo*) malloc(sizeof(simbolo));
     if(sim == NULL){
-        printf("Fallo en nuevo_simbolo -> MALLOC\n");
+        error("Fallo en nuevo_simbolo -> MALLOC");
     }
     strcpy(sim->nombre, nombre);
     // le ponemos un id
@@ -91,6 +90,20 @@ simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre){
     return sim;
 }
 
+void get_nombre_sim(char * nombre, simbolo * sim){
+    /*
+     * Accion que guarda el nombre del simbolo en nombre.
+     * Si no tiene nombre, guarda t+id (es decir, un simbolo temporal)
+     */
+    if (sim->tipo == TEMPORAL){
+        sprintf(nombre, "t%d", sim->id);
+    }
+    else{
+        sprintf(nombre, "%s", sim->nombre);
+    }
+
+}
+
 
 
 void imprime_tabla_simbolos(tabla_de_simbolos* TS){
@@ -105,6 +118,10 @@ void imprime_tabla_simbolos(tabla_de_simbolos* TS){
         }
 
     }
+}
+
+void error(char * mensaje){
+    printf("\033[31m\n\n%s\n\033[0m", mensaje);
 }
 /*
 void new_temp(tabla){
