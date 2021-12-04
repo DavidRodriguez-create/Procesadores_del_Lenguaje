@@ -25,7 +25,16 @@
 #define OP_DIVREAL 10
 #define OP_MOD 11
 #define OP_DIV 12
+
 #define OP_INTTOREAL 13
+
+#define OP_MAYOR 14
+#define OP_MENOR 15
+#define OP_DISTINTO 16
+#define OP_MAYORIGUAL 17
+#define OP_MENORIGUAL 18
+#define OP_IGUAL 19
+#define OP_GOTO 20
 
 //~ #define op_mayor 5
 //~ #define op_menor 6
@@ -41,6 +50,8 @@
 #define CONSTANTE_FLOAT 1
 #define CONSTANTE_BOOL 2
 #define CELDA_TS 3
+#define POS_QUAD 4
+
 
 
 typedef struct dir_elemento{
@@ -49,9 +60,25 @@ typedef struct dir_elemento{
         int cons_int;
         float cons_float;
         bool cons_bool;
+        int pos_quad;
         simbolo *celda_TS;
     }val;
 }dir_elemento;
+
+typedef struct lista{
+    int elem;
+    struct lista * sig;
+
+}lista;
+
+typedef struct expresion{
+    dir_elemento *dir;
+    struct lista *lista_true;
+    struct lista *lista_false;
+
+}expresion;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef struct cuadrupla{
     int operador;
@@ -77,6 +104,9 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc);
 dir_elemento* nuevo_dir_elemento_constante_entero(int num);
 dir_elemento* nuevo_dir_elemento_constante_booleano(char* nombre);
 dir_elemento* nuevo_dir_elemento_constante_real(float num);
+lista *makelist(int pos_quad);
+lista *merge(lista* l1, lista* l2);
+void backpatch(tabla_de_cuadruplas* TC, lista* l,int pos);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();
 void gen(); //añadir cuadrupla a la tabla de cuádruplas

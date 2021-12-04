@@ -7,22 +7,13 @@
 
 	#define MAX_LISTA 1000
 
-	#define RESET   "\033[0m"
-
-	#define RED     "\033[31m"
-
 	int yylex();
 	void yyerror(const char *s);
 	extern FILE *yyin;
 	tabla_de_simbolos* tabla_simbolos;
 	tabla_de_cuadruplas* tabla_cuadruplas;
 
-	typedef struct expresion{
-		dir_elemento *dir;
-		int lista_true[MAX_LISTA];
-		int lista_false[MAX_LISTA];
 
-	}expresion;
 
 %}
 
@@ -225,10 +216,32 @@ defSalida : BT_SAL listaDefsVariables {};
 
 expresion : llamadaFuncion {}
     | operando {
-    	dir_elemento* dir1 = nuevo_dir_elemento_celda_TS($<simval>1);
+
     	expresion* ex1 = (expresion*) malloc(sizeof(expresion));
-    	ex1->dir = dir1;
-    	$<expval>$ = ex1;
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( $<simval>1);
+
+		int tipo = $<simval>1->val.var.tipo;
+
+		if (tipo == BOOLEANO){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			//gen(tabla_cuadruplas,,,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else if (tipo == ENTERO || tipo == REAL){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = NULL;
+			ex1->lista_false = NULL;
+			$<expval>$ = ex1;
+
+		}else{
+			printf("\nError en la variable %s : Tipo incorrecto\n", $<simval>1->nombre);
+		}
+
+
+
     }
     | expresion BT_SUMA expresion {
 
@@ -463,39 +476,27 @@ expresion : llamadaFuncion {}
     }
 
     | expresion BT_OPREL expresion {
-    	expresion* ex1 = (expresion*) malloc(sizeof(expresion));
-    	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* dir_temporal2  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* exp1 = $<dirval>1;
-	dir_elemento* exp2 = $<dirval>3;
-	if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
 
-		dir_temporal->val.celda_TS->val.var.tipo = REAL;
-		dir_temporal2->val.celda_TS->val.var.tipo = REAL;
-		gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
-		gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal2);
-		gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal,dir_temporal2,dir_temporal);
-
-	}else if(exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == ENTERO){
-		dir_temporal->val.celda_TS->val.var.tipo = REAL;
-		gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
-		gen(tabla_cuadruplas, OP_DIVREAL, exp1,dir_temporal,dir_temporal);
-
-
-	}else if(exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
-		dir_temporal->val.celda_TS->val.var.tipo = REAL;
-		gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
-		gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal ,exp2,dir_temporal);
-	}else{
-		dir_temporal->val.celda_TS->val.var.tipo = REAL;
-		gen(tabla_cuadruplas, OP_DIVREAL, exp1 ,exp2,dir_temporal);
-	}
-	ex1->dir = dir_temporal;
-        $<expval>$ = ex1;
     }
     | expresion BT_Y expresion {}
     | expresion BT_O expresion {}
-    | BT_NO expresion {}
+    | BT_NO expresion {
+        expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+    	dir_elemento* exp1 = $<expval>2->dir;
+    	int tipo = exp1->val.celda_TS->val.var.tipo;
+    	if (tipo == BOOLEANO){
+    		dir_temporal->val.celda_TS->val.var.tipo = BOOLEANO;
+    		ex1->dir = dir_temporal;
+    		ex1->lista_true = $<expval>2->lista_true;
+    		ex1->lista_false = $<expval>2->lista_false;
+		 	$<expval>$ = ex1;
+
+    	}else{
+    		printf("\nError BT_NO expresion: Tipo incorrecto\n");
+    	}
+
+    }
     | BT_LITERALBOOLEANO {
 	dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano($<strval>1);
 	expresion* ex1 = (expresion*) malloc(sizeof(expresion));

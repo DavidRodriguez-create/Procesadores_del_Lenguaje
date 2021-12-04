@@ -65,21 +65,73 @@ dir_elemento* nuevo_dir_elemento_constante_real(float num){
     return dir_elem;
 }
 
+lista* makelist(int pos_quad){
+
+    struct lista  *nuevo;
+    nuevo=(lista*)malloc(sizeof(lista));
+    nuevo->elem= pos_quad;
+    nuevo->sig= NULL;
+    return nuevo;
+
+}
+
+lista * merge(lista* l1, lista* l2){
+    if (l2 == NULL){
+        return l1;
+    }else if (l1 == NULL){
+        return l2;
+    }else{
+        lista * aux;
+        aux = l1;
+        while (aux->sig != NULL){
+            aux = aux->sig;
+
+        }
+        aux->sig = l2;
+        return l1;
+    }
+
+}
+
+void backpatch(tabla_de_cuadruplas* TC, lista* l,int pos){
+
+    if (TC == NULL){
+        printf("Error en backpatch: Tabla de cuadruplas vacia");
+    }else if (l == NULL){
+
+        printf("Error en backpatch: Lista vacia");
+
+    }else{
+        lista* actual;
+        actual = l;
+        while (actual != NULL) {
+            dir_elemento *dir_elem = (dir_elemento *) malloc(sizeof(dir_elemento));
+            dir_elem->tipo = POS_QUAD;
+            dir_elem->val.pos_quad = pos;
+            TC->tabla[actual->elem]->resultado = dir_elem;
+            actual = actual->sig;
+        }
+
+    }
+
+
+}
+
 void imprime_tabla_cuadruplas(tabla_de_cuadruplas* tc){
     char nombre_operador[100];
     char nombre_operando1[100];
     char nombre_operando2[100];
     char nombre_resultado[100];
 
-    printf("\n---------------------------------------\n");
-    printf("TABLA DE CUADRUPLAS \n");
-    printf("num\top\top1\top2\tres\n\n");
+    printf("\n\t---------------------------------------\n");
+    printf("\tTABLA DE CUADRUPLAS \n");
+    printf("\tnum\top\top1\top2\tres\n\n");
     for (int i = 0; i < tc->next_quad; ++i) {
         get_nombre_operador(nombre_operador,tc->tabla[i]->operador);
         get_nombre_dir(nombre_operando1,tc->tabla[i]->operando1);
         get_nombre_dir(nombre_operando2,tc->tabla[i]->operando2);
         get_nombre_dir(nombre_resultado,tc->tabla[i]->resultado);
-        printf("%d\t%s\t%s\t%s\t%s\n",i,nombre_operador,nombre_operando1,nombre_operando2,nombre_resultado);
+        printf("\t%d\t%s\t%s\t%s\t%s\n",i,nombre_operador,nombre_operando1,nombre_operando2,nombre_resultado);
     }
 };
 
@@ -89,8 +141,8 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
     char nombre_operando1[100];
     char nombre_operando2[100];
     char nombre_resultado[100];
-    printf("\n---------------------------------------\n");
-    printf("Codigo de tres direcciones \n");
+    printf("\n\t---------------------------------------\n");
+    printf("\tCodigo de tres direcciones \n");
     for (int i = 0; i < tc->next_quad; ++i) {
         operador = tc->tabla[i]->operador;
         get_nombre_operador(nombre_operador,tc->tabla[i]->operador);
@@ -100,43 +152,43 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
 
         switch (operador) {
             case OP_ASIGNACION:
-                printf("%d\t%s %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
+                printf("\t%d\t%s %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
                 break;
             case OP_SUMA_UNARIA:
-                printf("%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
+                printf("\t%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
                 break;
             case OP_SUMA:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_SUMA_REAL:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_RESTA_UNARIA:
-                printf("%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
+                printf("\t%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
                 break;
             case OP_RESTA:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_RESTA_REAL:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_MULTIPLICACION:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_MULTIPLICACION_REAL:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_DIVREAL:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_MOD:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_DIV:
-                printf("%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_INTTOREAL:
-                printf("%d\t%s := int_to_real(%s)\n",i,nombre_resultado,nombre_operando1);
+                printf("\t%d\t%s := int_to_real(%s)\n",i,nombre_resultado,nombre_operando1);
                 break;
             default:
                 break;

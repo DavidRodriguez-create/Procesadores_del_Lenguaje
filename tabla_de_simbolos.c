@@ -2,6 +2,9 @@
 #include "tabla_de_simbolos.h"
 #include <string.h>
 
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+
 
 tabla_de_simbolos* nueva_tabla_de_simbolos(){
     tabla_de_simbolos *TS = (tabla_de_simbolos*) malloc(sizeof(tabla_de_simbolos));
@@ -50,7 +53,7 @@ simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, i
         TS->pos_libre = TS->pos_libre + 1;
     } else {
         //error
-        printf("Se ha llenado la tabla de simbolos\n");
+        error("Se ha llenado la tabla de simbolos");
     }
     return sim;
 };
@@ -85,7 +88,7 @@ simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre){
         sim = TS->tabla[pos];
         //printf("Encontrado: %s\n",sim->nombre);
     } else {
-        printf("No existe el simbolo con nombre: %s", nombre);
+        printf(RED "\n\nNo existe el simbolo con nombre: %s\n" RESET, nombre);
     }
     return sim;
 }
@@ -104,19 +107,20 @@ void get_nombre_sim(char * nombre, simbolo * sim){
 
 }
 
-
-
-void imprime_tabla_simbolos(tabla_de_simbolos* TS){
-    printf("\n-------------------------\n");
-    printf("TABLA DE SIMBOLOS \n");
-    for (int i = 0; i < TS->pos_libre; ++i) {
-        if (TS->tabla[i]->tipo == TEMPORAL){
-            printf("> id:%d nombre:%s tipo_sim:%d tipo_var:%d \n",TS->tabla[i]->id,"tmp",TS->tabla[i]->tipo,TS->tabla[i]->val.var.tipo);
-        }
-        else{
-            printf("> id:%d nombre:%s tipo_sim:%d tipo_var:%d \n",TS->tabla[i]->id,TS->tabla[i]->nombre,TS->tabla[i]->tipo,TS->tabla[i]->val.var.tipo);
-        }
-
+void imprime_tabla_simbolos(tabla_de_simbolos* ts){
+    int id;
+    char nombre[100];
+    int tipo_sim;
+    int tipo_var;
+    printf("\n\t------------------------------------\n");
+    printf("\tTABLA DE SIMBOLOS \n");
+    printf("\tid\tnombre\ttipo_s\ttipo_var\n\n");
+    for (int i = 0; i < ts->pos_libre; ++i) {
+        id = ts->tabla[i]->id;
+        get_nombre_sim(nombre,ts->tabla[i]);
+        tipo_sim = ts->tabla[i]->tipo;
+        tipo_var = ts->tabla[i]->val.var.tipo;
+        printf("\t%d\t%s\t%d\t%d\n",id,nombre,tipo_sim,tipo_var);
     }
 }
 
