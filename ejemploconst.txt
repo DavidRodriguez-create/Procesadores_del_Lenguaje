@@ -1,0 +1,18 @@
+algoritmo variables;
+ent a: entero;
+sal a: entero;
+{Prec: a= A}
+var
+aux: entero;
+aux2: real;
+
+fvar
+
+a := 3.0E9;
+aux2 := 3.0;
+a := -4.65;
+a := +9
+
+
+{Post: a=A }
+falgoritmo

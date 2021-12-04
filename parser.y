@@ -38,7 +38,6 @@
 %token BT_DEV
 %token BT_REF
 %token BT_TIPOBASE
-%token BT_LITERALENTERO
 %token BT_LITERALCARACTER
 %token BT_VERDADERO
 %token BT_FALSO
@@ -368,15 +367,26 @@ expresion : llamadaFuncion {}
 
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 		dir_elemento* exp1 = $<dirval>2;
-		if (exp1->val.celda_TS->val.var.tipo == ENTERO){
+		if (exp1->tipo == CELDA_TS){
+			if (exp1->val.celda_TS->val.var.tipo == ENTERO){
+				dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
+				gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
+			}else if ( exp1->val.celda_TS->val.var.tipo == REAL){
+				dir_temporal->val.celda_TS->val.var.tipo = REAL;
+				gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
+			}else{
+				printf("Error BT_RESTA expresion: tipo incorrecto");
+			}
+		}else if (exp1->tipo == CONSTANTE_INT){
 			dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 			gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
-		}else if ( exp1->val.celda_TS->val.var.tipo == REAL){
+		} else if (exp1->tipo == CONSTANTE_FLOAT){
 			dir_temporal->val.celda_TS->val.var.tipo = REAL;
 			gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
-		}else{
+		} else {
 			printf("Error BT_RESTA expresion: tipo incorrecto");
 		}
+
 		$<dirval>$ = dir_temporal;
 
     }
@@ -388,28 +398,41 @@ expresion : llamadaFuncion {}
     
     }
     |BT_LITERALREAL {
-    dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
+    dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_real($<floatval>1);
+    $<dirval>$ = dir_temporal;
     
     
     
     }
-    |BT_LITERALETERO{
-    
+    |BT_LITERALENTERO{
+  		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_entero($<intval>1);
+    	$<dirval>$ = dir_temporal;
     
     }
     | BT_SUMA expresion {
     	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-    	dir_elemento* exp1 = $<dirval>2;
-    	if (exp1->val.celda_TS->val.var.tipo == ENTERO){
-    		dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
-    		gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
-    	}else if ( exp1->val.celda_TS->val.var.tipo == REAL){
-    		dir_temporal->val.celda_TS->val.var.tipo = REAL;
-    		gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
-    	}else{
-    		printf("Error BT_SUMA expresion: tipo incorrecto");
-    	}
-    	$<dirval>$ = dir_temporal;
+	dir_elemento* exp1 = $<dirval>2;
+	if (exp1->tipo == CELDA_TS){
+		if (exp1->val.celda_TS->val.var.tipo == ENTERO){
+			dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
+			gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
+		}else if ( exp1->val.celda_TS->val.var.tipo == REAL){
+			dir_temporal->val.celda_TS->val.var.tipo = REAL;
+			gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
+		}else{
+			printf("Error OP_SUMA_UNARIA expresion: tipo incorrecto");
+		}
+	}else if (exp1->tipo == CONSTANTE_INT){
+		dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
+		gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
+	} else if (exp1->tipo == CONSTANTE_FLOAT){
+		dir_temporal->val.celda_TS->val.var.tipo = REAL;
+		gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
+	} else {
+		printf("Error en OP_SUMA_UNARIA: tipo incorrecto");
+	}
+
+	$<dirval>$ = dir_temporal;
     }
     | expresion BT_OPREL expresion {}
 

@@ -48,7 +48,7 @@ dir_elemento* nuevo_dir_elemento_constante_entero(int num){
     dir_elem->val.cons_int = num;
     return dir_elem;
 }
-dir_elemento* nuevo_dir_elemento_constante_float(float num){
+dir_elemento* nuevo_dir_elemento_constante_real(float num){
     dir_elemento* dir_elem = (dir_elemento*) malloc(sizeof(dir_elemento));
     dir_elem->tipo = CONSTANTE_FLOAT;
     dir_elem->val.cons_float = num;
@@ -194,7 +194,6 @@ void get_nombre_operador(char * nombre, int op){
     }
 }
 
-
 void get_nombre_dir(char * nombre, dir_elemento * dir){
     /*
      * Accion que guarda en nombre el nombre del dir
@@ -209,8 +208,10 @@ void get_nombre_dir(char * nombre, dir_elemento * dir){
                 get_nombre_sim(nombre,dir->val.celda_TS);
                 break;
             case CONSTANTE_INT:
+                sprintf(nombre, "%d", dir->val.cons_int);
                 break;
             case CONSTANTE_FLOAT:
+                sprintf(nombre, "%.2f", dir->val.cons_float);
                 break;
             case CONSTANTE_BOOL:
                 break;
