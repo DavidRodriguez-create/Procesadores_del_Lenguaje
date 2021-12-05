@@ -25,6 +25,7 @@
 	struct simbolo * simval;
 	struct dir_elemento* dirval;
 	struct expresion* expval;
+	struct lista* listval;
 }
 
 %token BT_ALGORITMO
@@ -671,6 +672,11 @@ expresion : llamadaFuncion {}
 M : /* */ {
 	$<intval>$ = tabla_cuadruplas->next_quad;
 };
+
+N : /* */ {
+	$<listval>$ = makelist(tabla_cuadruplas->next_quad);
+	gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+};
 operando : BT_IDENTIFICADOR {
 	$<simval>$ = buscar_sim_nombre(tabla_simbolos, $<strval>1 );
 	}
@@ -681,12 +687,35 @@ operando : BT_IDENTIFICADOR {
 
 
 
-instrucciones : instruccion BT_COMPOSICIONSECUENCIAL instrucciones {}
-            | instruccion {}
+instrucciones : instruccion BT_COMPOSICIONSECUENCIAL M instrucciones {
+
+                if($<listval>1 != NULL){
+                    backpatch(tabla_cuadruplas,$<listval>1,$<intval>3);
+                }
+                $<listval>$ = $<listval>4;
+
+                printf(RED"hola\n"RESET);
+
+
+            }
+            | instruccion {
+
+                 $<listval>$ = $<listval>1;
+
+            }
             ;
 instruccion : BT_CONTINUAR {}
-            | asignacion {}
-            | alternativa {}
+            | asignacion {
+                $<listval>$ = NULL;
+
+            }
+            | alternativa {
+
+
+
+            $<listval>$ = $<listval>1;
+
+            }
             | iteracion {}
             | llamadaAccion {}
             ;
@@ -773,14 +802,37 @@ asignacion : operando BT_ASIGNACION expresion {
 			error("Error en asignacion: operando BT_ASIGNACION expresion");
 		}
 		};
-alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {
+alternativa : BT_SI expresion BT_ENTONCES M instrucciones N M listaOpciones BT_FSI {
+    backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+    backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+
+
+    if ($<listval>8 == NULL){
+
+        backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+        $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
+    }else{
+
+
+    }
+
 
 
 
 };
-listaOpciones : BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones {}
-			  | /* */ {
+listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpciones {
+                backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+                backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+                if ($<listval>8 == NULL){
 
+                        backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+                        $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
+                }
+
+
+                }
+			  | /* */ {
+                    $<listval>$ = NULL;
 
 			  }
 			  ;
