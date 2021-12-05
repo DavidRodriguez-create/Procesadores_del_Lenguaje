@@ -8,11 +8,8 @@ aux2, aux3: entero;
 aux :  booleano;
 fvar
 
-si b ->
-    si aux2 > aux3 ->
-        aux2 := aux2;
-        aux2:= aux3
-    fsi
+si aux2 > aux3 ->
+    aux2:= aux3
 fsi;
 aux2 := aux3
 

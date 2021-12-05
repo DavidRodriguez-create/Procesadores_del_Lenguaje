@@ -8,7 +8,7 @@ aux2, aux3: entero;
 aux :  booleano;
 fvar
 
-a:=  falso
+a:=  no (b y c)
 
 
 

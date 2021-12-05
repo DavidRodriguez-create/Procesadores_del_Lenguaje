@@ -534,6 +534,7 @@ expresion : llamadaFuncion {}
     }
     | expresion BT_MAYOR  expresion {
 		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		//solo nos interesa el tipo
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
 		dir_elemento* exp1 = $<expval>1->dir;
 		dir_elemento* exp2 = $<expval>3->dir;
