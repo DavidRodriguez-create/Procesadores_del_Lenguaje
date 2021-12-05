@@ -190,7 +190,29 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
             case OP_INTTOREAL:
                 printf("\t%d\t%s := int_to_real(%s)\n",i,nombre_resultado,nombre_operando1);
                 break;
+            case OP_MAYOR:
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                break;
+            case OP_MENOR:
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                break;
+            case OP_DISTINTO:
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                break;
+            case OP_MAYORIGUAL:
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                break;
+            case OP_MENORIGUAL:
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                break;
+            case OP_IGUAL:
+                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                break;
+            case OP_GOTO:
+                printf("\t%d\tgoto %s\n",i,nombre_resultado);
+                break;
             default:
+                error("Error en generar_codigo_tres_direcciones(): no existe operador");
                 break;
         }
     }
@@ -210,6 +232,13 @@ void get_nombre_operador(char * nombre, int op){
     #define OP_MOD 11
     #define OP_DIV 12
     #define OP_INTTOREAL 13
+    #define OP_MAYOR 14
+    #define OP_MENOR 15
+    #define OP_DISTINTO 16
+    #define OP_MAYORIGUAL 17
+    #define OP_MENORIGUAL 18
+    #define OP_IGUAL 19
+    #define OP_GOTO 20
      */
     switch (op) {
         case OP_ASIGNACION:
@@ -251,7 +280,29 @@ void get_nombre_operador(char * nombre, int op){
         case OP_INTTOREAL:
             strcpy(nombre,"intreal");
             break;
+        case OP_MAYOR:
+            strcpy(nombre,">");
+            break;
+        case OP_MENOR:
+            strcpy(nombre,"<");
+            break;
+        case OP_DISTINTO:
+            strcpy(nombre,"<>");
+            break;
+        case OP_MAYORIGUAL:
+            strcpy(nombre,">=");
+            break;
+        case OP_MENORIGUAL:
+            strcpy(nombre,"<=");
+            break;
+        case OP_IGUAL:
+            strcpy(nombre,"=");
+            break;
+        case OP_GOTO:
+            strcpy(nombre,"goto");
+            break;
         default:
+            error("Error en get_nombre_operador(): no existe operador");
             break;
     }
 }

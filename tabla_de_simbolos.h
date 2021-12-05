@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+
 #define MAX_TABLA_SIMBOLOS 1000
 
 //tipos de variables
@@ -49,6 +53,9 @@ int existe_simbolo(tabla_de_simbolos* TS, char* nombre);
 simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre);
 void imprime_tabla_simbolos(tabla_de_simbolos* TS);
 void get_nombre_sim(char * nombre,simbolo * sim);
+void get_nombre_tipo_sim(char * nombre, int tipo_sim);
+void get_nombre_tipo_var(char * nombre, int tipo_var);
+void modificar_sim();
 
 
 //ver_simbolo_por_pantalla(tabla_simbolos->tabla[(tabla_simbolos->pos_libre)-1]);

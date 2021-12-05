@@ -219,7 +219,7 @@ expresion : llamadaFuncion {}
 
     	expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( $<simval>1);
-
+		dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
 		int tipo = $<simval>1->val.var.tipo;
 
 		if (tipo == BOOLEANO){
@@ -227,7 +227,7 @@ expresion : llamadaFuncion {}
 			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
 			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
 			$<expval>$ = ex1;
-			//gen(tabla_cuadruplas,,,NULL);
+			gen(tabla_cuadruplas,OP_IGUAL,dir_temporal,dir_true,NULL);
 			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
 		}else if (tipo == ENTERO || tipo == REAL){
@@ -237,7 +237,7 @@ expresion : llamadaFuncion {}
 			$<expval>$ = ex1;
 
 		}else{
-			printf("\nError en la variable %s : Tipo incorrecto\n", $<simval>1->nombre);
+			printf(RED"\nError en la variable %s : Tipo incorrecto\n"RESET, $<simval>1->nombre);
 		}
 
 
@@ -281,7 +281,7 @@ expresion : llamadaFuncion {}
     	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 		dir_elemento* exp1 = $<expval>1->dir;
-                dir_elemento* exp2 = $<expval>3->dir;
+        dir_elemento* exp2 = $<expval>3->dir;
 		int tipo = ENTERO;
 		if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
 			tipo = REAL;
@@ -304,14 +304,14 @@ expresion : llamadaFuncion {}
 			gen(tabla_cuadruplas, OP_RESTA, exp1, exp2, dir_temporal);
 		}
 		ex1->dir = dir_temporal;
-                $<expval>$ = ex1;
+        $<expval>$ = ex1;
 
     }
     | expresion BT_MULTIPLICACION expresion {
     	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
     		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
-		dir_elemento* exp1 = $<dirval>1;
-		dir_elemento* exp2 = $<dirval>3;
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
 		int tipo = ENTERO;
 		if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
 			tipo = REAL;
@@ -334,14 +334,14 @@ expresion : llamadaFuncion {}
 			gen(tabla_cuadruplas, OP_MULTIPLICACION, exp1, exp2, dir_temporal);
 		}
 		ex1->dir = dir_temporal;
-                $<expval>$ = ex1;
+        $<expval>$ = ex1;
     }
     | expresion BT_DIVREAL expresion {
     	expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 	dir_elemento* dir_temporal2  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* exp1 = $<dirval>1;
-	dir_elemento* exp2 = $<dirval>3;
+	dir_elemento* exp1 = $<expval>1->dir;
+	dir_elemento* exp2 = $<expval>3->dir;
 	if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
 
 		dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -365,20 +365,20 @@ expresion : llamadaFuncion {}
 		gen(tabla_cuadruplas, OP_DIVREAL, exp1 ,exp2,dir_temporal);
 	}
 	ex1->dir = dir_temporal;
-        $<expval>$ = ex1;
+    $<expval>$ = ex1;
     }
     | expresion BT_DIV expresion {
     	expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 	dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-	dir_elemento* exp1 = $<dirval>1;
-	dir_elemento* exp2 = $<dirval>3;
+	dir_elemento* exp1 = $<expval>1->dir;
+	dir_elemento* exp2 = $<expval>3->dir;
 	if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
 
 		dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 		gen(tabla_cuadruplas, OP_DIV, exp1, exp2, dir_temporal);
 
 	}else{
-		printf("\nError expresion BT_DIV expresion: tipos incorrectos\n");
+		error("Error expresion BT_DIV expresion: tipos incorrectos");
 	}
 
 	ex1->dir = dir_temporal;
@@ -388,15 +388,15 @@ expresion : llamadaFuncion {}
     | expresion BT_MOD expresion {
     		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-		dir_elemento* exp1 = $<dirval>1;
-		dir_elemento* exp2 = $<dirval>3;
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
 		if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO){
 
 			dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 			gen(tabla_cuadruplas, OP_MOD, exp1, exp2, dir_temporal);
 
 		}else{
-			printf("\nError expresion BT_MOD expresion: tipos incorrectos\n");
+			error("Error expresion BT_MOD expresion: tipos incorrectos");
 		}
 
 		ex1->dir = dir_temporal;
@@ -406,7 +406,7 @@ expresion : llamadaFuncion {}
     | BT_RESTA expresion {
 		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
-		dir_elemento* exp1 = $<dirval>2;
+		dir_elemento* exp1 = $<expval>2->dir;
 		if (exp1->tipo == CELDA_TS){
 			if (exp1->val.celda_TS->val.var.tipo == ENTERO){
 				dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
@@ -424,7 +424,7 @@ expresion : llamadaFuncion {}
 			dir_temporal->val.celda_TS->val.var.tipo = REAL;
 			gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
 		} else {
-			printf("\nError BT_RESTA expresion: tipo incorrecto\n");
+			error("Error BT_RESTA expresion: tipo incorrecto");
 		}
 
 		ex1->dir = dir_temporal;
@@ -468,18 +468,18 @@ expresion : llamadaFuncion {}
 		dir_temporal->val.celda_TS->val.var.tipo = REAL;
 		gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
 	} else {
-		printf("\nError en OP_SUMA_UNARIA: tipo incorrecto\n");
+		error("Error en OP_SUMA_UNARIA: tipo incorrecto");
 	}
 
 	ex1->dir = dir_temporal;
-        $<expval>$ = ex1;
+    $<expval>$ = ex1;
     }
 
     | expresion BT_OPREL expresion {
 
     }
-    | expresion BT_Y expresion {}
-    | expresion BT_O expresion {}
+    | expresion BT_Y M expresion {}
+    | expresion BT_O M expresion {}
     | BT_NO expresion {
         expresion* ex1 = (expresion*) malloc(sizeof(expresion));
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
@@ -493,7 +493,7 @@ expresion : llamadaFuncion {}
 		 	$<expval>$ = ex1;
 
     	}else{
-    		printf("\nError BT_NO expresion: Tipo incorrecto\n");
+    		error("Error BT_NO expresion: Tipo incorrecto");
     	}
 
     }
@@ -504,13 +504,47 @@ expresion : llamadaFuncion {}
 	$<expval>$ = ex1;
 
     }
-    | expresion BT_MAYOR expresion {}
-    | expresion BT_MENOR expresion {}
-    | expresion BT_IGUAL expresion {}
+    | expresion BT_MAYOR  expresion {
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS(new_temp(tabla_simbolos));
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
+
+		int tipo = exp1->val.celda_TS->val.var.tipo;
+		int tipo2 =exp2->val.celda_TS->val.var.tipo;
+		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+			dir_temporal->val.celda_TS->val.var.tipo = BOOLEANO;
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else{
+			error("Error en expresion BT_MAYOR  expresion: Tipo incorrecto");
+		}
+
+
+
+
+    }
+    | expresion BT_MENOR  expresion {
+
+
+    }
+    | expresion BT_IGUAL expresion {
+
+
+    }
     | expresion BT_DISTINTO expresion {}
-    | expresion BT_MAYORIGUAL expresion {}
-    | expresion BT_MENORIGUAL expresion {}
+    | expresion BT_MAYORIGUAL  expresion {}
+    | expresion BT_MENORIGUAL  expresion {}
     ;
+
+M : /* */ {
+	$<intval>$ = tabla_cuadruplas->next_quad;
+};
 operando : BT_IDENTIFICADOR {
 	$<simval>$ = buscar_sim_nombre(tabla_simbolos, $<strval>1 );
 	}

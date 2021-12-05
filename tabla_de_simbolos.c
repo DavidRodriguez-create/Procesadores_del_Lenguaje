@@ -2,8 +2,7 @@
 #include "tabla_de_simbolos.h"
 #include <string.h>
 
-#define RESET   "\033[0m"
-#define RED     "\033[31m"
+
 
 
 tabla_de_simbolos* nueva_tabla_de_simbolos(){
@@ -107,20 +106,77 @@ void get_nombre_sim(char * nombre, simbolo * sim){
 
 }
 
+void get_nombre_tipo_sim(char * nombre, int tipo_sim){
+    /*
+    #define TEMPORAL -1
+    #define VARIABLE 0
+    #define CONSTANTE 1
+    #define TIPO 2
+     */
+    switch (tipo_sim) {
+        case TEMPORAL:
+            strcpy(nombre,"tmp");
+            break;
+        case VARIABLE:
+            strcpy(nombre,"var");
+            break;
+        case CONSTANTE:
+            strcpy(nombre,"const");
+            break;
+        case TIPO:
+            strcpy(nombre,"tipo");
+            break;
+        default:
+            error("Error en get_nombre_tipo_sim(): no existe tipo de simbolo");
+            break;
+    }
+}
+
+void get_nombre_tipo_var(char * nombre, int tipo_var){
+    /*
+    #define ENTERO 0
+    #define REAL 1
+    #define BOOLEANO 2
+    #define CARACTER 3
+    #define CADENA 4
+     */
+    switch (tipo_var) {
+        case ENTERO:
+            strcpy(nombre,"entero");
+            break;
+        case REAL:
+            strcpy(nombre,"real");
+            break;
+        case BOOLEANO:
+            strcpy(nombre,"bool");
+            break;
+        case CARACTER:
+            strcpy(nombre,"char");
+            break;
+        case CADENA:
+            strcpy(nombre,"cadena");
+            break;
+        default:
+            error("Error en get_nombre_tipo_sim(): no existe tipo de simbolo");
+            break;
+    }
+}
+
+
 void imprime_tabla_simbolos(tabla_de_simbolos* ts){
     int id;
-    char nombre[100];
-    int tipo_sim;
-    int tipo_var;
+    char nombre_sim[100];
+    char nombre_tipo_sim[100];
+    char nombre_tipo_var[100];
     printf("\n\t------------------------------------\n");
     printf("\tTABLA DE SIMBOLOS \n");
     printf("\tid\tnombre\ttipo_s\ttipo_var\n\n");
     for (int i = 0; i < ts->pos_libre; ++i) {
         id = ts->tabla[i]->id;
-        get_nombre_sim(nombre,ts->tabla[i]);
-        tipo_sim = ts->tabla[i]->tipo;
-        tipo_var = ts->tabla[i]->val.var.tipo;
-        printf("\t%d\t%s\t%d\t%d\n",id,nombre,tipo_sim,tipo_var);
+        get_nombre_sim(nombre_sim,ts->tabla[i]);
+        get_nombre_tipo_sim(nombre_tipo_sim,ts->tabla[i]->tipo);
+        get_nombre_tipo_var(nombre_tipo_var,ts->tabla[i]->val.var.tipo);
+        printf("\t%d\t%s\t%s\t%s\n",id,nombre_sim,nombre_tipo_sim,nombre_tipo_var);
     }
 }
 

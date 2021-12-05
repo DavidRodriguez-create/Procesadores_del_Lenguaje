@@ -38,3 +38,12 @@ a bison. (LITERALNUMERICO-> LITERALENTERO y LITERALREAL
 --------------------------------DUDAS-------------------------------
 into_real() cuando en asignacion queremos transformar un int en real.
     asignacion : operando BT_ASIGNACION expresion
+
+el igual de oprel, como se tiene que comportar?
+    (ej: (3>4) = (3>2) , es posible? o solo con ej: 3=4)
+    (cuando pongo 3, 2 o 4, pueden ser variables distintas de booleanas)
+
+en exp mayor exp:
+como manejar las variables temporales
+gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
+ese NULL???
