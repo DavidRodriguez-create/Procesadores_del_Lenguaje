@@ -3,17 +3,12 @@ ent a: booleano;
 sal a: booleano;
 {Prec: a= A}
 var
+b, c : booleano;
 aux2, aux3: entero;
 aux :  booleano;
 fvar
 
-a:= aux;
-aux := aux2 > aux3;
-a:= falso;
-a:=verdadero;
-a:=aux2 <= aux2;
-a:= no a;
-a:= a y a
+a:=  falso
 
 
 

@@ -64,6 +64,13 @@ dir_elemento* nuevo_dir_elemento_constante_real(float num){
     dir_elem->val.cons_float = num;
     return dir_elem;
 }
+dir_elemento* nuevo_dir_elemento_pos_quad(int num){
+    dir_elemento* dir_quad = (dir_elemento*) malloc(sizeof(dir_elemento));
+    dir_quad->tipo = POS_QUAD;
+    dir_quad->val.pos_quad = num;
+    return dir_quad;
+
+}
 
 lista* makelist(int pos_quad){
 
@@ -152,6 +159,7 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
 
         switch (operador) {
             case OP_ASIGNACION:
+
                 printf("\t%d\t%s %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
                 break;
             case OP_SUMA_UNARIA:
@@ -191,22 +199,22 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
                 printf("\t%d\t%s := int_to_real(%s)\n",i,nombre_resultado,nombre_operando1);
                 break;
             case OP_MAYOR:
-                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\tsi %s %s %s goto %s\n",i,nombre_operando1,nombre_operador,nombre_operando2,nombre_resultado);
                 break;
             case OP_MENOR:
-                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\tsi %s %s %s goto %s\n",i,nombre_operando1,nombre_operador,nombre_operando2,nombre_resultado);
                 break;
             case OP_DISTINTO:
-                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\tsi %s %s %s goto %s\n",i,nombre_operando1,nombre_operador,nombre_operando2,nombre_resultado);
                 break;
             case OP_MAYORIGUAL:
-                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\tsi %s %s %s goto %s\n",i,nombre_operando1,nombre_operador,nombre_operando2,nombre_resultado);
                 break;
             case OP_MENORIGUAL:
-                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\tsi %s %s %s goto %s\n",i,nombre_operando1,nombre_operador,nombre_operando2,nombre_resultado);
                 break;
             case OP_IGUAL:
-                printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
+                printf("\t%d\tsi %s %s %s goto %s\n",i,nombre_operando1,nombre_operador,nombre_operando2,nombre_resultado);
                 break;
             case OP_GOTO:
                 printf("\t%d\tgoto %s\n",i,nombre_resultado);
@@ -334,6 +342,11 @@ void get_nombre_dir(char * nombre, dir_elemento * dir){
                     strcpy(nombre, "true");
                 }
 
+                break;
+
+            case POS_QUAD:
+
+                sprintf(nombre, "%d", dir->val.pos_quad);
                 break;
             default:
                 printf("Error en get_nombre_dir: El tipo del dir_elemento no esta declarado\n");

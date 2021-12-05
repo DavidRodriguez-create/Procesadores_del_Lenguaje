@@ -474,22 +474,44 @@ expresion : llamadaFuncion {}
 	ex1->dir = dir_temporal;
     $<expval>$ = ex1;
     }
+    | expresion BT_Y M expresion {
+        if ( $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO){
 
-    | expresion BT_OPREL expresion {
+            backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+            $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+            $<expval>$->lista_true = $<expval>4->lista_true;
+            $<expval>$->dir = $<expval>1->dir;
+
+        }else{
+            error("Error en expresion BT_Y M expresion: Tipo incorrecto");
+        }
 
     }
-    | expresion BT_Y M expresion {}
-    | expresion BT_O M expresion {}
+    | expresion BT_O M expresion {
+
+        if ( $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO){
+
+            backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
+            $<expval>$->lista_false =  $<expval>4->lista_false;
+            $<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
+            $<expval>$->dir = $<expval>1->dir;
+
+        }else{
+            error("Error en expresion BT_Y M expresion: Tipo incorrecto");
+        }
+
+
+
+
+    }
     | BT_NO expresion {
         expresion* ex1 = (expresion*) malloc(sizeof(expresion));
-		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
     	dir_elemento* exp1 = $<expval>2->dir;
     	int tipo = exp1->val.celda_TS->val.var.tipo;
     	if (tipo == BOOLEANO){
-    		dir_temporal->val.celda_TS->val.var.tipo = BOOLEANO;
-    		ex1->dir = dir_temporal;
-    		ex1->lista_true = $<expval>2->lista_true;
-    		ex1->lista_false = $<expval>2->lista_false;
+    		ex1->dir = exp1;
+    		ex1->lista_true = $<expval>2->lista_false;
+    		ex1->lista_false = $<expval>2->lista_true;
 		 	$<expval>$ = ex1;
 
     	}else{
@@ -498,22 +520,26 @@ expresion : llamadaFuncion {}
 
     }
     | BT_LITERALBOOLEANO {
-	dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano($<strval>1);
-	expresion* ex1 = (expresion*) malloc(sizeof(expresion));
-	ex1->dir = dir_temporal;
-	$<expval>$ = ex1;
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano($<strval>1);
+		dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		ex1->dir = dir_temporal;
+		ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+		ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+		$<expval>$ = ex1;
+		gen(tabla_cuadruplas,OP_IGUAL,dir_temporal,dir_true,NULL);
+		gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
     }
     | expresion BT_MAYOR  expresion {
 		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
-		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS(new_temp(tabla_simbolos));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
 		dir_elemento* exp1 = $<expval>1->dir;
 		dir_elemento* exp2 = $<expval>3->dir;
 
 		int tipo = exp1->val.celda_TS->val.var.tipo;
 		int tipo2 =exp2->val.celda_TS->val.var.tipo;
 		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
-			dir_temporal->val.celda_TS->val.var.tipo = BOOLEANO;
 			ex1->dir = dir_temporal;
 			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
 			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
@@ -531,15 +557,115 @@ expresion : llamadaFuncion {}
     }
     | expresion BT_MENOR  expresion {
 
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
+
+		int tipo = exp1->val.celda_TS->val.var.tipo;
+		int tipo2 =exp2->val.celda_TS->val.var.tipo;
+		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else{
+			error("Error en expresion BT_MENOR  expresion: Tipo incorrecto");
+		}
+
 
     }
     | expresion BT_IGUAL expresion {
 
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
+
+		int tipo = exp1->val.celda_TS->val.var.tipo;
+		int tipo2 =exp2->val.celda_TS->val.var.tipo;
+		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			gen(tabla_cuadruplas,OP_IGUAL,exp1,exp2,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else{
+			error("Error en expresion BT_IGUAL  expresion: Tipo incorrecto");
+		}
+
 
     }
-    | expresion BT_DISTINTO expresion {}
-    | expresion BT_MAYORIGUAL  expresion {}
-    | expresion BT_MENORIGUAL  expresion {}
+    | expresion BT_DISTINTO expresion {
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
+
+		int tipo = exp1->val.celda_TS->val.var.tipo;
+		int tipo2 =exp2->val.celda_TS->val.var.tipo;
+		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			gen(tabla_cuadruplas,OP_DISTINTO,exp1,exp2,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else{
+			error("Error en expresion BT_DISTINTO  expresion: Tipo incorrecto");
+		}
+
+
+	}
+    | expresion BT_MAYORIGUAL  expresion {
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
+
+		int tipo = exp1->val.celda_TS->val.var.tipo;
+		int tipo2 =exp2->val.celda_TS->val.var.tipo;
+		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			gen(tabla_cuadruplas,OP_MAYORIGUAL,exp1,exp2,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else{
+			error("Error en expresion BT_MAYORIGUAL  expresion: Tipo incorrecto");
+		}
+
+
+	}
+    | expresion BT_MENORIGUAL  expresion {
+
+		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
+		dir_elemento* dir_temporal  =  nuevo_dir_elemento_constante_booleano("verdadero");
+		dir_elemento* exp1 = $<expval>1->dir;
+		dir_elemento* exp2 = $<expval>3->dir;
+
+		int tipo = exp1->val.celda_TS->val.var.tipo;
+		int tipo2 =exp2->val.celda_TS->val.var.tipo;
+		if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+			ex1->dir = dir_temporal;
+			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+			$<expval>$ = ex1;
+			gen(tabla_cuadruplas,OP_MENORIGUAL,exp1,exp2,NULL);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+		}else{
+			error("Error en expresion BT_MENORIGUAL  expresion: Tipo incorrecto");
+		}
+	}
     ;
 
 M : /* */ {
@@ -573,7 +699,27 @@ asignacion : operando BT_ASIGNACION expresion {
 			int exp_simbolo_tipo = $<expval>3->dir->val.celda_TS->val.var.tipo;
 			//comp real o entero
 			if (exp_simbolo_tipo == res_simbolo_tipo){
-				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
+
+				if (exp_simbolo_tipo == BOOLEANO){
+					dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
+					dir_elemento* dir_false =  nuevo_dir_elemento_constante_booleano("falso");
+
+
+					backpatch(tabla_cuadruplas,$<expval>3->lista_false,tabla_cuadruplas->next_quad);
+					gen(tabla_cuadruplas, $<intval>2, dir_false, NULL, res);
+
+					dir_elemento* dir_quad = nuevo_dir_elemento_pos_quad(tabla_cuadruplas->next_quad + 2);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,dir_quad);
+
+
+                    backpatch(tabla_cuadruplas,$<expval>3->lista_true,tabla_cuadruplas->next_quad);
+                    gen(tabla_cuadruplas,$<intval>2,dir_true,NULL,res);
+
+
+				}else{
+					gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
+				}
+				
 			}
 			else if (exp_simbolo_tipo == ENTERO && res_simbolo_tipo == REAL){
 				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
@@ -604,7 +750,20 @@ asignacion : operando BT_ASIGNACION expresion {
 		}
 		else if (exp_tipo == CONSTANTE_BOOL){
 			if (res_simbolo_tipo == BOOLEANO){
-				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
+				dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
+				dir_elemento* dir_false =  nuevo_dir_elemento_constante_booleano("falso");
+
+
+				backpatch(tabla_cuadruplas,$<expval>3->lista_false,tabla_cuadruplas->next_quad);
+				gen(tabla_cuadruplas, $<intval>2, dir_false, NULL, res);
+
+				dir_elemento* dir_quad = nuevo_dir_elemento_pos_quad(tabla_cuadruplas->next_quad + 2);
+				gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,dir_quad);
+
+
+				backpatch(tabla_cuadruplas,$<expval>3->lista_true,tabla_cuadruplas->next_quad);
+				gen(tabla_cuadruplas,$<intval>2,dir_true,NULL,res);
+
 			}
 			else{
 				error("Error en asignacion: operando BT_ASIGNACION expresion, tipo CONSTANTE_BOOL incompatible con operando");
@@ -614,9 +773,16 @@ asignacion : operando BT_ASIGNACION expresion {
 			error("Error en asignacion: operando BT_ASIGNACION expresion");
 		}
 		};
-alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {};
+alternativa : BT_SI expresion BT_ENTONCES instrucciones listaOpciones BT_FSI {
+
+
+
+};
 listaOpciones : BT_SINOSI expresion BT_ENTONCES instrucciones listaOpciones {}
-			  | /* */ {}
+			  | /* */ {
+
+
+			  }
 			  ;
 iteracion : itCotaFija {}
 		  | itCotaVariable {}

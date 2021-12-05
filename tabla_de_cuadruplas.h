@@ -104,6 +104,7 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc);
 dir_elemento* nuevo_dir_elemento_constante_entero(int num);
 dir_elemento* nuevo_dir_elemento_constante_booleano(char* nombre);
 dir_elemento* nuevo_dir_elemento_constante_real(float num);
+dir_elemento* nuevo_dir_elemento_pos_quad(int num);
 lista *makelist(int pos_quad);
 lista *merge(lista* l1, lista* l2);
 void backpatch(tabla_de_cuadruplas* TC, lista* l,int pos);

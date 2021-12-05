@@ -47,3 +47,11 @@ en exp mayor exp:
 como manejar las variables temporales
 gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
 ese NULL???
+
+a:=   a o b y c //prioridades va de izquierda a derecha hay que arreglarlo?
+
+//	0	si false = true goto 4
+  	1	goto 2
+  	2	a := false
+  	3	goto 5
+  	4	a := true
