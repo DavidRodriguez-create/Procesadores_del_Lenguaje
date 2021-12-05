@@ -1,5 +1,5 @@
 all: bison flex tablaSimbolos tablaCuadruplas
-	gcc parser.tab.c lex.yy.o tabla_de_simbolos.o tabla_de_cuadruplas.o -ll -lm -DYYDEBUG
+	gcc parser.tab.c lex.yy.o tabla_de_simbolos.o tabla_de_cuadruplas.o -lfl -lm -DYYDEBUG
 
 flex: scanner.l
 	flex scanner.l
