@@ -727,9 +727,6 @@ instrucciones : instruccion BT_COMPOSICIONSECUENCIAL M instrucciones {
                 }*/
                 $<listval>$ = $<listval>4;
 
-                printf(RED"hola\n"RESET);
-
-
             }
             | instruccion {
 
@@ -754,37 +751,37 @@ instruccion : BT_CONTINUAR {}
             ;
 asignacion : operando BT_ASIGNACION expresion {
 		dir_elemento* res = nuevo_dir_elemento_celda_TS($<simval>1);
+
+
 		int res_simbolo_tipo = res->val.celda_TS->val.var.tipo;
 		int exp_tipo = $<expval>3->dir->tipo;
 
 		if(exp_tipo == CELDA_TS){
 			int exp_simbolo_tipo = $<expval>3->dir->val.celda_TS->val.var.tipo;
-			//comp real o entero
-			if (exp_simbolo_tipo == res_simbolo_tipo){
 
-				if (exp_simbolo_tipo == BOOLEANO){
-					dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
-					dir_elemento* dir_false =  nuevo_dir_elemento_constante_booleano("falso");
+			if (exp_simbolo_tipo == BOOLEANO){
+				dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
+				dir_elemento* dir_false =  nuevo_dir_elemento_constante_booleano("falso");
 
+				backpatch(tabla_cuadruplas,$<expval>3->lista_false,tabla_cuadruplas->next_quad);
+				gen(tabla_cuadruplas, $<intval>2, dir_false, NULL, res);
 
-					backpatch(tabla_cuadruplas,$<expval>3->lista_false,tabla_cuadruplas->next_quad);
-					gen(tabla_cuadruplas, $<intval>2, dir_false, NULL, res);
-
-					dir_elemento* dir_quad = nuevo_dir_elemento_pos_quad(tabla_cuadruplas->next_quad + 2);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,dir_quad);
+				dir_elemento* dir_quad = nuevo_dir_elemento_pos_quad(tabla_cuadruplas->next_quad + 2);
+				gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,dir_quad);
 
 
-                    backpatch(tabla_cuadruplas,$<expval>3->lista_true,tabla_cuadruplas->next_quad);
-                    gen(tabla_cuadruplas,$<intval>2,dir_true,NULL,res);
-
-
-				}else{
-					gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
-				}
-				
+				backpatch(tabla_cuadruplas,$<expval>3->lista_true,tabla_cuadruplas->next_quad);
+				gen(tabla_cuadruplas,$<intval>2,dir_true,NULL,res);
+			}
+			else if (exp_simbolo_tipo == res_simbolo_tipo){
+				error("Aqui estas");
+				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
 			}
 			else if (exp_simbolo_tipo == ENTERO && res_simbolo_tipo == REAL){
-				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
+				dir_elemento* dir_temporal = nuevo_dir_elemento_celda_TS(new_temp(tabla_simbolos));
+				dir_temporal->val.celda_TS->val.var.tipo = REAL;
+                gen(tabla_cuadruplas, OP_INTTOREAL,$<expval>3->dir,NULL,dir_temporal);
+				gen(tabla_cuadruplas, $<intval>2, dir_temporal, NULL, res);
 			}
 			else{
 				error("Error en asignacion: operando BT_ASIGNACION expresion, tipo expresion incompatible con operando");
@@ -796,7 +793,10 @@ asignacion : operando BT_ASIGNACION expresion {
 				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
 			}
 			else if (res_simbolo_tipo == REAL){
-				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
+				dir_elemento* dir_temporal = nuevo_dir_elemento_celda_TS(new_temp(tabla_simbolos));
+				dir_temporal->val.celda_TS->val.var.tipo = REAL;
+				gen(tabla_cuadruplas, OP_INTTOREAL,$<expval>3->dir,NULL,dir_temporal);
+				gen(tabla_cuadruplas, $<intval>2, dir_temporal, NULL, res);
 			}
 			else{
 				error("Error en asignacion: operando BT_ASIGNACION expresion, tipo CONSTANTE_INT incompatible con operando");
@@ -814,7 +814,6 @@ asignacion : operando BT_ASIGNACION expresion {
 			if (res_simbolo_tipo == BOOLEANO){
 				dir_elemento* dir_true =  nuevo_dir_elemento_constante_booleano("verdadero");
 				dir_elemento* dir_false =  nuevo_dir_elemento_constante_booleano("falso");
-
 
 				backpatch(tabla_cuadruplas,$<expval>3->lista_false,tabla_cuadruplas->next_quad);
 				gen(tabla_cuadruplas, $<intval>2, dir_false, NULL, res);

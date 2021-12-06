@@ -5,7 +5,6 @@ sal a: entero;
 var
 d,e: real;
 fvar
-d:= a;
-a:=e
+d:= a
 {Post: a=A }
 falgoritmo
