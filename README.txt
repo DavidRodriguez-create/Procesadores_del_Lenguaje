@@ -55,3 +55,7 @@ a:=   a o b y c //prioridades va de izquierda a derecha hay que arreglarlo?
   	2	a := false
   	3	goto 5
   	4	a := true
+
+
+
+//corregir tipos mirar ejemplo.txt
