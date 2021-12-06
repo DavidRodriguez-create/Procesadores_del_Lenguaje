@@ -476,14 +476,46 @@ expresion : llamadaFuncion {}
     $<expval>$ = ex1;
     }
     | expresion BT_Y M expresion {
-        if ( $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO){
+        int exp_tipo = $<expval>1->dir->tipo;
+        int exp_tipo2 = $<expval>4->dir->tipo;
+        if (exp_tipo == exp_tipo2 ){
 
+            if(exp_tipo == CELDA_TS){
+                if ( $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO){
+
+                    backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+                    $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+                    $<expval>$->lista_true = $<expval>4->lista_true;
+                    $<expval>$->dir = $<expval>1->dir;
+
+                }else{
+                    error("Error en expresion BT_Y M expresion: Tipo incorrecto");
+                }
+            }else if (exp_tipo == CONSTANTE_BOOL){
+
+                backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+                $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+                $<expval>$->lista_true = $<expval>4->lista_true;
+                $<expval>$->dir = $<expval>1->dir;
+
+            }else{
+                error("Error en expresion BT_Y M expresion : Tipo incorrecto en expresion");
+            }
+        }else if ((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) && exp_tipo2 == CONSTANTE_BOOL ){
             backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
             $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
             $<expval>$->lista_true = $<expval>4->lista_true;
             $<expval>$->dir = $<expval>1->dir;
 
+        }else if ((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) && exp_tipo == CONSTANTE_BOOL){
+            backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+            $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+            $<expval>$->lista_true = $<expval>4->lista_true;
+            $<expval>$->dir = $<expval>1->dir;
+
+
         }else{
+
             error("Error en expresion BT_Y M expresion: Tipo incorrecto");
         }
 
@@ -689,9 +721,9 @@ operando : BT_IDENTIFICADOR {
 
 instrucciones : instruccion BT_COMPOSICIONSECUENCIAL M instrucciones {
 
-                if($<listval>1 != NULL){
+                /*if($<listval>1 != NULL){
                     backpatch(tabla_cuadruplas,$<listval>1,$<intval>3);
-                }
+                }*/
                 $<listval>$ = $<listval>4;
 
                 printf(RED"hola\n"RESET);
@@ -802,31 +834,38 @@ asignacion : operando BT_ASIGNACION expresion {
 			error("Error en asignacion: operando BT_ASIGNACION expresion");
 		}
 		};
-alternativa : BT_SI expresion BT_ENTONCES M instrucciones N M listaOpciones BT_FSI {
+alternativa : BT_SI expresion BT_ENTONCES M instrucciones N M listaOpciones M BT_FSI {
     backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
-    backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+
 
 
     if ($<listval>8 == NULL){
 
         backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+        backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>9);
         $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
     }else{
-
-
+         backpatch(tabla_cuadruplas,$<listval>6,$<intval>9);
+         backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+         $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>8));
     }
 
 
 
 
 };
-listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpciones {
+listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpciones M {
                 backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
-                backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+
                 if ($<listval>8 == NULL){
 
-                        backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
-                        $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
+                    backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+                    backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>9);
+                    $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
+                }else{
+                    backpatch(tabla_cuadruplas,$<listval>6,$<intval>9);
+                    backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+                    $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>8));
                 }
 
 

@@ -7,9 +7,10 @@ b, c : booleano;
 aux2, aux3: entero;
 aux :  booleano;
 fvar
-
-si aux2 > aux3 -> a := b; a:= b fsi;
 aux2 := aux3;
+si aux2 > aux3 y aux2 > aux3 -> a := b [] aux2 > aux3 -> a:= b fsi;
+aux2 := aux3
+
 
 
 

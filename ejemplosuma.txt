@@ -4,7 +4,7 @@ sal a: entero;
 {Prec: a= A}
 var
 aux: entero;
-aux2: real;
+aux2: entero;
 
 fvar
 
