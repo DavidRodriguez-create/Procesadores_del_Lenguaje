@@ -56,6 +56,6 @@ a:=   a o b y c //prioridades va de izquierda a derecha hay que arreglarlo?
   	3	goto 5
   	4	a := true
 
-
+liberar memoria al terminal
 
 //corregir tipos mirar ejemplo.txt

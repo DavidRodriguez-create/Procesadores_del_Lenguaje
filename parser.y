@@ -253,10 +253,8 @@ expresion : llamadaFuncion {}
 		dir_elemento* exp1 = $<expval>1->dir;
 		dir_elemento* exp2 = $<expval>3->dir;
         if (exp_tipo == exp_tipo2 ){
-			
 
             if(exp_tipo == CELDA_TS){
-
 				
 				int tipo = ENTERO;
 				if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
@@ -297,8 +295,6 @@ expresion : llamadaFuncion {}
 				ex1->dir = dir_temporal;
 				$<expval>$ = ex1;
 
-
-				
 			}else{
 				error("Error en expresion BT_SUMA expresion: Tipo incorrecto");
 			}
@@ -316,11 +312,10 @@ expresion : llamadaFuncion {}
 
 
         }else if((exp_tipo == CONSTANTE_INT && exp_tipo2 == CONSTANTE_FLOAT ) | (exp_tipo2 == CONSTANTE_INT && exp_tipo == CONSTANTE_FLOAT) ){
-
-				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, exp2, dir_temporal);
-				ex1->dir = dir_temporal;
-				$<expval>$ = ex1;
+			dir_temporal->val.celda_TS->val.var.tipo = REAL;
+			gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, exp2, dir_temporal);
+			ex1->dir = dir_temporal;
+			$<expval>$ = ex1;
 		
 		}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
             dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -368,11 +363,7 @@ expresion : llamadaFuncion {}
 		dir_elemento* exp1 = $<expval>1->dir;
 		dir_elemento* exp2 = $<expval>3->dir;
         if (exp_tipo == exp_tipo2 ){
-			
-
             if(exp_tipo == CELDA_TS){
-
-				
 				int tipo = ENTERO;
 				if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
 					tipo = REAL;
@@ -760,7 +751,7 @@ expresion : llamadaFuncion {}
 			}
 
 		}
-		| expresion BT_MOD expresion {
+	| expresion BT_MOD expresion {
 			int exp_tipo = $<expval>1->dir->tipo;
 			int exp_tipo2 = $<expval>3->dir->tipo;
 			dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
@@ -1564,8 +1555,40 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpcione
 iteracion : itCotaFija {}
 		  | itCotaVariable {}
 		  ;
-itCotaVariable : BT_MIENTRAS expresion BT_HACER instrucciones BT_FMIENTRAS {};
-itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER instrucciones BT_FPARA {};
+itCotaVariable : BT_MIENTRAS expresion BT_HACER M instrucciones N BT_FMIENTRAS {
+
+	backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+	if ($<listval>5 != NULL) {
+		backpatch(tabla_cuadruplas,merge($<listval>6,$<listval>7),$<intval>4);
+	} else {
+		backpatch(tabla_cuadruplas,$<listval>6,$<intval>4);
+	}
+	$<listval>$ = $<expval>2->lista_false;
+
+
+
+
+};
+itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion BT_HACER N M instrucciones  BT_FPARA {
+
+	if ($<listval>10 != NULL){
+		backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
+
+	}
+	dir_elemento* uno  =  nuevo_dir_elemento_constante_entero(1);
+	gen(tabla_cuadruplas,OP_SUMA,$<expval>2->dir,uno,$<expval>2->dir);
+	gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,tabla_cuadruplas->next_quad + 2);
+	backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
+	gen(tabla_cuadruplas,OP_ASIGNACION,$<expval>4->dir, NULL,$<expval>2->dir );
+	gen(tabla_cuadruplas,OP_MENORIGUAL,$<expval>2->dir, $<expval>4->dir, $<intval>9 );
+
+	$<listval>$ = makelist(tabla_cuadruplas->next_quad);
+	gen(tabla_cuadruplas, OP_GOTO, NULL, NULL, NULL);
+
+
+
+
+};
 
 
 defAccion : BT_ACCION cabeceraAccion bloque BT_FACCION {};
