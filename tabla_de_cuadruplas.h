@@ -54,6 +54,7 @@
 
 
 
+
 typedef struct dir_elemento{
     int tipo;
     union {
@@ -73,7 +74,7 @@ typedef struct lista{
 
 typedef struct expresion{
     dir_elemento *dir;
-    struct lista *lista_true;
+    struct lista *lista_true;   
     struct lista *lista_false;
 
 }expresion;
@@ -103,6 +104,7 @@ void get_nombre_operador(char * nombre, int op);
 void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc);
 dir_elemento* nuevo_dir_elemento_constante_entero(int num);
 dir_elemento* nuevo_dir_elemento_constante_booleano(char* nombre);
+dir_elemento* nuevo_dir_elemento_constante_real(float num);
 dir_elemento* nuevo_dir_elemento_constante_real(float num);
 dir_elemento* nuevo_dir_elemento_pos_quad(int num);
 lista *makelist(int pos_quad);

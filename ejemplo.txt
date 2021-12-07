@@ -6,24 +6,14 @@ var
 d,e: real;
 b, c : entero;
 fvar
-b := 2 / 7;
-c := 2 / b;
-b := b / 2;
 
-d := 2.5 / e;
-d := e / 2.5;
-d := 2.5 / 2.5;
+para i :=  c hasta b  hacer
+		d := - e;
+		d := d - e
+fpara;
 
-d := 2.5 / 2;
-d := 2 / 2.5;
-d := 2.5 / b;
-d := b / 2.5;
+a := c
 
-
-d := 2 / 2;
-
-
-d := 2 div 2;
 
 
 

@@ -1399,9 +1399,9 @@ operando : BT_IDENTIFICADOR {
 
 instrucciones : instruccion BT_COMPOSICIONSECUENCIAL M instrucciones {
 
-                /*if($<listval>1 != NULL){
+                if($<listval>1 != NULL){
                     backpatch(tabla_cuadruplas,$<listval>1,$<intval>3);
-                }*/
+                }
                 $<listval>$ = $<listval>4;
 
             }
@@ -1423,7 +1423,10 @@ instruccion : BT_CONTINUAR {}
             $<listval>$ = $<listval>1;
 
             }
-            | iteracion {}
+            | iteracion {
+
+				$<listval>$ = $<listval>1
+			}
             | llamadaAccion {}
             ;
 asignacion : operando BT_ASIGNACION expresion {
@@ -1552,8 +1555,8 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpcione
 
 			  }
 			  ;
-iteracion : itCotaFija {}
-		  | itCotaVariable {}
+iteracion : itCotaFija { $<listval>$ = $<listval>1 }
+		  | itCotaVariable { $<listval>$ = $<listval>1 }
 		  ;
 itCotaVariable : BT_MIENTRAS expresion BT_HACER M instrucciones N BT_FMIENTRAS {
 
@@ -1575,12 +1578,18 @@ itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion
 		backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
 
 	}
+	
 	dir_elemento* uno  =  nuevo_dir_elemento_constante_entero(1);
-	gen(tabla_cuadruplas,OP_SUMA,$<expval>2->dir,uno,$<expval>2->dir);
-	gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,tabla_cuadruplas->next_quad + 2);
+	simbolo * s = nuevo_simbolo(tabla_simbolos, $<strval>2, VARIABLE, ENTERO);
+	dir_elemento* dir =   nuevo_dir_elemento_celda_TS(s);
+	gen(tabla_cuadruplas,OP_SUMA,dir,uno,dir);
+	
+	dir_elemento* next =  nuevo_dir_elemento_constante_entero(tabla_cuadruplas->next_quad + 2);	
+	gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,next);
 	backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
-	gen(tabla_cuadruplas,OP_ASIGNACION,$<expval>4->dir, NULL,$<expval>2->dir );
-	gen(tabla_cuadruplas,OP_MENORIGUAL,$<expval>2->dir, $<expval>4->dir, $<intval>9 );
+	gen(tabla_cuadruplas,OP_ASIGNACION,$<expval>4->dir, NULL,dir );
+	dir_elemento* m_quad =  nuevo_dir_elemento_constante_entero($<intval>9 );	
+	gen(tabla_cuadruplas,OP_MENORIGUAL,dir, $<expval>4->dir, m_quad );
 
 	$<listval>$ = makelist(tabla_cuadruplas->next_quad);
 	gen(tabla_cuadruplas, OP_GOTO, NULL, NULL, NULL);
