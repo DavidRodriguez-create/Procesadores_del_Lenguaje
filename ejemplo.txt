@@ -4,7 +4,30 @@ sal a: entero;
 {Prec: a= A}
 var
 d,e: real;
+b, c : entero;
 fvar
-d:= a
+b := 2 / 7;
+c := 2 / b;
+b := b / 2;
+
+d := 2.5 / e;
+d := e / 2.5;
+d := 2.5 / 2.5;
+
+d := 2.5 / 2;
+d := 2 / 2.5;
+d := 2.5 / b;
+d := b / 2.5;
+
+
+d := 2 / 2;
+
+
+d := 2 div 2;
+
+
+
+
+
 {Post: a=A }
 falgoritmo

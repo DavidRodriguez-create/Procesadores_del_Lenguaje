@@ -4,16 +4,13 @@ sal a: booleano;
 {Prec: a= A}
 var
 aux2, aux3: entero;
+aux4: real;
 aux :  booleano;
 fvar
 
-a:= aux;
-aux := aux2 > aux3;
-a:= falso;
-a:=verdadero;
-a:=aux2 <= aux2;
-a:= no a;
-a:= a y a
+aux4 := (4 + 8.6);
+aux := no ((8.6 >= 10.50) o verdadero)
+
 
 
 
