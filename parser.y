@@ -12,6 +12,7 @@
 	extern FILE *yyin;
 	tabla_de_simbolos* tabla_simbolos;
 	tabla_de_cuadruplas* tabla_cuadruplas;
+	int ambito = LOCAL;
 
 
 
@@ -151,7 +152,7 @@ declaraciones : definicionTipo declaraciones {}
 
 definicionTipo : BT_TIPO listaDefsTipo BT_FTIPO {};
 definicionConst : BT_CONST listaDefsConstantes BT_FCONST {};
-definicionVar : BT_VAR listaDefsVariables BT_FVAR {};
+definicionVar : BT_VAR TIPO_LOCAL listaDefsVariables BT_FVAR {};
 
 listaDefsTipo : BT_IDENTIFICADOR BT_CREACIONTIPO defTipo BT_COMPOSICIONSECUENCIAL listaDefsTipo {}
 							| /* */ {}
@@ -195,13 +196,13 @@ listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUE
         	printf("\nERROR def tipo\n");
         }
 
-		nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable);
+		nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable,ambito);
 
         $<intval>$ = tipo_variable;
 
 		}
         | BT_IDENTIFICADOR BT_SEPARADOR listaId {
-        nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3);
+        nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3,ambito);
         $<intval>$ = $<intval>3;
 
         }
@@ -211,8 +212,25 @@ defVariablesInteraccion : defEntrada {}
 			| defSalida {}
 			;
 
-defEntrada : BT_ENT listaDefsVariables {};
-defSalida : BT_SAL listaDefsVariables {};
+defEntrada : BT_ENT TIPO_ENTRADA listaDefsVariables {};
+defSalida : BT_SAL TIPO_SALIDA listaDefsVariables {};
+
+TIPO_ENTRADA: /* */ {
+
+	ambito = ENTRADA;
+
+}
+TIPO_SALIDA: /* */ {
+
+	ambito = SALIDA;
+
+}
+
+TIPO_LOCAL: /* */ {
+
+	ambito = LOCAL;
+
+}
 
 
 expresion : llamadaFuncion {}
@@ -1580,7 +1598,7 @@ itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion
 	}
 	
 	dir_elemento* uno  =  nuevo_dir_elemento_constante_entero(1);
-	simbolo * s = nuevo_simbolo(tabla_simbolos, $<strval>2, VARIABLE, ENTERO);
+	simbolo * s = nuevo_simbolo(tabla_simbolos, $<strval>2, VARIABLE, ENTERO,ambito);
 	dir_elemento* dir =   nuevo_dir_elemento_celda_TS(s);
 	gen(tabla_cuadruplas,OP_SUMA,dir,uno,dir);
 	

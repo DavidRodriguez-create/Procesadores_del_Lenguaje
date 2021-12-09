@@ -31,30 +31,53 @@ simbolo* new_temp(tabla_de_simbolos* TS){
     }
     return sim;
 };
-simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable){
+simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito){
     simbolo *sim = (simbolo*) malloc(sizeof(simbolo));
     if(sim == NULL){
         error("Fallo en nuevo_simbolo -> MALLOC");
     }
-    strcpy(sim->nombre, nombre);
-    // le ponemos un id
-    sim->id = TS->pos_libre;
-    sim->tipo = tipo_simbolo;
-    if (tipo_simbolo==VARIABLE) {
-        sim->val.var.tipo = tipo_variable;
-        sim->val.var.ambito = 0;
+   
+    
+    simbolo* aux = buscar_sim_nombre(TS, nombre);
+    printf("%s",aux->nombre);
+    if (aux != NULL){
+
+        if (aux->val.var.ambito == ENTRADASALIDA){
+            error("Ya existe la variable ");
+
+        }else if (aux->val.var.ambito == ENTRADA && ambito == SALIDA){
+
+            aux->val.var.ambito = ENTRADASALIDA;
+            int pos = buscar_sim_nombre_pos(TS, nombre);
+
+        }else{
+            error("Ya existe la variable ");
+        }
+        return aux;
+    }else{
+        strcpy(sim->nombre, nombre);
+        // le ponemos un id
+        sim->id = TS->pos_libre;
+        sim->tipo = tipo_simbolo;
+        if (tipo_simbolo==VARIABLE) {
+            sim->val.var.tipo = tipo_variable;
+            sim->val.var.ambito = ambito;
+        }
+
+        if (TS->pos_libre < MAX_TABLA_SIMBOLOS){
+            TS->tabla[TS->pos_libre] = sim;
+
+            // calculamos el siguiente vacio
+            TS->pos_libre = TS->pos_libre + 1;
+        } else {
+            //error
+            error("Se ha llenado la tabla de simbolos");
+        }
+        return sim;
     }
 
-    if (TS->pos_libre < MAX_TABLA_SIMBOLOS){
-        TS->tabla[TS->pos_libre] = sim;
 
-        // calculamos el siguiente vacio
-        TS->pos_libre = TS->pos_libre + 1;
-    } else {
-        //error
-        error("Se ha llenado la tabla de simbolos");
-    }
-    return sim;
+
 };
 
 void ver_simbolo_por_pantalla(simbolo *sim){
@@ -75,21 +98,36 @@ int existe_simbolo(tabla_de_simbolos* TS, char* nombre){
     return existe;
 }
 
-simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre){
+simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre) {
     int pos = 0;
-    simbolo *sim;
+    simbolo *sim = NULL;
+    printf("\nEstoy buscando: %s\n", nombre);
+    if (TS->pos_libre != 0) {
+        while (pos < TS->pos_libre  && strcmp(TS->tabla[pos]->nombre, nombre) != 0) {
+            printf("\n %s vs %s\n", TS->tabla[pos]->nombre, nombre);
+            pos = pos + 1;
+        }
+        if (pos < TS->pos_libre) {
+            sim = TS->tabla[pos];
+            printf("Encontrado: %s\n", sim->nombre);
+        } else {
+            printf(RED "\n\nNo existe el simbolo con nombre: %s\n" RESET, nombre);
+        }
+    }
+
+    return sim;
+}
+
+int buscar_sim_nombre_pos(tabla_de_simbolos* TS, char* nombre){
+    int pos = 0;
+
     //printf("\nEstoy buscando: %s\n",nombre);
-    while (pos<MAX_TABLA_SIMBOLOS && strcmp(TS->tabla[pos]->nombre,nombre)!=0){
+    while (pos<TS->pos_libre && strcmp(TS->tabla[pos]->nombre,nombre)!=0){
         //printf("\n %s vs %s\n",TS->tabla[pos]->nombre,nombre);
         pos = pos + 1;
     }
-    if (pos<MAX_TABLA_SIMBOLOS){
-        sim = TS->tabla[pos];
-        //printf("Encontrado: %s\n",sim->nombre);
-    } else {
-        printf(RED "\n\nNo existe el simbolo con nombre: %s\n" RESET, nombre);
-    }
-    return sim;
+
+    return pos;
 }
 
 void get_nombre_sim(char * nombre, simbolo * sim){

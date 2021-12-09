@@ -24,6 +24,14 @@
 #define CONSTANTE 1
 #define TIPO 2
 
+
+//ambito 
+#define LOCAL 0
+#define ENTRADA 1
+#define ENTRADASALIDA 2
+#define SALIDA 3
+
+
 typedef struct variable{
     int tipo;
     int ambito;
@@ -47,10 +55,11 @@ typedef struct tabla_de_simbolos{
 void error(char * mensaje);
 tabla_de_simbolos* nueva_tabla_de_simbolos();
 simbolo* new_temp(tabla_de_simbolos* TS);
-simbolo* nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable);
+simbolo* nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito);
 void ver_simbolo_por_pantalla(simbolo *sim);
 int existe_simbolo(tabla_de_simbolos* TS, char* nombre);
 simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre);
+int buscar_sim_nombre_pos(tabla_de_simbolos* TS, char* nombre);
 void imprime_tabla_simbolos(tabla_de_simbolos* TS);
 void get_nombre_sim(char * nombre,simbolo * sim);
 void get_nombre_tipo_sim(char * nombre, int tipo_sim);
