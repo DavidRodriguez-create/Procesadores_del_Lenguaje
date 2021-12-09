@@ -1443,7 +1443,7 @@ instruccion : BT_CONTINUAR {}
             }
             | iteracion {
 
-				$<listval>$ = $<listval>1
+				$<listval>$ = $<listval>1;
 			}
             | llamadaAccion {}
             ;
@@ -1472,7 +1472,6 @@ asignacion : operando BT_ASIGNACION expresion {
 				gen(tabla_cuadruplas,$<intval>2,dir_true,NULL,res);
 			}
 			else if (exp_simbolo_tipo == res_simbolo_tipo){
-				error("Aqui estas");
 				gen(tabla_cuadruplas, $<intval>2, $<expval>3->dir, NULL, res);
 			}
 			else if (exp_simbolo_tipo == ENTERO && res_simbolo_tipo == REAL){
@@ -1573,8 +1572,8 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpcione
 
 			  }
 			  ;
-iteracion : itCotaFija { $<listval>$ = $<listval>1 }
-		  | itCotaVariable { $<listval>$ = $<listval>1 }
+iteracion : itCotaFija { $<listval>$ = $<listval>1; }
+		  | itCotaVariable { $<listval>$ = $<listval>1; }
 		  ;
 itCotaVariable : BT_MIENTRAS expresion BT_HACER M instrucciones N BT_FMIENTRAS {
 

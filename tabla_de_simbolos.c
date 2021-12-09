@@ -39,7 +39,7 @@ simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, i
    
     
     simbolo* aux = buscar_sim_nombre(TS, nombre);
-    printf("%s",aux->nombre);
+    //printf("Esto es aux: %p\n",aux);
     if (aux != NULL){
 
         if (aux->val.var.ambito == ENTRADASALIDA){
@@ -76,8 +76,6 @@ simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, i
         return sim;
     }
 
-
-
 };
 
 void ver_simbolo_por_pantalla(simbolo *sim){
@@ -101,17 +99,17 @@ int existe_simbolo(tabla_de_simbolos* TS, char* nombre){
 simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre) {
     int pos = 0;
     simbolo *sim = NULL;
-    printf("\nEstoy buscando: %s\n", nombre);
+    //printf("\nEstoy buscando: %s\n", nombre);
     if (TS->pos_libre != 0) {
         while (pos < TS->pos_libre  && strcmp(TS->tabla[pos]->nombre, nombre) != 0) {
-            printf("\n %s vs %s\n", TS->tabla[pos]->nombre, nombre);
+            //printf("\n %s vs %s\n", TS->tabla[pos]->nombre, nombre);
             pos = pos + 1;
         }
         if (pos < TS->pos_libre) {
             sim = TS->tabla[pos];
-            printf("Encontrado: %s\n", sim->nombre);
+            //printf("Encontrado: %s\n", sim->nombre);
         } else {
-            printf(RED "\n\nNo existe el simbolo con nombre: %s\n" RESET, nombre);
+            //printf(RED "\n\nNo existe el simbolo con nombre: %s\n" RESET, nombre);
         }
     }
 
@@ -135,7 +133,10 @@ void get_nombre_sim(char * nombre, simbolo * sim){
      * Accion que guarda el nombre del simbolo en nombre.
      * Si no tiene nombre, guarda t+id (es decir, un simbolo temporal)
      */
-    if (sim->tipo == TEMPORAL){
+    if (sim == NULL){
+        error("Error en get_nombre_sim(), simbolo nulo");
+    }
+    else if (sim->tipo == TEMPORAL){
         sprintf(nombre, "t%d", sim->id);
     }
     else{
@@ -195,7 +196,33 @@ void get_nombre_tipo_var(char * nombre, int tipo_var){
             strcpy(nombre,"cadena");
             break;
         default:
-            error("Error en get_nombre_tipo_sim(): no existe tipo de simbolo");
+            error("Error en get_nombre_tipo_sim(): no existe tipo de simbolo variable");
+            break;
+    }
+}
+
+void get_nombre_tipo_param(char * nombre, int tipo_param){
+    /*
+    #define LOCAL 0
+    #define ENTRADA 1
+    #define ENTRADASALIDA 2
+    #define SALIDA 3
+     */
+    switch (tipo_param) {
+        case LOCAL:
+            strcpy(nombre,"local");
+            break;
+        case ENTRADA:
+            strcpy(nombre,"ent");
+            break;
+        case ENTRADASALIDA:
+            strcpy(nombre,"ent_sal");
+            break;
+        case SALIDA:
+            strcpy(nombre,"sal");
+            break;
+        default:
+            error("Error en get_nombre_tipo_param(): no existe tipo de simbolo parametro");
             break;
     }
 }
@@ -206,15 +233,18 @@ void imprime_tabla_simbolos(tabla_de_simbolos* ts){
     char nombre_sim[100];
     char nombre_tipo_sim[100];
     char nombre_tipo_var[100];
+    char nombre_tipo_param[100];
     printf("\n\t------------------------------------\n");
     printf("\tTABLA DE SIMBOLOS \n");
-    printf("\tid\tnombre\ttipo_s\ttipo_var\n\n");
+    printf("\tid\tnombre\ttipo_s\ttipovar\ttipo_param\n\n");
+
     for (int i = 0; i < ts->pos_libre; ++i) {
         id = ts->tabla[i]->id;
         get_nombre_sim(nombre_sim,ts->tabla[i]);
         get_nombre_tipo_sim(nombre_tipo_sim,ts->tabla[i]->tipo);
         get_nombre_tipo_var(nombre_tipo_var,ts->tabla[i]->val.var.tipo);
-        printf("\t%d\t%s\t%s\t%s\n",id,nombre_sim,nombre_tipo_sim,nombre_tipo_var);
+        get_nombre_tipo_param(nombre_tipo_param,ts->tabla[i]->val.var.ambito);
+        printf("\t%d\t%s\t%s\t%s\t%s\n",id,nombre_sim,nombre_tipo_sim,nombre_tipo_var,nombre_tipo_param);
     }
 }
 
