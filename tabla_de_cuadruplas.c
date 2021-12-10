@@ -219,6 +219,13 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
             case OP_GOTO:
                 printf("\t%d\tgoto %s\n",i,nombre_resultado);
                 break;
+            case INPUT:
+                printf("\t%d\tinput %s\n",i,nombre_resultado);
+                break;
+            case OUTPUT:
+                printf("\t%d\toutput %s\n",i,nombre_resultado);
+                break;
+            
             default:
                 error("Error en generar_codigo_tres_direcciones(): no existe operador");
                 break;
@@ -247,6 +254,8 @@ void get_nombre_operador(char * nombre, int op){
     #define OP_MENORIGUAL 18
     #define OP_IGUAL 19
     #define OP_GOTO 20
+    #define INPUT 21
+    INPUT#define OUTPUT 22
      */
     switch (op) {
         case OP_ASIGNACION:
@@ -309,6 +318,13 @@ void get_nombre_operador(char * nombre, int op){
         case OP_GOTO:
             strcpy(nombre,"goto");
             break;
+        case INPUT:
+            strcpy(nombre,"input");
+            break;
+
+        case OUTPUT:
+            strcpy(nombre,"output");
+            break;
         default:
             error("Error en get_nombre_operador(): no existe operador");
             break;
@@ -364,6 +380,24 @@ dir_elemento* operacion_aritmetica(int op,dir_elemento * exp1, dir_elemento * ex
    gen(tabla_cuadruplas,op,exp1,exp2,res);
    return res;
 };
+
+void generarOutputs(tabla_de_simbolos* TS,tabla_de_cuadruplas * tabla_cuadruplas){
+
+    int pos = 0;
+    simbolo *sim = NULL;
+    //printf("\nEstoy buscando: %s\n", nombre);
+    if (TS->pos_libre != 0) {
+        while (pos < TS->pos_libre  && (TS->tabla[pos]->val.var.ambito == SALIDA |TS->tabla[pos]->val.var.ambito == ENTRADASALIDA )) {
+            //printf("\n %s vs %s\n", TS->tabla[pos]->nombre, nombre);
+            simbolo *sim = TS->tabla[pos];
+            dir_elemento * dir = nuevo_dir_elemento_celda_TS(sim);
+            gen(tabla_cuadruplas,OUTPUT,NULL,NULL,dir);
+            pos = pos + 1;
+        }
+        
+    }
+
+}
 
 
 

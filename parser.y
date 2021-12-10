@@ -143,7 +143,12 @@ defAccionesFunciones : defAccion defAccionesFunciones {}
                      | defFuncion defAccionesFunciones {}
                      | /* */ {}
                      ;
-bloque : declaraciones instrucciones {};
+bloque : declaraciones instrucciones {
+
+	backpatch(tabla_cuadruplas,$<listval>2,tabla_cuadruplas->next_quad);
+	generarOutputs(tabla_simbolos,tabla_cuadruplas);
+	
+};
 declaraciones : definicionTipo declaraciones {}
             | definicionConst declaraciones {}
             | definicionVar declaraciones {}
@@ -196,14 +201,23 @@ listaId : BT_IDENTIFICADOR BT_DEFINICIONTIPOVARIABLE defTipo BT_COMPOSICIONSECUE
         	printf("\nERROR def tipo\n");
         }
 
-		nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable,ambito);
+		simbolo * s = nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, tipo_variable,ambito);
+		dir_elemento * dir = nuevo_dir_elemento_celda_TS(s);
 
         $<intval>$ = tipo_variable;
+		if (ambito == ENTRADA ){
+			gen(tabla_cuadruplas,INPUT,NULL,NULL,dir);
+		}
+		
 
 		}
         | BT_IDENTIFICADOR BT_SEPARADOR listaId {
-        nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3,ambito);
+        simbolo * s =  nuevo_simbolo(tabla_simbolos, $<strval>1, VARIABLE, $<intval>3,ambito);
+		dir_elemento * dir = nuevo_dir_elemento_celda_TS(s);
         $<intval>$ = $<intval>3;
+		if (ambito == ENTRADA ){
+			gen(tabla_cuadruplas,INPUT,NULL,NULL,dir);
+		}
 
         }
 

@@ -1,6 +1,6 @@
 algoritmo variables;
 ent a: entero;
-sal a: entero;
+sal a, b: entero;
 {Prec: a= A}
 var
 d,e: real;
@@ -10,14 +10,12 @@ fvar
 para i :=  c hasta b  hacer
 		d := - e;
 		d := d - e
-fpara;
-
-a := c
+fpara
 
 
 
 
 
 
-{Post: a=A }
+{Post: a=A and b=B}
 falgoritmo

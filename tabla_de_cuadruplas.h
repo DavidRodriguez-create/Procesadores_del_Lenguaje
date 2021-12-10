@@ -35,6 +35,8 @@
 #define OP_MENORIGUAL 18
 #define OP_IGUAL 19
 #define OP_GOTO 20
+#define INPUT 21
+#define OUTPUT 22
 
 //~ #define op_mayor 5
 //~ #define op_menor 6
@@ -110,6 +112,7 @@ dir_elemento* nuevo_dir_elemento_pos_quad(int num);
 lista *makelist(int pos_quad);
 lista *merge(lista* l1, lista* l2);
 void backpatch(tabla_de_cuadruplas* TC, lista* l,int pos);
+void generarOutputs(tabla_de_simbolos* TS,tabla_de_cuadruplas * tabla_cuadruplas);
 /*
 tablaCuadruplas inicializarTablaCuadruplas();
 void gen(); //añadir cuadrupla a la tabla de cuádruplas
