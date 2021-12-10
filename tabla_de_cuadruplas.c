@@ -387,11 +387,14 @@ void generarOutputs(tabla_de_simbolos* TS,tabla_de_cuadruplas * tabla_cuadruplas
     simbolo *sim = NULL;
     //printf("\nEstoy buscando: %s\n", nombre);
     if (TS->pos_libre != 0) {
-        while (pos < TS->pos_libre  && (TS->tabla[pos]->val.var.ambito == SALIDA |TS->tabla[pos]->val.var.ambito == ENTRADASALIDA )) {
-            //printf("\n %s vs %s\n", TS->tabla[pos]->nombre, nombre);
-            simbolo *sim = TS->tabla[pos];
-            dir_elemento * dir = nuevo_dir_elemento_celda_TS(sim);
-            gen(tabla_cuadruplas,OUTPUT,NULL,NULL,dir);
+        while (pos < TS->pos_libre ) {
+            if (TS->tabla[pos]->val.var.ambito == SALIDA |TS->tabla[pos]->val.var.ambito == ENTRADASALIDA ){
+                simbolo *sim = TS->tabla[pos];
+                dir_elemento * dir = nuevo_dir_elemento_celda_TS(sim);
+                gen(tabla_cuadruplas,OUTPUT,NULL,NULL,dir);
+            }
+            //printf("\n %s\n", TS->tabla[pos]->nombre);
+            
             pos = pos + 1;
         }
         

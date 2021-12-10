@@ -133,8 +133,13 @@
 
 descAlgoritmo : BT_ALGORITMO BT_IDENTIFICADOR BT_COMPOSICIONSECUENCIAL cabeceraAlgoritmo bloqueAlgoritmo BT_FALGORITMO {printf("buenos dias\n");};
 
-cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO {};
-bloqueAlgoritmo : bloque BT_COMENTARIO {};
+cabeceraAlgoritmo : defGlobales defAccionesFunciones defVariablesInteraccion BT_COMENTARIO {
+	
+};
+bloqueAlgoritmo : bloque BT_COMENTARIO {
+	
+
+};
 defGlobales : definicionTipo defGlobales {}
             | definicionConst defGlobales {}
             | /* */ {}
@@ -147,6 +152,9 @@ bloque : declaraciones instrucciones {
 
 	backpatch(tabla_cuadruplas,$<listval>2,tabla_cuadruplas->next_quad);
 	generarOutputs(tabla_simbolos,tabla_cuadruplas);
+	
+
+	
 	
 };
 declaraciones : definicionTipo declaraciones {}
@@ -1589,15 +1597,18 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpcione
 iteracion : itCotaFija { $<listval>$ = $<listval>1; }
 		  | itCotaVariable { $<listval>$ = $<listval>1; }
 		  ;
-itCotaVariable : BT_MIENTRAS expresion BT_HACER M instrucciones N BT_FMIENTRAS {
+itCotaVariable : BT_MIENTRAS M expresion BT_HACER M instrucciones BT_FMIENTRAS {
 
-	backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
-	if ($<listval>5 != NULL) {
-		backpatch(tabla_cuadruplas,merge($<listval>6,$<listval>7),$<intval>4);
+	backpatch(tabla_cuadruplas,$<expval>3->lista_true,$<intval>5);
+	if ($<listval>6 != NULL) {
+		//backpatch(tabla_cuadruplas,merge($<listval>6,$<listval>7),$<intval>4);
+		backpatch(tabla_cuadruplas,$<listval>6,$<intval>2);
 	} else {
-		backpatch(tabla_cuadruplas,$<listval>6,$<intval>4);
+		//backpatch(tabla_cuadruplas,$<listval>6,$<intval>4);
+
+		gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,nuevo_dir_elemento_constante_entero($<intval>2));
 	}
-	$<listval>$ = $<expval>2->lista_false;
+	$<listval>$ = $<expval>3->lista_false;
 
 
 
@@ -1667,6 +1678,7 @@ int main(int argc, char **argv){
 	tabla_cuadruplas = nueva_tabla_de_cuadruplas();
 
 	yyparse();
+
 	imprime_tabla_simbolos(tabla_simbolos);
 	imprime_tabla_cuadruplas(tabla_cuadruplas);
 	generar_codigo_tres_direcciones(tabla_cuadruplas);
