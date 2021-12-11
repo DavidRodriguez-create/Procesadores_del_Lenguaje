@@ -1,18 +1,34 @@
 algoritmo variables;
-ent a: entero;
+ent a,n, m: entero;
 sal a, b: entero;
 {Prec: a= A}
 var
 d,e: real;
-b, c : entero;
+b, c, i: entero;
+r : booleano;
 fvar
 
-para i :=  c hasta b  hacer
-		d := - e;
-		d := d - e
-fpara
+i:= 0;
 
+si b > c ->
+	mientras i <n hacer
+		para i :=  c hasta b  hacer
+				d := - e;
+				d := d - e
+		fpara
 
+	fmientras
+[] b <= c ->
+
+	si r -> 
+		si r ->
+
+			continuar
+		[] r ->
+			Continuar
+		fsi 
+	fsi
+fsi
 
 
 

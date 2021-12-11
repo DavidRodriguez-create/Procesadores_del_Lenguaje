@@ -1451,7 +1451,12 @@ instrucciones : instruccion BT_COMPOSICIONSECUENCIAL M instrucciones {
 
             }
             ;
-instruccion : BT_CONTINUAR {}
+instruccion : BT_CONTINUAR {
+
+			$<listval>$ = makelist(tabla_cuadruplas->next_quad);
+			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+			}
             | asignacion {
                 $<listval>$ = NULL;
 
@@ -1574,40 +1579,25 @@ alternativa : BT_SI expresion BT_ENTONCES M instrucciones N M listaOpciones  BT_
 };
 listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpciones  {
 
-				backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
-				backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
-				
-
-				if ($<listval>8 == NULL){
-
-					//backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
-					$<listval>$ = merge($<listval>5,$<listval>6);
-				}else{
+					backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+					backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
 					
-					$<listval>$ = merge($<listval>6,merge($<listval>5,$<listval>8));
-				}	
 
-				/*
-                backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+					if ($<listval>8 == NULL){
 
-                if ($<listval>8 == NULL){
-
-                    backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
-                    backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>9);
-                    $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
-                }else{
-                    backpatch(tabla_cuadruplas,$<listval>6,$<intval>9);
-                    backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
-                    $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>8));
-                }*/
+						//backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+						$<listval>$ = merge($<listval>5,$<listval>6);
+					}else{
+						
+						$<listval>$ = merge($<listval>6,merge($<listval>5,$<listval>8));
+					}	
 
 
-                }
-			  | /* */ {
-                    $<listval>$ = NULL;
+				}
+				| /* */ {
+					$<listval>$ = NULL;
 
-			  }
-			  ;
+				};
 iteracion : itCotaFija { $<listval>$ = $<listval>1; }
 		  | itCotaVariable { $<listval>$ = $<listval>1; }
 		  ;
