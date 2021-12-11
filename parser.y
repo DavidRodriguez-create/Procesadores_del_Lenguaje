@@ -1553,27 +1553,41 @@ asignacion : operando BT_ASIGNACION expresion {
 			error("Error en asignacion: operando BT_ASIGNACION expresion");
 		}
 		};
-alternativa : BT_SI expresion BT_ENTONCES M instrucciones N M listaOpciones M BT_FSI {
+alternativa : BT_SI expresion BT_ENTONCES M instrucciones N M listaOpciones  BT_FSI {
     backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+	backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+	
 
+	if ($<listval>8 == NULL){
 
-
-    if ($<listval>8 == NULL){
-
-        backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
-        backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>9);
-        $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>6));
+        //backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+		$<listval>$ = merge($<listval>5,$<listval>6);
     }else{
-         backpatch(tabla_cuadruplas,$<listval>6,$<intval>9);
-         backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
-         $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>8));
-    }
+         //backpatch(tabla_cuadruplas,$<listval>6,$<intval>9);
+         
+         $<listval>$ = merge($<listval>6,merge($<listval>5,$<listval>8));
+    }	
 
 
 
 
 };
-listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpciones M {
+listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpciones  {
+
+				backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
+				backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
+				
+
+				if ($<listval>8 == NULL){
+
+					//backpatch(tabla_cuadruplas,$<listval>6,$<intval>7);
+					$<listval>$ = merge($<listval>5,$<listval>6);
+				}else{
+					
+					$<listval>$ = merge($<listval>6,merge($<listval>5,$<listval>8));
+				}	
+
+				/*
                 backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
 
                 if ($<listval>8 == NULL){
@@ -1585,7 +1599,7 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpcione
                     backpatch(tabla_cuadruplas,$<listval>6,$<intval>9);
                     backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
                     $<listval>$ = merge($<expval>2->lista_false,merge($<listval>5,$<listval>8));
-                }
+                }*/
 
 
                 }
