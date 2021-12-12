@@ -13,30 +13,30 @@ r:real;
 z:booleano;
 fvar
 
-z := 30.0 > consR;
+z := (30.0 = consR + 9 - 9.5 / m);
 z := verdadero y consB ;
 z := no (consB y consB) ;
 
-r := consR * consR;
-r := consR * a;
-r :=  a * consR;
+r := consR + consR;
+r := consR + a;
+r :=  a + consR;
 
-r := consR * 2.5;
-r :=  2.5 * consR;
-r := consR * 2;
-r :=  2 * consR;
-r := r * 2;
-r :=  2 * r;
-r := 2 * 2;
-r := r * r;
+r := consR + 2.5;
+r :=  2.5 + consR;
+r := consR + 2;
+r :=  2 + consR;
+r := r + 2;
+r :=  2 + r;
+r := 2 + 2;
+r := r + r;
 
 
-a := cons * cons;
-a :=  cons * a;
-a :=  a * cons;
+a := cons + cons;
+a :=  cons + a;
+a :=  a + cons;
 
-a := cons * 2;
-a := 2 * cons;
+a := cons + 2;
+a := 2 + cons;
 
 a := - cons;
 a := - 2;

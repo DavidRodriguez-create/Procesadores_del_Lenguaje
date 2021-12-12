@@ -335,7 +335,7 @@ expresion : llamadaFuncion {}
         if (exp_tipo == exp_tipo2 ){
 
             if(exp_tipo == CELDA_TS){
-				if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE ){
+				if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) ){
 					int tipo = ENTERO;
 					if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
 						tipo = REAL;
@@ -361,7 +361,7 @@ expresion : llamadaFuncion {}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
-				}else if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE ){
+				}else if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE ){
 					if ((exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
 					(exp1->val.celda_TS->val.var.tipo== REAL && exp2->val.celda_TS->val.cons.tipo == REAL)){
 						dir_temporal->val.celda_TS->val.var.tipo = exp2->val.celda_TS->val.cons.tipo;
@@ -379,7 +379,7 @@ expresion : llamadaFuncion {}
 						error("Error en expresion BT_SUMA expresion: No se puede modificar tipo en constantes");
 					}
 
-				}else if (exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->tipo == CONSTANTE){
+				}else if ((exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->tipo == CONSTANTE){
 
 					if ((exp2->val.celda_TS->val.var.tipo == ENTERO && exp1->val.celda_TS->val.cons.tipo == ENTERO)|
 					(exp2->val.celda_TS->val.var.tipo== REAL && exp1->val.celda_TS->val.cons.tipo == REAL)){
@@ -429,8 +429,8 @@ expresion : llamadaFuncion {}
 			}else{
 				error("Error en expresion BT_SUMA expresion: Tipo incorrecto");
 			}
-		}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) ){
 
@@ -439,8 +439,8 @@ expresion : llamadaFuncion {}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
-        }else if ( ((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+        }else if ( ((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+					((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -464,7 +464,7 @@ expresion : llamadaFuncion {}
 			ex1->dir = dir_temporal;
 			$<expval>$ = ex1;
 		
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL)  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -474,7 +474,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS  &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
+		}else if (((exp_tipo2 == CELDA_TS  &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -484,7 +484,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
 				gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
 				gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, dir_temporal, dir_temporal);
@@ -492,7 +492,7 @@ expresion : llamadaFuncion {}
 				$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
 				gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
 				gen(tabla_cuadruplas, OP_SUMA_REAL, dir_temporal, exp2, dir_temporal);
@@ -517,7 +517,7 @@ expresion : llamadaFuncion {}
 		dir_elemento* exp2 = $<expval>3->dir;
         if (exp_tipo == exp_tipo2 ){
             if(exp_tipo == CELDA_TS){
-				if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE ){
+				if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL)&& (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) ){
 					int tipo = ENTERO;
 					if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
 						tipo = REAL;
@@ -542,7 +542,8 @@ expresion : llamadaFuncion {}
 					}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
-				}else if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE ){
+				}else if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE ){
+					
 					if ((exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
 					(exp1->val.celda_TS->val.var.tipo== REAL && exp2->val.celda_TS->val.cons.tipo == REAL)){
 						dir_temporal->val.celda_TS->val.var.tipo = exp2->val.celda_TS->val.cons.tipo;
@@ -560,7 +561,7 @@ expresion : llamadaFuncion {}
 						error("Error en expresion BT_RESTA expresion: No se puede modificar tipo en constantes");
 					}
 
-				}else if (exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->tipo == CONSTANTE){
+				}else if ((exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->tipo == CONSTANTE){
 
 					if ((exp2->val.celda_TS->val.var.tipo == ENTERO && exp1->val.celda_TS->val.cons.tipo == ENTERO)|
 					(exp2->val.celda_TS->val.var.tipo== REAL && exp1->val.celda_TS->val.cons.tipo == REAL)){
@@ -612,8 +613,8 @@ expresion : llamadaFuncion {}
 			}else{
 				error("Error en expresion BT_RESTA expresion: Tipo incorrecto");
 			}
-		}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL)  && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) ){
 
@@ -622,8 +623,8 @@ expresion : llamadaFuncion {}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
-        }else if ( ((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+        }else if ( ((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+					((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 									
@@ -648,7 +649,7 @@ expresion : llamadaFuncion {}
 			ex1->dir = dir_temporal;
 			$<expval>$ = ex1;
 		
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -658,7 +659,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS  &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
+		}else if (((exp_tipo2 == CELDA_TS  && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -668,7 +669,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE  && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL)  && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
 				gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
 				gen(tabla_cuadruplas, OP_RESTA_REAL, exp1, dir_temporal, dir_temporal);
@@ -676,7 +677,7 @@ expresion : llamadaFuncion {}
 				$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
 				gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
 				gen(tabla_cuadruplas, OP_RESTA_REAL, dir_temporal, exp2, dir_temporal);
@@ -685,8 +686,7 @@ expresion : llamadaFuncion {}
 
         
 		}else{
-
-            error("Error en expresion BT_RESTA expresion: Tipo incorrecto");
+            error("Error en expresion BT_RESTA expresion: Tipo incorrecto HOLAAAA");
         }
 
     }
@@ -702,7 +702,7 @@ expresion : llamadaFuncion {}
 
             if(exp_tipo == CELDA_TS){
 
-				if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE ){
+				if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) ){
 				
 					int tipo = ENTERO;
 					if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
@@ -729,7 +729,7 @@ expresion : llamadaFuncion {}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
-				}else if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE ){
+				}else if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE ){
 					if ((exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
 					(exp1->val.celda_TS->val.var.tipo== REAL && exp2->val.celda_TS->val.cons.tipo == REAL)){
 						dir_temporal->val.celda_TS->val.var.tipo = exp2->val.celda_TS->val.cons.tipo;
@@ -747,7 +747,7 @@ expresion : llamadaFuncion {}
 						error("Error en expresion BT_MULTIPLICACION expresion: No se puede modificar tipo en constantes");
 					}
 
-				}else if (exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->tipo == CONSTANTE){
+				}else if ((exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->tipo == CONSTANTE){
 
 					if ((exp2->val.celda_TS->val.var.tipo == ENTERO && exp1->val.celda_TS->val.cons.tipo == ENTERO)|
 					(exp2->val.celda_TS->val.var.tipo== REAL && exp1->val.celda_TS->val.cons.tipo == REAL)){
@@ -799,8 +799,8 @@ expresion : llamadaFuncion {}
 			}else{
 				error("Error en expresion BT_MULTIPLICACION expresion: Tipo incorrecto");
 			}
-		}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) ){
 
@@ -809,8 +809,8 @@ expresion : llamadaFuncion {}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
-        }else if ( ((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+        }else if ( ((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+					((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -835,7 +835,7 @@ expresion : llamadaFuncion {}
 			ex1->dir = dir_temporal;
 			$<expval>$ = ex1;
 		
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL)  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -845,7 +845,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS  &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
+		}else if (((exp_tipo2 == CELDA_TS  &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -855,7 +855,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE  && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL)  && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
 
             dir_temporal->val.celda_TS->val.var.tipo = REAL;
 			gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
@@ -864,7 +864,7 @@ expresion : llamadaFuncion {}
 			$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
 
             dir_temporal->val.celda_TS->val.var.tipo = REAL;
 			gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
@@ -893,7 +893,7 @@ expresion : llamadaFuncion {}
 
             if(exp_tipo == CELDA_TS){
 
-				if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE ){
+				if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) ){
 					int tipo = ENTERO;
 					if (exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == REAL){
 						dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -920,7 +920,7 @@ expresion : llamadaFuncion {}
 					}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
-				}else if (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE ){
+				}else if ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE ){
 					if ((exp1->val.celda_TS->val.var.tipo== REAL && exp2->val.celda_TS->val.cons.tipo == REAL)){
 						dir_temporal->val.celda_TS->val.var.tipo = exp2->val.celda_TS->val.cons.tipo;
 						gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, dir_temporal);
@@ -937,7 +937,7 @@ expresion : llamadaFuncion {}
 						error("Error en expresion BT_DIVREAL expresion: No se puede modificar tipo en constantes");
 					}
 
-				}else if (exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->tipo == CONSTANTE){
+				}else if ((exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->tipo == CONSTANTE){
 
 					if ((exp2->val.celda_TS->val.var.tipo== REAL && exp1->val.celda_TS->val.cons.tipo == REAL)){
 						dir_temporal->val.celda_TS->val.var.tipo = exp1->val.celda_TS->val.cons.tipo;
@@ -991,8 +991,8 @@ expresion : llamadaFuncion {}
 			}else{
 				error("Error en expresion BT_DIVREAL expresion: Tipo incorrecto");
 			}
-		}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)){
+		}else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
 					dir_temporal2->val.celda_TS->val.var.tipo = REAL;
@@ -1003,8 +1003,8 @@ expresion : llamadaFuncion {}
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
-        }else if ( ((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+        }else if ( ((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+					((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1029,7 +1029,7 @@ expresion : llamadaFuncion {}
 			ex1->dir = dir_temporal;
 			$<expval>$ = ex1;
 		
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL)  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -1039,7 +1039,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS  &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
+		}else if (((exp_tipo2 == CELDA_TS  &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_INT) |
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
@@ -1049,7 +1049,7 @@ expresion : llamadaFuncion {}
 					$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE  && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL)  && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_FLOAT)){
             dir_temporal->val.celda_TS->val.var.tipo = REAL;
 			gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
 			gen(tabla_cuadruplas, OP_DIVREAL, exp1, dir_temporal, dir_temporal);
@@ -1057,7 +1057,7 @@ expresion : llamadaFuncion {}
 			$<expval>$ = ex1;
 
         
-		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
+		}else if (((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_FLOAT)){
             dir_temporal->val.celda_TS->val.var.tipo = REAL;
 			gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
 			gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal, exp2, dir_temporal);
@@ -1082,10 +1082,10 @@ expresion : llamadaFuncion {}
 
 				if(exp_tipo == CELDA_TS){
 
-					if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)){
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)){
 
 						dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 						gen(tabla_cuadruplas, OP_DIV, exp1, exp2, dir_temporal);
@@ -1108,8 +1108,8 @@ expresion : llamadaFuncion {}
 					error("Error expresion BT_DIV expresion: tipos incorrectos");
 				}
 
-			}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-					((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) |
+			}else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+					((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) |
 			          ((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
 					  ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) ){
 
@@ -1134,10 +1134,10 @@ expresion : llamadaFuncion {}
 
 				if(exp_tipo == CELDA_TS){
 
-					if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)){
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)){
 
 							dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 							gen(tabla_cuadruplas, OP_MOD, exp1, exp2, dir_temporal);
@@ -1160,8 +1160,8 @@ expresion : llamadaFuncion {}
 					error("Error expresion BT_MOD expresion: tipos incorrectos");
 				}
 
-			}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-					((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) |
+			}else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+					((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) |
 			          ((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
 					  ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) ){
 
@@ -1182,10 +1182,10 @@ expresion : llamadaFuncion {}
 		dir_elemento* dir_temporal  =  nuevo_dir_elemento_celda_TS( new_temp(tabla_simbolos));
 		dir_elemento* exp1 = $<expval>2->dir;
 		if (exp1->tipo == CELDA_TS){
-			if ((exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO )){
+			if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO )){
 				dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 				gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
-			}else if ((exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL )){
+			}else if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL )){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
 				gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
 			}else{
@@ -1230,10 +1230,10 @@ expresion : llamadaFuncion {}
 		dir_elemento* exp1 = $<expval>2->dir;
 		if (exp1->tipo == CELDA_TS){
 
-			if ((exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO )){
+			if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO )){
 				dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 				gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
-			}else if ((exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL )){
+			}else if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL )){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
 				gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
 			}else{
@@ -1258,10 +1258,10 @@ expresion : llamadaFuncion {}
         if (exp_tipo == exp_tipo2 ){
 
             if(exp_tipo == CELDA_TS){
-                if ( ($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+                if ( (($<expval>1->dir->val.celda_TS->tipo == VARIABLE| $<expval>1->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && ($<expval>4->dir->val.celda_TS->tipo == VARIABLE| $<expval>4->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
 				   ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)|
-				    ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
-					($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)){
+				    ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && ($<expval>4->dir->val.celda_TS->tipo == VARIABLE| $<expval>4->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+					(($<expval>1->dir->val.celda_TS->tipo == VARIABLE| $<expval>1->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)){
 
 
 						backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
@@ -1282,7 +1282,7 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_Y M expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) | 
+        }else if (((exp_tipo == CELDA_TS && ($<expval>1->dir->val.celda_TS->tipo == VARIABLE| $<expval>1->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) | 
 					(exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO)) 
 					&& exp_tipo2 == CONSTANTE_BOOL ){
 
@@ -1291,7 +1291,7 @@ expresion : llamadaFuncion {}
 					$<expval>$->lista_true = $<expval>4->lista_true;
 					$<expval>$->dir = $<expval>1->dir;
 
-        }else if (((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) |
+        }else if (((exp_tipo2 == CELDA_TS && ($<expval>4->dir->val.celda_TS->tipo == VARIABLE| $<expval>4->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) |
 				(exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO))
 				&& exp_tipo == CONSTANTE_BOOL){
 
@@ -1314,10 +1314,10 @@ expresion : llamadaFuncion {}
         if (exp_tipo == exp_tipo2 ){
 
             if(exp_tipo == CELDA_TS){
-                if ( ($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+                if ( (($<expval>1->dir->val.celda_TS->tipo == VARIABLE| $<expval>1->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && ($<expval>4->dir->val.celda_TS->tipo == VARIABLE| $<expval>4->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
 				   ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)|
-				    ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
-					($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)){
+				    ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && ($<expval>4->dir->val.celda_TS->tipo == VARIABLE| $<expval>4->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+					(($<expval>1->dir->val.celda_TS->tipo == VARIABLE| $<expval>1->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)){
 
 						backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
 						$<expval>$->lista_false =  $<expval>4->lista_false;
@@ -1337,7 +1337,7 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_Y M expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) | 
+        }else if (((exp_tipo == CELDA_TS && ($<expval>1->dir->val.celda_TS->tipo == VARIABLE| $<expval>1->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) | 
 					(exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO)) 
 					&& exp_tipo2 == CONSTANTE_BOOL ){
 
@@ -1346,7 +1346,7 @@ expresion : llamadaFuncion {}
 						$<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
 						$<expval>$->dir = $<expval>1->dir;
 
-        }else if (((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) |
+        }else if (((exp_tipo2 == CELDA_TS && ($<expval>4->dir->val.celda_TS->tipo == VARIABLE| $<expval>4->dir->val.celda_TS->tipo == TEMPORAL) && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) |
 				(exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO))
 				&& exp_tipo == CONSTANTE_BOOL){
 
@@ -1374,7 +1374,7 @@ expresion : llamadaFuncion {}
 
 		if ( exp_tipo == CELDA_TS ){
 		
-			if ( ($<expval>2->dir->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == BOOLEANO) |
+			if ( (($<expval>2->dir->val.celda_TS->tipo == VARIABLE| $<expval>2->dir->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == BOOLEANO) |
 				($<expval>2->dir->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == BOOLEANO) ){
 				ex1->dir = exp1;
 				ex1->lista_true = $<expval>2->lista_false;
@@ -1424,14 +1424,14 @@ expresion : llamadaFuncion {}
             if(exp_tipo == CELDA_TS){
 
 
-				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+				if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
 							ex1->dir = dir_temporal;
 							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
@@ -1454,12 +1454,12 @@ expresion : llamadaFuncion {}
                 error("Error en expresion BT_MAYOR  expresion : Tipo incorrecto en expresion");
             }
 			
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+        }else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1496,14 +1496,14 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+				if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
 
 							ex1->dir = dir_temporal;
@@ -1524,14 +1524,14 @@ expresion : llamadaFuncion {}
 					gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
 					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
             }else{
-                error("Error en expresion BT_MENOR  expresion : Tipo incorrecto en expresion");
+                error("Error en expresion BT_MENOR  expresion : Tipo incorrecto en expresion HOLAAAA");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+        }else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1544,8 +1544,9 @@ expresion : llamadaFuncion {}
 					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
-
-            error("Error en expresion BT_MENOR  expresion: Tipo incorrecto");
+			
+	
+            error("Error en expresion BT_MENOR  expresion: Tipo incorrecto HOLLAA");
         }
 
 
@@ -1566,14 +1567,14 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+				if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
 					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+					   ((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
 							ex1->dir = dir_temporal;
 							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
@@ -1595,12 +1596,12 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_IGUAL  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+        }else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1633,14 +1634,14 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+				if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
 					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
 							ex1->dir = dir_temporal;
 							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
@@ -1662,12 +1663,12 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_DISTINTO  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+        }else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1700,14 +1701,14 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+				if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
 					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
 
 						ex1->dir = dir_temporal;
@@ -1731,12 +1732,12 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_MAYORIGUAL  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+        }else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1770,14 +1771,14 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+				if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
 					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
 					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
-					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+					((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
 						ex1->dir = dir_temporal;
 						ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
@@ -1799,12 +1800,12 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_MENORIGUAL   expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+        }else if (((exp_tipo == CELDA_TS && (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
-				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
-				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  (exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  (exp2->val.celda_TS->tipo == VARIABLE | exp2->val.celda_TS->tipo == TEMPORAL) && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
@@ -1891,6 +1892,7 @@ asignacion : operando BT_ASIGNACION expresion {
 				
 				if ($<expval>3->dir->val.celda_TS->tipo == VARIABLE |$<expval>3->dir->val.celda_TS->tipo == TEMPORAL ){
 					exp_simbolo_tipo = $<expval>3->dir->val.celda_TS->val.var.tipo;
+					
 
 				}else{
 			
@@ -1922,8 +1924,7 @@ asignacion : operando BT_ASIGNACION expresion {
 					gen(tabla_cuadruplas, $<intval>2, dir_temporal, NULL, res);
 				}
 				else{
-					printf("%d\n",exp_simbolo_tipo);
-					printf("%d\n",res_simbolo_tipo);
+					
 					error("Error en asignacion: operando BT_ASIGNACION expresion, tipo expresion incompatible con operando ");
 				}
 
