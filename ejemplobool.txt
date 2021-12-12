@@ -8,7 +8,7 @@ aux4: real;
 aux :  booleano;
 fvar
 
-aux4 := (4 + 8.6);
+aux4 := (4 + 2E+3);
 aux := no ((8.6 >= 10.50) o verdadero)
 
 
