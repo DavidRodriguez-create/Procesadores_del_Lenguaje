@@ -5,11 +5,17 @@ sal a, b: entero;
 const
 	cons := 53;
     consR := 0.0;
+    consB := verdAdero;
 fconst
 var 
 
 r:real;
+z:booleano;
 fvar
+
+z := 30.0 > consR;
+z := verdadero y consB ;
+z := no (consB y consB) ;
 
 r := consR * consR;
 r := consR * a;
@@ -19,6 +25,10 @@ r := consR * 2.5;
 r :=  2.5 * consR;
 r := consR * 2;
 r :=  2 * consR;
+r := r * 2;
+r :=  2 * r;
+r := 2 * 2;
+r := r * r;
 
 
 a := cons * cons;

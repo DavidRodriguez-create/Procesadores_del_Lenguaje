@@ -80,6 +80,7 @@ simbolo* new_temp(tabla_de_simbolos* TS);
 simbolo* nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito);
 simbolo* nuevo_simbolo_constante_entero(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito,int valor);
 simbolo* nuevo_simbolo_constante_real(tabla_de_simbolos* TS, char* nombre,float valor);
+simbolo* nuevo_simbolo_constante_bool(tabla_de_simbolos* TS, char* nombre,char* valor);
 void ver_simbolo_por_pantalla(simbolo *sim);
 int existe_simbolo(tabla_de_simbolos* TS, char* nombre);
 simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre);

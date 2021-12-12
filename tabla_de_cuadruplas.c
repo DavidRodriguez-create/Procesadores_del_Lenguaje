@@ -268,7 +268,7 @@ void get_nombre_operador(char * nombre, int op){
             strcpy(nombre,"+");
             break;
         case OP_SUMA_REAL:
-            strcpy(nombre,"+");
+            strcpy(nombre,"+(real)");
             break;
         case OP_RESTA_UNARIA:
             strcpy(nombre,"-");
@@ -277,13 +277,13 @@ void get_nombre_operador(char * nombre, int op){
             strcpy(nombre,"-");
             break;
         case OP_RESTA_REAL:
-            strcpy(nombre,"-");
+            strcpy(nombre,"-(real)");
             break;
         case OP_MULTIPLICACION:
             strcpy(nombre,"*");
             break;
         case OP_MULTIPLICACION_REAL:
-            strcpy(nombre,"*");
+            strcpy(nombre,"*(real)");
             break;
         case OP_DIVREAL:
             strcpy(nombre,"/");

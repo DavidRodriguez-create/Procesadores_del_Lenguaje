@@ -5,10 +5,11 @@ sal a, b: entero;
 const
 	cons := 53;
 	cons2 := 0;
+	consB := verdadero;
 fconst
 var
 d,e: real;
-b, c, i: entero;
+c, i: entero;
 r : booleano;
 fvar
 
@@ -17,7 +18,7 @@ c := cons;
 
 i:= 0;
 
-si b > c ->
+si consB ->
 	mientras i <n hacer
 		para i :=  c hasta b  hacer
 				d := - e;

@@ -111,7 +111,7 @@
 %left BT_Y
 %right BT_NO
 
-%left BT_MAYOR BT_MENOR BT_IGUAL BT_DISTINTO BT_MAYORIGUAL BT_MENORIGUAL
+%left BT_MAYOR BT_MENOR BT_CREACIONTIPO BT_DISTINTO BT_MAYORIGUAL BT_MENORIGUAL
 %left BT_MOD BT_DIV
 %left BT_SUMA BT_RESTA
 %left BT_MULTIPLICACION BT_DIVREAL
@@ -192,6 +192,10 @@ listaDefsConstantes : BT_IDENTIFICADOR BT_ASIGNACION BT_LITERALENTERO BT_COMPOSI
 			|BT_IDENTIFICADOR BT_ASIGNACION BT_LITERALREAL BT_COMPOSICIONSECUENCIAL listaDefsConstantes {
 
 				nuevo_simbolo_constante_real(tabla_simbolos, $<strval>1,$<floatval>3);
+			}
+		    |BT_IDENTIFICADOR BT_ASIGNACION BT_LITERALBOOLEANO BT_COMPOSICIONSECUENCIAL listaDefsConstantes {
+
+				nuevo_simbolo_constante_bool(tabla_simbolos, $<strval>1,$<strval>3);
 			}
 		    | /* */ {}
 		    ;
@@ -274,10 +278,22 @@ expresion : llamadaFuncion {}
 		int tipo_simbolo = $<simval>1->tipo;
 
 		if (tipo_simbolo == CONSTANTE){
-			ex1->dir = dir_temporal;
-			ex1->lista_true = NULL;
-			ex1->lista_false = NULL;
-			$<expval>$ = ex1;
+			if ($<simval>1->val.cons.tipo == BOOLEANO){
+
+				ex1->dir = dir_temporal;
+				ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+				ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+				$<expval>$ = ex1;
+				gen(tabla_cuadruplas,OP_IGUAL,dir_temporal,dir_true,NULL);
+				gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+			}else{
+				ex1->dir = dir_temporal;
+				ex1->lista_true = NULL;
+				ex1->lista_false = NULL;
+				$<expval>$ = ex1;
+			}
+			
 			
 
 		}else{
@@ -436,7 +452,15 @@ expresion : llamadaFuncion {}
 
         }else if((exp_tipo == CONSTANTE_INT && exp_tipo2 == CONSTANTE_FLOAT ) | (exp_tipo2 == CONSTANTE_INT && exp_tipo == CONSTANTE_FLOAT) ){
 			dir_temporal->val.celda_TS->val.var.tipo = REAL;
-			gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, exp2, dir_temporal);
+			if (exp_tipo2 == CONSTANTE_INT){
+				gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+				gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, dir_temporal, dir_temporal);
+			}else{
+				gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+				gen(tabla_cuadruplas, OP_SUMA_REAL, dir_temporal, exp2, dir_temporal);
+			}
+			
+			
 			ex1->dir = dir_temporal;
 			$<expval>$ = ex1;
 		
@@ -444,7 +468,8 @@ expresion : llamadaFuncion {}
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, dir_temporal, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -453,7 +478,8 @@ expresion : llamadaFuncion {}
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_SUMA_REAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_SUMA_REAL, dir_temporal, exp2, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -610,15 +636,24 @@ expresion : llamadaFuncion {}
         }else if((exp_tipo == CONSTANTE_INT && exp_tipo2 == CONSTANTE_FLOAT ) | (exp_tipo2 == CONSTANTE_INT && exp_tipo == CONSTANTE_FLOAT) ){
 
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_RESTA_REAL, exp1, exp2, dir_temporal);
-				ex1->dir = dir_temporal;
-				$<expval>$ = ex1;
+				if (exp_tipo2 == CONSTANTE_INT){
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_RESTA_REAL, exp1, dir_temporal, dir_temporal);
+				}else{
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_RESTA_REAL, dir_temporal, exp2, dir_temporal);
+				}
+			
+			
+			ex1->dir = dir_temporal;
+			$<expval>$ = ex1;
 		
 		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_RESTA_REAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_RESTA_REAL, exp1, dir_temporal, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -627,7 +662,8 @@ expresion : llamadaFuncion {}
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_RESTA_REAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_RESTA_REAL, dir_temporal, exp2, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -787,15 +823,24 @@ expresion : llamadaFuncion {}
         }else if((exp_tipo == CONSTANTE_INT && exp_tipo2 == CONSTANTE_FLOAT ) | (exp_tipo2 == CONSTANTE_INT && exp_tipo == CONSTANTE_FLOAT) ){
 
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, exp1, exp2, dir_temporal);
-				ex1->dir = dir_temporal;
-				$<expval>$ = ex1;
+				if (exp_tipo2 == CONSTANTE_INT){
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, exp1, dir_temporal, dir_temporal);
+				}else{
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, dir_temporal, exp2, dir_temporal);
+				}
+			
+			
+			ex1->dir = dir_temporal;
+			$<expval>$ = ex1;
 		
 		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, exp1, dir_temporal, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -804,7 +849,8 @@ expresion : llamadaFuncion {}
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_MULTIPLICACION_REAL, dir_temporal, exp2, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -907,7 +953,7 @@ expresion : llamadaFuncion {}
 						$<expval>$ = ex1;
 						
 					}else{
-						error("Error en expresion BT_DIVREAL expresion: No se puede modificar tipo en constantes HOLAAAAA");
+						error("Error en expresion BT_DIVREAL expresion: No se puede modificar tipo en constantes");
 					}
 
 
@@ -924,7 +970,11 @@ expresion : llamadaFuncion {}
 			}else if (exp_tipo == CONSTANTE_INT && exp_tipo2 == CONSTANTE_INT){
 
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, dir_temporal);
+				dir_temporal2->val.celda_TS->val.var.tipo = REAL;
+				gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+				gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal2);
+				gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal,dir_temporal2,dir_temporal);
+
 				ex1->dir = dir_temporal;
 				$<expval>$ = ex1;
 
@@ -941,24 +991,19 @@ expresion : llamadaFuncion {}
 			}else{
 				error("Error en expresion BT_DIVREAL expresion: Tipo incorrecto");
 			}
-		}else if ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT  ){
+		}else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)){
 
-            dir_temporal->val.celda_TS->val.var.tipo = REAL;
-			gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
-			gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal, exp2, dir_temporal);
-			ex1->dir = dir_temporal;
-			$<expval>$ = ex1;
+					dir_temporal->val.celda_TS->val.var.tipo = REAL;
+					dir_temporal2->val.celda_TS->val.var.tipo = REAL;
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal2);
+					gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal,dir_temporal2,dir_temporal);
 
-        }else if ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT){
+					ex1->dir = dir_temporal;
+					$<expval>$ = ex1;
 
-			dir_temporal->val.celda_TS->val.var.tipo = REAL;
-			gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
-			gen(tabla_cuadruplas, OP_DIVREAL, exp1, dir_temporal, dir_temporal);
-			ex1->dir = dir_temporal;
-			$<expval>$ = ex1;
-
-
-		}else if ( ((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+        }else if ( ((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
 					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
 					((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
@@ -972,15 +1017,24 @@ expresion : llamadaFuncion {}
         }else if((exp_tipo == CONSTANTE_INT && exp_tipo2 == CONSTANTE_FLOAT ) | (exp_tipo2 == CONSTANTE_INT && exp_tipo == CONSTANTE_FLOAT) ){
 
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, dir_temporal);
-				ex1->dir = dir_temporal;
-				$<expval>$ = ex1;
+				if (exp_tipo2 == CONSTANTE_INT){
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_DIVREAL, exp1, dir_temporal, dir_temporal);
+				}else{
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal, exp2, dir_temporal);
+				}
+			
+			
+			ex1->dir = dir_temporal;
+			$<expval>$ = ex1;
 		
 		}else if (((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE  && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)|
 				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE  && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp2,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_DIVREAL, exp1, dir_temporal, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -989,7 +1043,8 @@ expresion : llamadaFuncion {}
 				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE  && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_INT)){
 
 					dir_temporal->val.celda_TS->val.var.tipo = REAL;
-					gen(tabla_cuadruplas, OP_DIVREAL, exp1, exp2, dir_temporal);
+					gen(tabla_cuadruplas, OP_INTTOREAL,exp1,NULL,dir_temporal);
+					gen(tabla_cuadruplas, OP_DIVREAL, dir_temporal, exp2, dir_temporal);
 					ex1->dir = dir_temporal;
 					$<expval>$ = ex1;
 
@@ -1203,12 +1258,16 @@ expresion : llamadaFuncion {}
         if (exp_tipo == exp_tipo2 ){
 
             if(exp_tipo == CELDA_TS){
-                if ( ($<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) ){
+                if ( ($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+				   ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)|
+				    ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+					($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)){
 
-                    backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
-                    $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
-                    $<expval>$->lista_true = $<expval>4->lista_true;
-                    $<expval>$->dir = $<expval>1->dir;
+
+						backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+						$<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+						$<expval>$->lista_true = $<expval>4->lista_true;
+						$<expval>$->dir = $<expval>1->dir;
 
                 }else{
                     error("Error en expresion BT_Y M expresion: Tipo incorrecto");
@@ -1223,17 +1282,23 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_Y M expresion : Tipo incorrecto en expresion");
             }
-        }else if ((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) && exp_tipo2 == CONSTANTE_BOOL ){
-            backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
-            $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
-            $<expval>$->lista_true = $<expval>4->lista_true;
-            $<expval>$->dir = $<expval>1->dir;
+        }else if (((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) | 
+					(exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO)) 
+					&& exp_tipo2 == CONSTANTE_BOOL ){
 
-        }else if ((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) && exp_tipo == CONSTANTE_BOOL){
-            backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
-            $<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
-            $<expval>$->lista_true = $<expval>4->lista_true;
-            $<expval>$->dir = $<expval>1->dir;
+					backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+					$<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+					$<expval>$->lista_true = $<expval>4->lista_true;
+					$<expval>$->dir = $<expval>1->dir;
+
+        }else if (((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) |
+				(exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO))
+				&& exp_tipo == CONSTANTE_BOOL){
+
+				backpatch(tabla_cuadruplas,$<expval>1->lista_true,$<intval>3);
+				$<expval>$->lista_false = merge($<expval>1->lista_false,$<expval>4->lista_false);
+				$<expval>$->lista_true = $<expval>4->lista_true;
+				$<expval>$->dir = $<expval>1->dir;
 
 
         }else{
@@ -1249,12 +1314,15 @@ expresion : llamadaFuncion {}
         if (exp_tipo == exp_tipo2 ){
 
             if(exp_tipo == CELDA_TS){
-                if ( ($<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) ){
+                if ( ($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+				   ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)|
+				    ($<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO)|
+					($<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO)){
 
-                    backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
-					$<expval>$->lista_false =  $<expval>4->lista_false;
-					$<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
-					$<expval>$->dir = $<expval>1->dir;
+						backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
+						$<expval>$->lista_false =  $<expval>4->lista_false;
+						$<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
+						$<expval>$->dir = $<expval>1->dir;
 
                 }else{
                     error("Error en expresion BT_Y M expresion: Tipo incorrecto");
@@ -1269,17 +1337,23 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_Y M expresion : Tipo incorrecto en expresion");
             }
-        }else if ((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) && exp_tipo2 == CONSTANTE_BOOL ){
-            backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
-            $<expval>$->lista_false =  $<expval>4->lista_false;
-            $<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
-            $<expval>$->dir = $<expval>1->dir;
+        }else if (((exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == VARIABLE && $<expval>1->dir->val.celda_TS->val.var.tipo == BOOLEANO) | 
+					(exp_tipo == CELDA_TS && $<expval>1->dir->val.celda_TS->tipo == CONSTANTE && $<expval>1->dir->val.celda_TS->val.cons.tipo == BOOLEANO)) 
+					&& exp_tipo2 == CONSTANTE_BOOL ){
 
-        }else if ((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) && exp_tipo == CONSTANTE_BOOL){
-            backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
-            $<expval>$->lista_false =  $<expval>4->lista_false;
-            $<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
-            $<expval>$->dir = $<expval>1->dir;
+						backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
+						$<expval>$->lista_false =  $<expval>4->lista_false;
+						$<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
+						$<expval>$->dir = $<expval>1->dir;
+
+        }else if (((exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == VARIABLE && $<expval>4->dir->val.celda_TS->val.var.tipo == BOOLEANO) |
+				(exp_tipo2 == CELDA_TS && $<expval>4->dir->val.celda_TS->tipo == CONSTANTE && $<expval>4->dir->val.celda_TS->val.cons.tipo == BOOLEANO))
+				&& exp_tipo == CONSTANTE_BOOL){
+
+					backpatch(tabla_cuadruplas,$<expval>1->lista_false,$<intval>3);
+					$<expval>$->lista_false =  $<expval>4->lista_false;
+					$<expval>$->lista_true = merge($<expval>1->lista_true,$<expval>4->lista_true);
+					$<expval>$->dir = $<expval>1->dir;
 
 
         }else{
@@ -1299,8 +1373,9 @@ expresion : llamadaFuncion {}
     	
 
 		if ( exp_tipo == CELDA_TS ){
-			int tipo = exp1->val.celda_TS->val.var.tipo;
-			if (tipo == BOOLEANO){
+		
+			if ( ($<expval>2->dir->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == BOOLEANO) |
+				($<expval>2->dir->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == BOOLEANO) ){
 				ex1->dir = exp1;
 				ex1->lista_true = $<expval>2->lista_false;
 				ex1->lista_false = $<expval>2->lista_true;
@@ -1348,16 +1423,22 @@ expresion : llamadaFuncion {}
 
             if(exp_tipo == CELDA_TS){
 
-				int tipo = exp1->val.celda_TS->val.var.tipo;
-				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
 
-                    ex1->dir = dir_temporal;
-					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-					$<expval>$ = ex1;
-					gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
+
+							ex1->dir = dir_temporal;
+							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+							ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+							$<expval>$ = ex1;
+							gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
+							gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
                 }else{
                     error("Error en expresion BT_MAYOR  expresion: Tipo incorrecto");
                 }
@@ -1372,26 +1453,26 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_MAYOR  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+			
+        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
-        }else if (((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) | ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
-
+					ex1->dir = dir_temporal;
+					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+					$<expval>$ = ex1;
+					gen(tabla_cuadruplas,OP_MAYOR,exp1,exp2,NULL);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
 
-            error("Error en expresion BT_MAYOR  expresion: Tipo incorrecto");
+            error("Error en expresion BT_MAYOR  expresion: Los operandos tienen que ser del mis tipo");
         }
 
 
@@ -1415,14 +1496,22 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
-                    ex1->dir = dir_temporal;
-					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-					$<expval>$ = ex1;
-					gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+							ex1->dir = dir_temporal;
+							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+							ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+							$<expval>$ = ex1;
+							gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
+							gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
                 }else{
                     error("Error en expresion BT_MENOR  expresion: Tipo incorrecto");
                 }
@@ -1437,22 +1526,22 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_MENOR  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
-        }else if (((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) | ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
+					ex1->dir = dir_temporal;
+					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+					$<expval>$ = ex1;
+					gen(tabla_cuadruplas,OP_MENOR,exp1,exp2,NULL);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
 
@@ -1461,7 +1550,7 @@ expresion : llamadaFuncion {}
 
 
     }
-    | expresion BT_IGUAL expresion {
+    | expresion BT_CREACIONTIPO expresion {
 
 		
 		expresion* ex1 = (expresion*) malloc(sizeof(expresion));
@@ -1477,14 +1566,21 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					   (exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
-                    ex1->dir = dir_temporal;
-					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-					$<expval>$ = ex1;
-					gen(tabla_cuadruplas,OP_IGUAL,exp1,exp2,NULL);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+							ex1->dir = dir_temporal;
+							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+							ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+							$<expval>$ = ex1;
+							gen(tabla_cuadruplas,OP_IGUAL,exp1,exp2,NULL);
+							gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
                 }else{
                     error("Error en expresion BT_IGUAL  expresion: Tipo incorrecto");
                 }
@@ -1499,22 +1595,22 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_IGUAL  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_IGUAL,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
-        }else if (((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) | ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_IGUAL,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
+					ex1->dir = dir_temporal;
+					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+					$<expval>$ = ex1;
+					gen(tabla_cuadruplas,OP_IGUAL,exp1,exp2,NULL);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
 
@@ -1537,14 +1633,21 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
-                    ex1->dir = dir_temporal;
-					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-					$<expval>$ = ex1;
-					gen(tabla_cuadruplas,OP_DISTINTO,exp1,exp2,NULL);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+							ex1->dir = dir_temporal;
+							ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+							ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+							$<expval>$ = ex1;
+							gen(tabla_cuadruplas,OP_DISTINTO,exp1,exp2,NULL);
+							gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
                 }else{
                     error("Error en expresion BT_DISTINTO  expresion: Tipo incorrecto");
                 }
@@ -1559,22 +1662,22 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_DISTINTO  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_DISTINTO,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
-        }else if (((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) | ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_DISTINTO,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
+					ex1->dir = dir_temporal;
+					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+					$<expval>$ = ex1;
+					gen(tabla_cuadruplas,OP_DISTINTO,exp1,exp2,NULL);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
 
@@ -1597,14 +1700,23 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
-                    ex1->dir = dir_temporal;
-					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-					$<expval>$ = ex1;
-					gen(tabla_cuadruplas,OP_MAYORIGUAL,exp1,exp2,NULL);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
+						ex1->dir = dir_temporal;
+						ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+						ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+						$<expval>$ = ex1;
+						gen(tabla_cuadruplas,OP_MAYORIGUAL,exp1,exp2,NULL);
+						gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+
                 }else{
                     error("Error en expresion BT_MAYORIGUAL  expresion: Tipo incorrecto");
                 }
@@ -1619,22 +1731,22 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_MAYORIGUAL  expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MAYORIGUAL,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
-        }else if (((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) | ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MAYORIGUAL,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
+					ex1->dir = dir_temporal;
+					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+					$<expval>$ = ex1;
+					gen(tabla_cuadruplas,OP_MAYORIGUAL,exp1,exp2,NULL);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
 
@@ -1658,14 +1770,21 @@ expresion : llamadaFuncion {}
 
 				int tipo = exp1->val.celda_TS->val.var.tipo;
 				int tipo2 = exp2->val.celda_TS->val.var.tipo;
-				if ((tipo == ENTERO && tipo2 == ENTERO) || ( tipo == REAL && tipo2 == REAL )){
+				if ((exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == ENTERO && exp2->val.celda_TS->val.cons.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == ENTERO && exp2->val.celda_TS->val.var.tipo == ENTERO)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.var.tipo == REAL && exp2->val.celda_TS->val.cons.tipo == REAL)|
+					(exp1->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.cons.tipo == REAL && exp2->val.celda_TS->val.var.tipo == REAL)){
 
-                    ex1->dir = dir_temporal;
-					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-					$<expval>$ = ex1;
-					gen(tabla_cuadruplas,OP_MENORIGUAL ,exp1,exp2,NULL);
-					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+						ex1->dir = dir_temporal;
+						ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+						ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+						$<expval>$ = ex1;
+						gen(tabla_cuadruplas,OP_MENORIGUAL ,exp1,exp2,NULL);
+						gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
                 }else{
                     error("Error en expresion BT_MENORIGUAL   expresion: Tipo incorrecto");
                 }
@@ -1680,22 +1799,21 @@ expresion : llamadaFuncion {}
             }else{
                 error("Error en expresion BT_MENORIGUAL   expresion : Tipo incorrecto en expresion");
             }
-        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | ((exp_tipo == CELDA_TS && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MENORIGUAL ,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
+        }else if (((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo == CONSTANTE_INT)|
+				((exp_tipo == CELDA_TS && exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == ENTERO) && exp_tipo2 == CONSTANTE_INT) | 
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == VARIABLE && exp1->val.celda_TS->val.var.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT)| 
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == VARIABLE && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo2 == CELDA_TS &&  exp2->val.celda_TS->tipo == CONSTANTE && exp2->val.celda_TS->val.cons.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)|
+				((exp_tipo == CELDA_TS &&  exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL) && exp_tipo2 == CONSTANTE_FLOAT) ){
 
-        }else if (((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == ENTERO) && exp_tipo == CONSTANTE_INT) | ((exp_tipo2 == CELDA_TS && exp2->val.celda_TS->val.var.tipo == REAL) && exp_tipo == CONSTANTE_FLOAT)){
-            ex1->dir = dir_temporal;
-			ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
-			ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
-			$<expval>$ = ex1;
-			gen(tabla_cuadruplas,OP_MENORIGUAL ,exp1,exp2,NULL);
-			gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
-
+					ex1->dir = dir_temporal;
+					ex1->lista_true = makelist(tabla_cuadruplas->next_quad);
+					ex1->lista_false = makelist(tabla_cuadruplas->next_quad + 1);
+					$<expval>$ = ex1;
+					gen(tabla_cuadruplas,OP_MENORIGUAL ,exp1,exp2,NULL);
+					gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,NULL);
 
         }else{
 
@@ -1926,21 +2044,33 @@ itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion
 	}
 	
 	dir_elemento* uno  =  nuevo_dir_elemento_constante_entero(1);
-	simbolo * s = nuevo_simbolo(tabla_simbolos, $<strval>2, VARIABLE, ENTERO,ambito);
-	dir_elemento* dir =   nuevo_dir_elemento_celda_TS(s);
-	gen(tabla_cuadruplas,OP_SUMA,dir,uno,dir);
+
+
+	simbolo* s = buscar_sim_nombre(tabla_simbolos, $<strval>2);
+	if (s->tipo == CONSTANTE){
+		yyerror("No se puede asignar una constante en un buqle for");
+	}else{
+
+		if (s == NULL){
+			s = nuevo_simbolo(tabla_simbolos, $<strval>2, VARIABLE, ENTERO,ambito);
+		}
+
+		dir_elemento* dir =   nuevo_dir_elemento_celda_TS(s);
+		gen(tabla_cuadruplas,OP_SUMA,dir,uno,dir);
+		
+		dir_elemento* next =  nuevo_dir_elemento_constante_entero(tabla_cuadruplas->next_quad + 2);	
+		gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,next);
+		backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
+		gen(tabla_cuadruplas,OP_ASIGNACION,$<expval>4->dir, NULL,dir );
+		dir_elemento* m_quad =  nuevo_dir_elemento_constante_entero($<intval>9 );	
+		gen(tabla_cuadruplas,OP_MENORIGUAL,dir, $<expval>4->dir, m_quad );
+
+		$<listval>$ = makelist(tabla_cuadruplas->next_quad);
+		gen(tabla_cuadruplas, OP_GOTO, NULL, NULL, NULL);
+
+
+	}
 	
-	dir_elemento* next =  nuevo_dir_elemento_constante_entero(tabla_cuadruplas->next_quad + 2);	
-	gen(tabla_cuadruplas,OP_GOTO,NULL,NULL,next);
-	backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
-	gen(tabla_cuadruplas,OP_ASIGNACION,$<expval>4->dir, NULL,dir );
-	dir_elemento* m_quad =  nuevo_dir_elemento_constante_entero($<intval>9 );	
-	gen(tabla_cuadruplas,OP_MENORIGUAL,dir, $<expval>4->dir, m_quad );
-
-	$<listval>$ = makelist(tabla_cuadruplas->next_quad);
-	gen(tabla_cuadruplas, OP_GOTO, NULL, NULL, NULL);
-
-
 
 
 };
@@ -1989,5 +2119,5 @@ int main(int argc, char **argv){
 }
 
 void yyerror(const char *s){
-	printf("ERROR %s\n", s);
+	printf(RED "\n\nERROR:  %s\n"RESET, s);
 }

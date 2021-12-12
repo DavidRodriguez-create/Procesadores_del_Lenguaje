@@ -157,6 +157,51 @@ simbolo* nuevo_simbolo_constante_real(tabla_de_simbolos* TS, char* nombre,float 
         return sim;
     }
 }
+simbolo* nuevo_simbolo_constante_bool(tabla_de_simbolos* TS, char* nombre,char* valor){
+    simbolo *sim = (simbolo*) malloc(sizeof(simbolo));
+    if(sim == NULL){
+        error("Fallo en nuevo_simbolo -> MALLOC");
+    }
+   
+    
+    simbolo* aux = buscar_sim_nombre(TS, nombre);
+    //printf("Esto es aux: %p\n",aux);
+    if (aux != NULL){
+
+         error("Ya existe la constante");
+       
+        return aux;
+    }else{
+        strcpy(sim->nombre, nombre);
+        // le ponemos un id
+        sim->id = TS->pos_libre;
+        sim->tipo = CONSTANTE;
+    
+        sim->val.cons.tipo = BOOLEANO;
+        sim->val.cons.ambito = LOCAL;
+
+        if ((strcasecmp(valor,"verdadero"))==0){
+            sim->val.cons.val.booleano= true;
+        }else {
+            sim->val.cons.val.booleano = false;
+        }
+            
+        
+
+        if (TS->pos_libre < MAX_TABLA_SIMBOLOS){
+            TS->tabla[TS->pos_libre] = sim;
+
+            // calculamos el siguiente vacio
+            TS->pos_libre = TS->pos_libre + 1;
+        } else {
+            //error
+            error("Se ha llenado la tabla de simbolos");
+        }
+        return sim;
+    }
+
+
+}
 
 void ver_simbolo_por_pantalla(simbolo *sim){
 
