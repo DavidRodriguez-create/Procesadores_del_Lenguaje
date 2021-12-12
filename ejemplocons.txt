@@ -28,7 +28,16 @@ a :=  a * cons;
 a := cons * 2;
 a := 2 * cons;
 
-a := cons;
+a := - cons;
+a := - 2;
+a := - a;
+
+r := - cons;
+r  := - 2;
+r  := - a;
+r := 2;
+r := consR;
+
 cons := a
 
 
