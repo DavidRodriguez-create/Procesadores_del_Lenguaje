@@ -4,7 +4,7 @@
 
 #include "definiciones.h"
 #include "tabla_de_simbolos.h"
-#include <stdbool.h>
+
 
 #define MAX_TABLA_CUADRUPLAS 1000
 

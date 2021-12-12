@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -25,6 +26,7 @@
 #define TIPO 2
 
 
+
 //ambito 
 #define LOCAL 0
 #define ENTRADA 1
@@ -32,10 +34,28 @@
 #define SALIDA 3
 
 
+typedef struct constante{
+
+    int tipo;
+    int ambito;
+    union{
+        int entero;
+        float real;
+        char caracter;
+        char* string;
+        bool booleano;
+        
+    }val;
+    
+
+}constante; 
+
 typedef struct variable{
     int tipo;
     int ambito;
+
 } variable;
+
 
 typedef struct simbolo{
     int id;
@@ -43,6 +63,8 @@ typedef struct simbolo{
     int tipo;
     union{
         variable var;
+        constante cons;
+        
     }val; //val de valor
 }simbolo;
 
@@ -56,6 +78,8 @@ void error(char * mensaje);
 tabla_de_simbolos* nueva_tabla_de_simbolos();
 simbolo* new_temp(tabla_de_simbolos* TS);
 simbolo* nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito);
+simbolo* nuevo_simbolo_constante_entero(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito,int valor);
+simbolo* nuevo_simbolo_constante_real(tabla_de_simbolos* TS, char* nombre,float valor);
 void ver_simbolo_por_pantalla(simbolo *sim);
 int existe_simbolo(tabla_de_simbolos* TS, char* nombre);
 simbolo* buscar_sim_nombre(tabla_de_simbolos* TS, char* nombre);

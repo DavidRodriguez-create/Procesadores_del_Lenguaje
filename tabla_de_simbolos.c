@@ -78,6 +78,86 @@ simbolo * nuevo_simbolo(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, i
 
 };
 
+simbolo * nuevo_simbolo_constante_entero(tabla_de_simbolos* TS, char* nombre, int tipo_simbolo, int tipo_variable, int ambito,int valor){
+
+    simbolo *sim = (simbolo*) malloc(sizeof(simbolo));
+    if(sim == NULL){
+        error("Fallo en nuevo_simbolo -> MALLOC");
+    }
+   
+    
+    simbolo* aux = buscar_sim_nombre(TS, nombre);
+    //printf("Esto es aux: %p\n",aux);
+    if (aux != NULL){
+
+         error("Ya existe la constante");
+       
+        return aux;
+    }else{
+        strcpy(sim->nombre, nombre);
+        // le ponemos un id
+        sim->id = TS->pos_libre;
+        sim->tipo = tipo_simbolo;
+    
+        sim->val.cons.tipo = tipo_variable;
+        sim->val.cons.ambito = ambito;
+        sim->val.cons.val.entero = valor;
+            
+        
+
+        if (TS->pos_libre < MAX_TABLA_SIMBOLOS){
+            TS->tabla[TS->pos_libre] = sim;
+
+            // calculamos el siguiente vacio
+            TS->pos_libre = TS->pos_libre + 1;
+        } else {
+            //error
+            error("Se ha llenado la tabla de simbolos");
+        }
+        return sim;
+    }
+
+}
+simbolo* nuevo_simbolo_constante_real(tabla_de_simbolos* TS, char* nombre,float valor){
+    
+    simbolo *sim = (simbolo*) malloc(sizeof(simbolo));
+    if(sim == NULL){
+        error("Fallo en nuevo_simbolo -> MALLOC");
+    }
+   
+    
+    simbolo* aux = buscar_sim_nombre(TS, nombre);
+    //printf("Esto es aux: %p\n",aux);
+    if (aux != NULL){
+
+         error("Ya existe la constante");
+       
+        return aux;
+    }else{
+        strcpy(sim->nombre, nombre);
+        // le ponemos un id
+        sim->id = TS->pos_libre;
+        sim->tipo = CONSTANTE;
+    
+        sim->val.cons.tipo = REAL;
+        sim->val.cons.ambito = LOCAL;
+        sim->val.cons.val.real = valor;
+            
+        
+
+        if (TS->pos_libre < MAX_TABLA_SIMBOLOS){
+            TS->tabla[TS->pos_libre] = sim;
+
+            // calculamos el siguiente vacio
+            TS->pos_libre = TS->pos_libre + 1;
+        } else {
+            //error
+            error("Se ha llenado la tabla de simbolos");
+        }
+        return sim;
+    }
+}
+
 void ver_simbolo_por_pantalla(simbolo *sim){
 
     printf("\n> %s id:%d tipo_sim:%d otro_tipo:%d \n",sim->nombre,sim->id,sim->tipo,sim->val.var.tipo);
@@ -201,6 +281,8 @@ void get_nombre_tipo_var(char * nombre, int tipo_var){
     }
 }
 
+
+
 void get_nombre_tipo_param(char * nombre, int tipo_param){
     /*
     #define LOCAL 0
@@ -242,8 +324,14 @@ void imprime_tabla_simbolos(tabla_de_simbolos* ts){
         id = ts->tabla[i]->id;
         get_nombre_sim(nombre_sim,ts->tabla[i]);
         get_nombre_tipo_sim(nombre_tipo_sim,ts->tabla[i]->tipo);
-        get_nombre_tipo_var(nombre_tipo_var,ts->tabla[i]->val.var.tipo);
-        get_nombre_tipo_param(nombre_tipo_param,ts->tabla[i]->val.var.ambito);
+        if (ts->tabla[i]->tipo == VARIABLE){
+            get_nombre_tipo_var(nombre_tipo_var,ts->tabla[i]->val.var.tipo);
+            get_nombre_tipo_param(nombre_tipo_param,ts->tabla[i]->val.var.ambito);
+        }else{
+            get_nombre_tipo_var(nombre_tipo_var,ts->tabla[i]->val.cons.tipo);
+            get_nombre_tipo_param(nombre_tipo_param,ts->tabla[i]->val.cons.ambito);
+        }
+       
         printf("\t%d\t%s\t%s\t%s\t%s\n",id,nombre_sim,nombre_tipo_sim,nombre_tipo_var,nombre_tipo_param);
     }
 }

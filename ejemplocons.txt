@@ -1,0 +1,38 @@
+algoritmo constantes;
+ent a,n, m: entero;
+sal a, b: entero;
+{Prec: a= A}
+const
+	cons := 53;
+    consR := 0.0;
+fconst
+var 
+
+r:real;
+fvar
+
+r := consR * consR;
+r := consR * a;
+r :=  a * consR;
+
+r := consR * 2.5;
+r :=  2.5 * consR;
+r := consR * 2;
+r :=  2 * consR;
+
+
+a := cons * cons;
+a :=  cons * a;
+a :=  a * cons;
+
+a := cons * 2;
+a := 2 * cons;
+
+a := cons;
+cons := a
+
+
+
+
+{Post: a=A and b=B}
+falgoritmo

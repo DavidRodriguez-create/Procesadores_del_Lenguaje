@@ -2,11 +2,18 @@ algoritmo variables;
 ent a,n, m: entero;
 sal a, b: entero;
 {Prec: a= A}
+const
+	cons := 53;
+	cons2 := 0;
+fconst
 var
 d,e: real;
 b, c, i: entero;
 r : booleano;
 fvar
+
+
+c := cons;
 
 i:= 0;
 
@@ -20,14 +27,7 @@ si b > c ->
 	fmientras
 [] b <= c ->
 
-	si r -> 
-		si r ->
-
-			continuar
-		[] r ->
-			Continuar
-		fsi 
-	fsi
+	d := - e
 fsi
 
 
