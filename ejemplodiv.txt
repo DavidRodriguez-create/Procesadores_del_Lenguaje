@@ -11,7 +11,11 @@ fvar
 
 a := a div aux;
 
-t := + aux
+t := - aux;
+
+aux2 := - 8.5E4;
+
+aux2 := aux2 + 2 + 7 + 9 + 8.5
 
 {Post: a=A }
 falgoritmo

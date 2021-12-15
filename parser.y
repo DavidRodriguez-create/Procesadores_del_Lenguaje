@@ -1187,7 +1187,7 @@ expresion : llamadaFuncion {}
 				gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
 			}else if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL )){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
+				gen(tabla_cuadruplas, OP_RESTA_UNARIA_REAL, exp1, NULL, dir_temporal);
 			}else{
 				printf("\nError BT_RESTA expresion: tipo incorrecto\n");
 			}
@@ -1196,7 +1196,7 @@ expresion : llamadaFuncion {}
 			gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
 		} else if (exp1->tipo == CONSTANTE_FLOAT){
 			dir_temporal->val.celda_TS->val.var.tipo = REAL;
-			gen(tabla_cuadruplas, OP_RESTA_UNARIA, exp1, NULL, dir_temporal);
+			gen(tabla_cuadruplas, OP_RESTA_UNARIA_REAL, exp1, NULL, dir_temporal);
 		} else {
 			error("Error BT_RESTA expresion: tipo incorrecto");
 		}
@@ -1235,18 +1235,18 @@ expresion : llamadaFuncion {}
 				gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
 			}else if (((exp1->val.celda_TS->tipo == VARIABLE | exp1->val.celda_TS->tipo == TEMPORAL) && exp1->val.celda_TS->val.var.tipo == REAL )| (exp1->val.celda_TS->tipo == CONSTANTE && exp1->val.celda_TS->val.cons.tipo == REAL )){
 				dir_temporal->val.celda_TS->val.var.tipo = REAL;
-				gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
+				gen(tabla_cuadruplas, OP_SUMA_UNARIA_REAL, exp1, NULL, dir_temporal);
 			}else{
-				printf("\nError OP_SUMA_UNARIA expresion: tipo incorrecto\n");
+				printf("\nError BT_SUMA expresion: tipo incorrecto\n");
 			}
 		}else if (exp1->tipo == CONSTANTE_INT){
 			dir_temporal->val.celda_TS->val.var.tipo = ENTERO;
 			gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
 		} else if (exp1->tipo == CONSTANTE_FLOAT){
 			dir_temporal->val.celda_TS->val.var.tipo = REAL;
-			gen(tabla_cuadruplas, OP_SUMA_UNARIA, exp1, NULL, dir_temporal);
+			gen(tabla_cuadruplas, OP_SUMA_UNARIA_REAL, exp1, NULL, dir_temporal);
 		} else {
-			error("Error en OP_SUMA_UNARIA: tipo incorrecto");
+			error("Error en BT_SUMA: tipo incorrecto");
 		}
 
 		ex1->dir = dir_temporal;

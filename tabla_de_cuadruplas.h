@@ -15,9 +15,11 @@
 
 // Operadores aritmeticos
 #define OP_SUMA_UNARIA 2
+#define OP_SUMA_UNARIA_REAL 23
 #define OP_SUMA 3
 #define OP_SUMA_REAL 4
 #define OP_RESTA_UNARIA 5
+#define OP_RESTA_UNARIA_REAL 24
 #define OP_RESTA 6
 #define OP_RESTA_REAL 7
 #define OP_MULTIPLICACION 8

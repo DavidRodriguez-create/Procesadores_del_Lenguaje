@@ -165,6 +165,10 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
             case OP_SUMA_UNARIA:
                 printf("\t%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
                 break;
+
+            case OP_SUMA_UNARIA_REAL:
+                printf("\t%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
+                break;
             case OP_SUMA:
                 printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
@@ -172,6 +176,9 @@ void generar_codigo_tres_direcciones(tabla_de_cuadruplas* tc){
                 printf("\t%d\t%s := %s %s %s\n",i,nombre_resultado,nombre_operando1,nombre_operador,nombre_operando2);
                 break;
             case OP_RESTA_UNARIA:
+                printf("\t%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
+                break;
+            case OP_RESTA_UNARIA_REAL:
                 printf("\t%d\t%s := %s %s\n",i,nombre_resultado,nombre_operador,nombre_operando1);
                 break;
             case OP_RESTA:
@@ -264,6 +271,9 @@ void get_nombre_operador(char * nombre, int op){
         case OP_SUMA_UNARIA:
             strcpy(nombre,"+");
             break;
+        case OP_SUMA_UNARIA_REAL:
+            strcpy(nombre,"+(real)");
+            break;
         case OP_SUMA:
             strcpy(nombre,"+");
             break;
@@ -272,6 +282,10 @@ void get_nombre_operador(char * nombre, int op){
             break;
         case OP_RESTA_UNARIA:
             strcpy(nombre,"-");
+            break;
+
+        case OP_RESTA_UNARIA_REAL:
+            strcpy(nombre,"-(real)");
             break;
         case OP_RESTA:
             strcpy(nombre,"-");
