@@ -1,0 +1,6 @@
+Que hace nuestro compilador -> variables, expresiones aritméticas , booleanas, literales, constantes y  control de flujo.
+Características específicas de vuestro lexico y vuestra gramática -> Se puede escribir numeros del estilo 2E10, 2E-2 ...
+
+Cuando se emplea los operadores <> = < <=... los operandos tienen que ser del mismo tipo y tienen que ser de tipo entero o real
+
+Que pasos hay que dar para comprobar vuestro trabajo -> Ejecutar los ejemplos
