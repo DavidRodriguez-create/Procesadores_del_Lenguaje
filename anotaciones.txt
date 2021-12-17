@@ -8,24 +8,29 @@ Que hace nuestro compilador ->
     - Constantes: enteras, reales, booleanas.
   Acepta uso de:
     - Literales: enteros, reales, booleanas.
-    - Expresiones aritméticas: los operadores son por defecto enteros, sino aparece especificado el tipo (real)
+    - Expresiones aritméticas: los operadores (+,-,*) son por defecto enteros, sino aparece especificado el tipo (+(real),-(real),*(real))
     - Expresiones booleanas
     - Control de flujo: alternativas, para, mientras.
 
 
 Características específicas de vuestro lexico y vuestra gramática ->
-
-  - Se especifica en la tabla de simbolos, en tipo de parametro, como ha sido declarada la variable: ent_sal, ent, sal, local (si se declara localmente)
-  - Se puede escribir numeros con exponente 10, del estilo: 2E10, 2E-2 ...
-  - Cuando se emplea los operadores relacionales (<> = < <= ...) los operandos tienen que ser del mismo tipo, entero o real.
+    - hemos ido por camino de C (expresiones aritmeticas y booleanas juntos)
+    - en el "problema generico" hemos cambiado la gramatica
+    - Se especifica en la tabla de simbolos, en tipo de parametro, como ha sido declarada la variable: ent_sal, ent, sal, local (si se declara localmente)
+    - Se puede escribir numeros con exponente 10, del estilo: 2E8, 2E-2, aunque en los exponentes de numeros enteros, tiene un maximo sobre el orden de 1e9 mas de eso hace integer overflow
+    - Cuando se emplea los operadores relacionales (<> = < <= ...) los operandos tienen que ser del mismo tipo, entero o real.
 
 Que pasos hay que dar para comprobar vuestro trabajo ->
 
   Para comprobar lo anterior tenemos los ejemplos:
-    - ejemplo_def_Variables_Constantes_Literales.txt
-    - ejemplo_uso_Aritmeticas.txt
-    - ejemplo_uso_Booleanas.txt
-    - ejemplo_uso_Alternativas.txt
-    - ejemplo_uso_Para.txt
-    - ejemplo_uso_Mientras.txt
+    - variables_constantes_literales.txt
+    - aritmeticas.txt
+    - booleanas.txt
+    - alternativas.txt
+    - para.txt
+    - mientras.txt
     - ejemplo_general.txt
+  los ejemplos de la practica (tuyos):
+    - ejemplo1.txt
+    - ejemplo2.txt
+    - ejemplo3.txt

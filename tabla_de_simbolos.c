@@ -363,7 +363,7 @@ void imprime_tabla_simbolos(tabla_de_simbolos* ts){
     char nombre_tipo_param[100];
     printf("\n\t------------------------------------\n");
     printf("\tTABLA DE SIMBOLOS \n");
-    printf("\tid\tnombre\ttipo_s\ttipovar\ttipo_param\n\n");
+    printf("\tid\tnombre\t\ttipo_s\t\ttipovar\t\ttipo_param\n\n");
 
     for (int i = 0; i < ts->pos_libre; ++i) {
         id = ts->tabla[i]->id;
@@ -377,7 +377,7 @@ void imprime_tabla_simbolos(tabla_de_simbolos* ts){
             get_nombre_tipo_param(nombre_tipo_param,ts->tabla[i]->val.cons.ambito);
         }
        
-        printf("\t%d\t%s\t%s\t%s\t%s\n",id,nombre_sim,nombre_tipo_sim,nombre_tipo_var,nombre_tipo_param);
+        printf("\t%d\t%s\t\t%s\t\t%s\t\t%s\n",id,nombre_sim,nombre_tipo_sim,nombre_tipo_var,nombre_tipo_param);
     }
 }
 

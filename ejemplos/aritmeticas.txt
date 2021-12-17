@@ -1,0 +1,20 @@
+algoritmo aritmeticas;
+ent a: entero;
+sal a: entero;
+{Prec: a= A}
+var
+    b,c: entero;
+    f,g: real;
+fvar
+const
+    DIEZ := 10;
+    UNO := 1.0;
+fconst
+
+a := DIEZ;
+f := (a + UNO) / 5.6e6;
+g := 5.1 * f;
+c := (1E9 div 5) mod 3
+
+{Post: a=A }
+falgoritmo

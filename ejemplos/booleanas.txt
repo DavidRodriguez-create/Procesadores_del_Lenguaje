@@ -1,0 +1,23 @@
+algoritmo booleanas;
+ent a: entero;
+sal a: entero;
+{Prec: a=A}
+var
+    comprarRegalo, deuda: booleano;
+    exito, trabajar: booleano;
+fvar
+
+const
+    WII := verdadero;
+    UPSI := falso;
+fconst
+
+trabajar := WII;
+exito := UPSI;
+
+si trabajar -> exito := WII; a := WII
+[] no trabajar -> trabajar := UPSI; a := UPSI
+fsi
+
+{Post: a=A }
+falgoritmo

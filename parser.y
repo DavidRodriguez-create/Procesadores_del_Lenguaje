@@ -2000,7 +2000,7 @@ listaOpciones : BT_SINOSI expresion BT_ENTONCES M instrucciones N M listaOpcione
 
 					backpatch(tabla_cuadruplas,$<expval>2->lista_true,$<intval>4);
 					backpatch(tabla_cuadruplas,$<expval>2->lista_false,$<intval>7);
-					
+
 
 					if ($<listval>8 == NULL){
 

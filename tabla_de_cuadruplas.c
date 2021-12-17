@@ -132,13 +132,13 @@ void imprime_tabla_cuadruplas(tabla_de_cuadruplas* tc){
 
     printf("\n\t---------------------------------------\n");
     printf("\tTABLA DE CUADRUPLAS \n");
-    printf("\tnum\top\top1\top2\tres\n\n");
+    printf("\tnum\top\t\top1\t\top2\t\tres\n\n");
     for (int i = 0; i < tc->next_quad; ++i) {
         get_nombre_operador(nombre_operador,tc->tabla[i]->operador);
         get_nombre_dir(nombre_operando1,tc->tabla[i]->operando1);
         get_nombre_dir(nombre_operando2,tc->tabla[i]->operando2);
         get_nombre_dir(nombre_resultado,tc->tabla[i]->resultado);
-        printf("\t%d\t%s\t%s\t%s\t%s\n",i,nombre_operador,nombre_operando1,nombre_operando2,nombre_resultado);
+        printf("\t%d\t%s\t\t%s\t\t%s\t\t%s\n",i,nombre_operador,nombre_operando1,nombre_operando2,nombre_resultado);
     }
 };
 
