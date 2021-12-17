@@ -19,6 +19,8 @@ si dinerosBanco > 0 ->
             comprarRegalo := verdadero;
             dinerosBanco := paga + regaloAcomprar
         fsi
+    [] paga <= 0 ->
+        Continuar
     fsi
 [] dinerosBanco <= 0 -> deuda := verdadero
 fsi

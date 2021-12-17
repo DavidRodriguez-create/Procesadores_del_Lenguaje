@@ -1,7 +1,6 @@
 #ifndef TABLA_DE_SIMBOLOS_H
 #define TABLA_DE_SIMBOLOS_H
 
-#include "definiciones.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -25,9 +24,7 @@
 #define CONSTANTE 1
 #define TIPO 2
 
-
-
-//ambito 
+//ambito (que realmente es tipo de parametro)
 #define LOCAL 0
 #define ENTRADA 1
 #define ENTRADASALIDA 2

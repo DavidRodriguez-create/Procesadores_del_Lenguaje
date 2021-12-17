@@ -1,6 +1,4 @@
 
-
-
 Que hace nuestro compilador ->
 
   Definicion de:
@@ -20,17 +18,38 @@ Características específicas de vuestro lexico y vuestra gramática ->
     - Se puede escribir numeros con exponente 10, del estilo: 2E8, 2E-2, aunque en los exponentes de numeros enteros, tiene un maximo sobre el orden de 1e9 mas de eso hace integer overflow
     - Cuando se emplea los operadores relacionales (<> = < <= ...) los operandos tienen que ser del mismo tipo, entero o real.
 
+
 Que pasos hay que dar para comprobar vuestro trabajo ->
 
   Para comprobar lo anterior tenemos los ejemplos:
-    - variables_constantes_literales.txt
-    - aritmeticas.txt
-    - booleanas.txt
     - alternativas.txt
-    - para.txt
-    - mientras.txt
-    - ejemplo_general.txt
+        En este ejemplo vemos el funcionamiento de alternativas con un continuar.
+
+        nota2: En las asignaciones booleanas, aunque estan declaradas como verdadero o falso, en nuestro codigo de tres direcciones sigue haciendo la
+        comprobacion para asignarle el valor booleano. Sabemos que es mejor asignarle directamente, pero a falta de tiempo se queda como esta.
+
+    - aritmeticas.txt
+        Aqui se ve como funciona los operadores aritmeticos.
+
+    - booleanas.txt
+        Aqui se ve el funcionamiento en la asignacion de variables booleanas.
+
+    - constantes_literales_variables.txt
+        Aqui vemos como se comporta en conjunto los diferentes variables, constante y literales. Hay 3 "errores" puestos a proposito.
+
+        nota: Hemos puesto en un principio que solo se pueda usar el valor de los constantes como tal, sin poder hacer un int_to_float(),
+        pero nos hemos dado cuenta mas tarde que tiene mas sentido poder hacer ese tipo de conversion aunque no lo hemos cambiado por falta de tiempo.
+
+        nota2: En las asignaciones booleanas, aunque estan declaradas como verdadero o falso, en nuestro codigo de tres direcciones sigue haciendo la
+        comprobacion para asignarle el valor booleano. Sabemos que es mejor asignarle directamente, pero a falta de tiempo se queda como esta.
+
+    - control_de_flujo.txt
+        Aqui se puede ver como funcionan en conjunto si, sino, mientras y para.
+
   los ejemplos de la practica (tuyos):
     - ejemplo1.txt
+        algoritmo intercambio
     - ejemplo2.txt
+        algoritmo orden3
     - ejemplo3.txt
+        algoritmo sumacomb

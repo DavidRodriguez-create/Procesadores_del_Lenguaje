@@ -1,16 +1,8 @@
 #ifndef TABLACUADRUPLAS_H
 #define TABLACUADRUPLAS_H
 
-
-#include "definiciones.h"
 #include "tabla_de_simbolos.h"
-
-
 #define MAX_TABLA_CUADRUPLAS 1000
-
-
-
-
 #define OP_ASIGNACION 1
 
 // Operadores aritmeticos
@@ -40,14 +32,6 @@
 #define INPUT 21
 #define OUTPUT 22
 
-//~ #define op_mayor 5
-//~ #define op_menor 6
-//~ #define op_distinto 7
-//~ #define op_mayorigual 8
-//~ #define op_menorigual 9
-//~ #define op_igual 10
-//~ #define op_goto  11
-
 // TIPOS DIR_ELEMENTO
 
 #define CONSTANTE_INT 0
@@ -55,8 +39,6 @@
 #define CONSTANTE_BOOL 2
 #define CELDA_TS 3
 #define POS_QUAD 4
-
-
 
 
 typedef struct dir_elemento{

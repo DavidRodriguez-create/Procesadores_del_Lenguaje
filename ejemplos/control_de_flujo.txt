@@ -7,32 +7,26 @@ const
 	cons2 := 0;
 	consB := verdadero;
 fconst
+
 var
 d,e: real;
-c, i: entero;
+c,i: entero;
 r : booleano;
 fvar
 
-
 c := cons;
-
 i:= 0;
 
 si consB ->
 	mientras i <n hacer
 		para i :=  c hasta b  hacer
-				d := - e;
-				d := d - e
+            d := - e;
+            d := d - e
 		fpara
-
 	fmientras
 [] b <= c ->
-
 	d := - e
 fsi
-
-
-
 
 {Post: a=A and b=B}
 falgoritmo

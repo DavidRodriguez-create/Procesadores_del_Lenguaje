@@ -138,7 +138,7 @@ void imprime_tabla_cuadruplas(tabla_de_cuadruplas* tc){
         get_nombre_dir(nombre_operando1,tc->tabla[i]->operando1);
         get_nombre_dir(nombre_operando2,tc->tabla[i]->operando2);
         get_nombre_dir(nombre_resultado,tc->tabla[i]->resultado);
-        printf("\t%d\t%s\t\t%s\t\t%s\t\t%s\n",i,nombre_operador,nombre_operando1,nombre_operando2,nombre_resultado);
+        printf("\t%d\t%-16s%-16s%-16s%-16s\n",i,nombre_operador,nombre_operando1,nombre_operando2,nombre_resultado);
     }
 };
 

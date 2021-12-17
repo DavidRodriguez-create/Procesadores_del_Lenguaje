@@ -4,13 +4,8 @@ sal a: entero;
 {Prec: a=A}
 var
     comprarRegalo, deuda: booleano;
-    exito, trabajar: booleano;
+    WII, UPSI, exito, trabajar: booleano;
 fvar
-
-const
-    WII := verdadero;
-    UPSI := falso;
-fconst
 
 trabajar := WII;
 exito := UPSI;

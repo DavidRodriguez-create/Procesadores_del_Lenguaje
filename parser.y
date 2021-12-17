@@ -2064,7 +2064,7 @@ itCotaFija : BT_PARA BT_IDENTIFICADOR BT_ASIGNACION expresion BT_HASTA expresion
 		backpatch(tabla_cuadruplas,$<listval>8,tabla_cuadruplas->next_quad);
 		gen(tabla_cuadruplas,OP_ASIGNACION,$<expval>4->dir, NULL,dir );
 		dir_elemento* m_quad =  nuevo_dir_elemento_constante_entero($<intval>9 );	
-		gen(tabla_cuadruplas,OP_MENORIGUAL,dir, $<expval>4->dir, m_quad );
+		gen(tabla_cuadruplas,OP_MENORIGUAL,dir, $<expval>6->dir, m_quad );
 
 		$<listval>$ = makelist(tabla_cuadruplas->next_quad);
 		gen(tabla_cuadruplas, OP_GOTO, NULL, NULL, NULL);

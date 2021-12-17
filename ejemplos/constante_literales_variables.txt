@@ -8,7 +8,6 @@ const
     consB := verdAdero;
 fconst
 var 
-
 r:real;
 z:booleano;
 fvar
@@ -30,7 +29,6 @@ r :=  2 + r;
 r := 2 + 2;
 r := r + r;
 
-
 a := cons + cons;
 a :=  cons + a;
 a :=  a + cons;
@@ -47,11 +45,10 @@ r  := - 2;
 r  := - a;
 r := 2;
 r := consR;
+r := cons;
 
-cons := a
-
-
-
+cons := a;
+cons := 7
 
 {Post: a=A and b=B}
 falgoritmo
